@@ -198,10 +198,10 @@
           ]
         },
         {
-          "name": "Stephan Oepen",
-          "title": "Head—Department of Chemistry",
-          "photo": "/assets/people/stephan-oepen.png",
-          "profile-url": "https://www.mn.uio.no/ifi/english/people/aca/oe/",
+          "name": "Roger Simm",
+          "title": "Head—Department of Bioscience",
+          "photo": "/assets/people/roger-simm.png",
+          "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/rogersim/",
           "affiliations": [],
           "elixir-groups": [
             {
@@ -263,14 +263,6 @@
           "title": "Senior Engineer",
           "photo": "/assets/people/federico-bianchini.png",
           "profile-url": "https://www.mn.uio.no/sbi/personer/fredebi/",
-          "affiliations": [],
-          "elixir-groups": []
-        },
-        {
-          "name": "Nazeefa Fatima",
-          "title": "Principal Engineer",
-          "photo": "/assets/people/nazeefa-fatima.png",
-          "profile-url": "https://www.mn.uio.no/ifi/english/people/adm/nazeefaf/",
           "affiliations": [],
           "elixir-groups": []
         },
@@ -367,10 +359,10 @@
           ]
         },
         {
-          "name": "Annette Bayer",
+          "name": "Peik Haugen",
           "title": "Professor, Head—Department of Chemistry",
-          "photo": "/assets/people/annette-bayer.png",
-          "profile-url": "https://en.uit.no/ansatte/person?p_document_id=41029",
+          "photo": "/assets/people/peik-haugen.png",
+          "profile-url": "https://en.uit.no/ansatte/peik.haugen",
           "affiliations": [],
           "elixir-groups": [
             {
@@ -435,6 +427,14 @@
           "elixir-groups": [],
           "affiliations": []
         }
+        {
+          "name": "Nazeefa Fatima",
+          "title": "Senior Engineer",
+          "photo": "/assets/people/nazeefa-fatima.png",
+          "profile-url": "https://uit.no/ansatte/nazeefa.fatima",
+          "affiliations": [],
+          "elixir-groups": []
+        },
       ]
     },
     "ntnu": {
@@ -562,10 +562,10 @@
           ]
         },
         {
-          "name": "Kari Kolstad",
+          "name": "Gro Steine",
           "title": "Dean—Faculty of Biosciences",
-          "photo": "/assets/people/kari-kolstad.png",
-          "profile-url": "https://www.nmbu.no/om/ansatte/kari-kolstad",
+          "photo": "/assets/people/Gro-Steine.png",
+          "profile-url": "https://www.nmbu.no/om/ansatte/Gro-Steine",
           "affiliations": [],
           "elixir-groups": [
             {
