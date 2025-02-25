@@ -1,4 +1,4 @@
-import Placeholder from "../../components/placeholder.astro";
+<link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
 
 Welcome to ELIXIR's training platform, providing you high-quality bioinformatics
 training designed to support researchers and professionals in life science research.
@@ -17,55 +17,20 @@ You can visit [ELIXIR TeSS](https://tess.elixir-europe.org/) for an overview ove
 
 # Upcoming Events
 
-<Placeholder height="h-64">
-    No Training Material Available
-</Placeholder>
+<div id="tess-widget-events-list" className="tess-widget tess-widget-list"></div>
+<script async="" defer="" src="/assets/scripts/upcoming-events.js" onLoad="initTeSSWidgets()"></script>
 
 # Training Material
 
-<Placeholder height="h-64">
-    No Training Material Available
-</Placeholder>
+<div id="training-materials-list" class="tess-widget tess-widget-list"></div>
+<script async="" defer="" src="/assets/scripts/training-material.js" onLoad="initTrainingMaterials()"></script>
 
 # Past Events
 
-import EventList from "../../components/event-list.astro";
+<div id="past-training-materials-list" class="tess-widget tess-widget-list"></div>
+<script async="" defer="" src="/assets/scripts/past-events.js" onLoad="initPastTrainingMaterials()"></script>
 
-<EventList
-    events={[
-        {
-            title: "Jupyter / Galaxy workflow workshop",
-            location: "Bergen",
-            datetime: "February 14-15, 2019",
-        },
-        {
-            title: "Hands-on workshop in Marine Metagenomics",
-            location: "Tromsø",
-            datetime: "November 26-30, 2018",
-        },
-        {
-            title: "NeLS intro and hands-on DLN Data Management, workshop",
-            location: "Oslo",
-            datetime: "November 7, 2018",
-            link: "https://goo.gl/oExp6Q"
-        },
-        {
-            title: "NeLS Storage hands-on, workshop @ NTNU",
-            location: "Trondheim",
-            datetime: "2018",
-            link: "https://drive.google.com/drive/folders/16fZVn2J9z54FOA16WfefeWy66b1J9q-c?ths=true"
-        },
-        {
-            title: "NeLS_RNASeq-HISAT2_exercise_Galaxy, workshop",
-            location: "Oslo",
-            datetime: "2018",
-            link: "https://drive.google.com/drive/folders/16fZVn2J9z54FOA16WfefeWy66b1J9q-c?ths=true"
-        },
-        {
-            title: "NeLS miRNA exercise Galaxy, workshop @ NTNU",
-            location: "Oslo",
-            datetime: "October 2018",
-            link: "https://drive.google.com/drive/folders/16fZVn2J9z54FOA16WfefeWy66b1J9q-c?ths=true"
-        },
-    ]}
-/>
+<script async=""
+        defer=""
+        src="https://elixirtess.github.io/TeSS_widgets/js/tess-widget-standalone.js"
+        onLoad="initTeSSWidgets(); initTrainingMaterials(); initPastTrainingMaterials();"></script>
