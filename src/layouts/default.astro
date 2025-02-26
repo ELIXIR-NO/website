@@ -3,8 +3,11 @@ import Navigation from "../components/navigation";
 import Footer from "../components/footer";
 import Banner from "../components/banner.astro";
 import BannerPrimaryContent from "../content/banner/primary.mdx";
-import { components } from "../components/elements";
+import {components} from "../components/elements";
+import {SEO} from "astro-seo";
 import "../styles/global.scss";
+
+const {seo} = Astro.props;
 ---
 
 <html lang="en" class="bg-white dark:bg-dark-background">
@@ -18,7 +21,7 @@ import "../styles/global.scss";
             try {
                 window.pagefind = await import('/pagefind/pagefind.js');
                 await window.pagefind.options({
-                    ranking: { pageLength: .35 }
+                    ranking: {pageLength: .35}
                 });
                 window.pagefind.init();
             } catch (error) {
@@ -36,6 +39,45 @@ import "../styles/global.scss";
             document.documentElement.classList.add('dark');
         }
     </script>
+    <SEO
+            title="A Very Descriptive Title"
+            titleTemplate="%s — ELIXIR Norway"
+            titleDefault="ELIXIR NO"
+            description="A heavily optimized description full of well-researched keywords."
+            canonical=""
+            noindex={false}
+            nofollow={false}
+            charset="UTF-8"
+            openGraph={{
+                optional: {
+                    locale: "en_GB",
+                    description: "",
+                    localeAlternate: ["nb_NO"]
+                },
+                basic: {
+                    title: "A Very Descriptive Title",
+                    type: "image",
+                    image: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
+                },
+            }}
+            twitter={{
+                creator: "@jonasmerlins1"
+            }}
+            extend={{
+
+                link: [{rel: "icon", href: "/favicon.ico"}],
+                // extending the default meta tags
+
+                meta: [
+                    {
+                        name: "twitter:image",
+                        content: "https://user-images.githubusercontent.com/5182256/131216951-8f74f425-f775-463d-a11b-0e01ad9fce8d.png",
+                    },
+                    {name: "twitter:title", content: "Tinker Tailor Soldier Spy"},
+                    {name: "twitter:description", content: "Agent"},
+                ],
+            }}
+    />
 </head>
 <body class="relative min-h-full">
 <Banner>
