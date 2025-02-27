@@ -7,7 +7,7 @@ function initTrainingMaterials() {
             },
             params: {
                 pageSize: 10,
-                q: ['Norway']
+                node: ["Norway"]
             }
         });
 }
