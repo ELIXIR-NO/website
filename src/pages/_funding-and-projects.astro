@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from "../layouts/complex.astro";
+
+const projects = await getCollection('projects');
+console.log(projects)
+---
+
+<Layout title="Funding & Projects">
+    {projects.map(({ data }) => {
+        return (
+                <div class="flex flex-col gap-y-8 mt-12">
+                    <h1 class="text-3xl font-bold underline">{data.title}</h1>
+                    <p class="text-base">{data.summary}</p>
+                </div>
+            )
+            })}
+</Layout>

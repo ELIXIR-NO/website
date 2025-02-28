@@ -119,7 +119,7 @@ const Links = () => {
     return (
         <div
             className="col-span-full lg:col-span-1 text-right place-content-end place-items-end place-self-center lg:place-self-end">
-            <div role="list" className="flex sm:flex-row lg:flex-col gap-y-2 gap-x-2">
+            <div role="list" className="flex sm:flex-row lg:flex-col gap-y-2 gap-x-2 [&_*]:text-gray-800">
                 <a href="#" className="text-sm leading-6">Helpdesk</a>
                 <a href="#" className="text-sm leading-6">Careers</a>
                 <a href="#" className="text-sm leading-6">Organizations</a>

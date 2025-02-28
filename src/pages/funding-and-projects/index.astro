@@ -6,24 +6,24 @@ import { getCollection } from 'astro:content';
 function groupByProjectType(objects) {
 
     const result = {
-        Global: [],
-        National: [],
-        European: []
+        ongoing: [],
+        finished: [],
+        european: []
     };
 
     objects.forEach(obj => {
-        switch (obj.data.type) {
-            case 'global-project':
-                result.Global.push(obj);
+        switch (obj.data.status) {
+            case 'ongoing':
+                result.ongoing.push(obj);
                 break;
-            case 'national-project':
-                result.National.push(obj);
+            case 'finished':
+                result.finished.push(obj);
                 break;
-            case 'european-project':
-                result.European.push(obj);
+            case 'european':
+                result.european.push(obj);
                 break;
             default:
-                console.warn(`Unknown type: ${obj.data.type}`);
+                break;
         }
     });
 
@@ -35,7 +35,7 @@ const projects = await getCollection('projects');
 const groupedProjects = groupByProjectType(projects);
 ---
 
-<Layout title="Projects">
+<Layout title="Funding & Projects">
     {[...Object.entries(groupedProjects)].map(([title, value]) => {
         return (
             <section class="flex flex-col gap-y-8 mt-12">
@@ -43,7 +43,7 @@ const groupedProjects = groupByProjectType(projects);
                 <div class="flex flex-col gap-y-6">
                     {value.map((project) => {
                         return (
-                                <ProjectCard title={project.data.title} href={`/projects/${project.slug}`}>
+                                <ProjectCard title={project.data.title} href={`/funding-and-projects/${project.slug}`}>
                                     {project.data.summary}
                                 </ProjectCard>
                         );
