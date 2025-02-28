@@ -9,12 +9,12 @@ const props = Astro.props;
             {Astro.slots.has("left") && (
                     <aside class={`sticky top-8 hidden ${
                         props.sidebar === "equal" ? "w-60" :
-                            props.sidebar === "left-prominent" ? "w-72" : "w-44"
+                            props.sidebar === "left-prominent" ? "w-80" : "w-44"
                     } shrink-0 lg:block`}>
                         <slot name="left"/>
                     </aside>
             )}
-            <main class=`mx-auto ${
+            <main class=` ${
                 (Astro.slots.has("right") &&
                     Astro.slots.has("left")) ?
                     "max-w-full flex-1" :
