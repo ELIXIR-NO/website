@@ -44,9 +44,9 @@ export default function CommandPalette({ open, setOpen }) {
         setSearchTerm('');
     };
 
-    const onItemSelected = (url: Location) => {
+    const onItemSelected = (url: Location | (Location & string)) => {
         if (url) {
-            window.location = url
+            window.location = url;
         }
     }
 
