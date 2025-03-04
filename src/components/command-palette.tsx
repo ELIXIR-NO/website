@@ -46,7 +46,7 @@ export default function CommandPalette({ open, setOpen }) {
 
     const onItemSelected = (url: Location | (Location & string)) => {
         if (url) {
-            window.location = url;
+            (window as Window).location = url;
         }
     }
 
