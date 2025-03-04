@@ -44,11 +44,11 @@ export default function CommandPalette({ open, setOpen }) {
         setSearchTerm('');
     };
 
-    const onItemSelected = (url: Location | (Location & string)) => {
+    const onItemSelected = (url: string | Location) => {
         if (url) {
-            (window as Window).location = url;
+            window.location.href = typeof url === 'string' ? url : url.href;
         }
-    }
+    };
 
     return (
         <Dialog
