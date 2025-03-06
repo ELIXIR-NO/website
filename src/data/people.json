@@ -186,7 +186,7 @@
       "people": [
         {
           "name": "Eivind Hovig",
-          "title": "Professor Emeritus, co-head of ELIXIR Norway",
+          "title": "Professor Emeritus",
           "photo": "/assets/people/eivind-hovig.png",
           "profile-url": "https://www.mn.uio.no/ifi/english/people/aca/ehovig/",
           "affiliations": [],
@@ -282,14 +282,14 @@
         {
           "name": "Jeanne Chèneby",
           "title": "Researcher, PhD",
-          "photo": "/assets/people/empty.png",
+          "photo": "/assets/people/jeanne-cheneby.jpeg",
           "profile-url": "https://www.mn.uio.no/sbi/personer/jeannech/",
           "affiliations": [],
           "elixir-groups": []
         },
         {
           "name": "Morten Johansen",
-          "title": "Chief Engineer",
+          "title": "Senior Engineer",
           "photo": "/assets/people/empty.png",
           "profile-url": "https://www.mn.uio.no/ifi/english/people/adm/morj/",
           "affiliations": [],
