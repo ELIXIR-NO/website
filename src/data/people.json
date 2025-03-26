@@ -182,8 +182,21 @@
       ]
     },
     "uio": {
-      "name": "University of Oslo",
-      "people": [
+	"name": "University of Oslo",
+	"people": [
+	{
+          "name": "Rein Aasland",
+          "title": "Professor, Head of Node",
+          "photo": "/assets/people/rein-aasland.png",
+          "profile-url": "https://www.mn.uio.no/ibv/personer/vit/reina/",
+          "affiliations": [],
+          "elixir-groups": [
+            {
+              "name": "node-leaders",
+              "role": null
+            }
+          ]
+        },
         {
           "name": "Eivind Hovig",
           "title": "Professor Emeritus",
@@ -206,19 +219,6 @@
           "elixir-groups": [
             {
               "name": "steering-board",
-              "role": null
-            }
-          ]
-        },
-        {
-          "name": "Rein Aasland",
-          "title": "Professor, Head of Node",
-          "photo": "/assets/people/rein-aasland.png",
-          "profile-url": "https://www.mn.uio.no/ibv/personer/vit/reina/",
-          "affiliations": [],
-          "elixir-groups": [
-            {
-              "name": "node-leaders",
               "role": null
             }
           ]
