@@ -182,8 +182,21 @@
       ]
     },
     "uio": {
-      "name": "University of Oslo",
-      "people": [
+	"name": "University of Oslo",
+	"people": [
+	{
+          "name": "Rein Aasland",
+          "title": "Professor, Head of Node",
+          "photo": "/assets/people/rein-aasland.png",
+          "profile-url": "https://www.mn.uio.no/ibv/personer/vit/reina/",
+          "affiliations": [],
+          "elixir-groups": [
+            {
+              "name": "node-leaders",
+              "role": null
+            }
+          ]
+        },
         {
           "name": "Eivind Hovig",
           "title": "Professor Emeritus",
@@ -206,19 +219,6 @@
           "elixir-groups": [
             {
               "name": "steering-board",
-              "role": null
-            }
-          ]
-        },
-        {
-          "name": "Rein Aasland",
-          "title": "Professor, Head of Node",
-          "photo": "/assets/people/rein-aasland.png",
-          "profile-url": "https://www.mn.uio.no/ibv/personer/vit/reina/",
-          "affiliations": [],
-          "elixir-groups": [
-            {
-              "name": "node-leaders",
               "role": null
             }
           ]
@@ -294,7 +294,15 @@
           "profile-url": "https://www.mn.uio.no/ifi/english/people/adm/morj/",
           "affiliations": [],
           "elixir-groups": []
-        }
+        },
+	{
+          "name": "Ole Kristian Tørresen",
+          "title": "Researcher, PhD",
+          "photo": "/assets/people/ole-christian-toerresen.png",
+          "profile-url": "https://www.mn.uio.no/cees/english/people/researcher-postdoc/olekto/",
+          "affiliations": [],
+          "elixir-groups": []
+        }  
       ]
     },
     "uit": {
