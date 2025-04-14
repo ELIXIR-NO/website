@@ -1,7 +1,7 @@
 ---
-const { height } = Astro.props;
+const { height, id, className } = Astro.props;
 ---
 
-<div class={`w-full ${height} bg-slate-50 dark:bg-dark-surface flex items-center justify-center text-gray-500 dark:text-gray-300`}>
+<div id={id ?? ""} class={`w-full ${height} bg-slate-50 dark:bg-dark-surface flex items-center justify-center text-gray-500 dark:text-gray-300 ${className}`}>
     <slot/>
 </div>
