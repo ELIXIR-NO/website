@@ -1,3 +1,5 @@
+import Placeholder from "../../components/placeholder.astro";
+
 <link rel="stylesheet" property="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css"/>
 
 # Training by ELIXIR Norway
@@ -24,16 +26,17 @@ Navigating ELIXIR's Training programs by exploring our catalogue of available co
 # Upcoming Events
 
 <div id="tess-widget-events-list" className="tess-widget tess-widget-list"></div>
+<Placeholder id="tess-widget-events-list-placeholder" height="h-44" className="hidden">No upcoming events at the moment.</Placeholder>
 <script async="" defer="" src="/assets/scripts/upcoming-events.js" onLoad="initTeSSWidgets()"></script>
 
 # Training Material
 
-<div id="training-materials-list" class="tess-widget tess-widget-list"></div>
+<div id="training-materials-list" className="tess-widget tess-widget-list"></div>
 <script async="" defer="" src="/assets/scripts/training-material.js" onLoad="initTrainingMaterials()"></script>
 
 # Past Events
 
-<div id="past-training-materials-list" class="tess-widget tess-widget-list"></div>
+<div id="past-training-materials-list" className="tess-widget tess-widget-list"></div>
 <script async="" defer="" src="/assets/scripts/past-events.js" onLoad="initPastTrainingMaterials()"></script>
 
 <script async=""

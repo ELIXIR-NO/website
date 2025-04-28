@@ -49,4 +49,45 @@
       @apply mt-16 mb-8;
     }
   }
+
+  #training-materials-list,#past-training-materials-list {
+    @apply list-none space-y-2;
+
+    ol, ul {
+      @apply space-y-3;
+    }
+
+    li {
+      @apply bg-light-surface dark:bg-dark-surface rounded-lg p-3 shadow-sm border border-gray-200 dark:border-gray-700;
+    }
+
+    li a {
+      @apply text-lg font-semibold text-blue-600 dark:text-blue-400 hover:underline;
+    }
+
+    li div {
+      @apply text-gray-600 dark:text-gray-300 text-sm mt-1;
+    }
+  }
+
+}
+
+.tess-controls {
+  @apply flex justify-center mb-4;
+}
+
+.tess-search {
+  @apply flex items-center space-x-3 !important;
+}
+
+.tess-search input {
+  @apply px-4 py-2 w-full flex bg-light-surface dark:bg-dark-surface text-light-on-surface dark:text-dark-on-surface border border-gray-300 dark:border-gray-600 rounded-lg !important;
+}
+
+.tess-search-clear {
+  @apply text-light-on-surface dark:text-dark-on-surface hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer !important;
+}
+
+.tess-search button {
+  @apply bg-brand-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-brand-primary focus:ring-2 focus:ring-brand-primary !important;
 }
