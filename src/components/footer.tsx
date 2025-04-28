@@ -42,7 +42,7 @@ const ElixirBrand = () => {
                     />
                     <SocialButton
                         name="LinkedIn"
-                        link="https://www.linkedin.com/company/elixir-europe"
+                        link="https://www.linkedin.com/company/elixir-norway"
                         icon={<SiLinkedin className="h-8 w-8"/>}
                     />
                     <SocialButton
