@@ -1,56 +1,147 @@
 ---
-import Layout from "../../layouts/complex.astro";
 import ProjectCard from "../../components/project-card";
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
+import {slugToTitleCase, sortStringsByLength} from "../../lib/utils";
+import ComplexLayout from "../../layouts/complex.astro";
+import MetadataFilter from "../../components/metadata-filter";
 
-function groupByProjectType(objects) {
+const extractKeywords = (items: any) => {
+    return sortStringsByLength([
+        ...new Set<string>(
+            items
+                .map((item: any) => (item.data?.keywords ?? []))
+                .reduce((pv: any, cv: any) => pv.concat(cv), []) as string[]
+        )
+    ]).map((keyword) => ({
+        id: keyword,
+        value: keyword,
+        label: slugToTitleCase(keyword),
+    }));
+};
 
-    const result = {
-        ongoing: [],
-        finished: [],
-        european: []
+const extractCategories = (items) => {
+    return sortStringsByLength([
+        ...new Set<string>(
+            items
+                .map((item: any) => item.data?.category)
+                .filter(Boolean) as string[]
+        )
+    ]).map((category) => ({
+        id: category,
+        value: category,
+        label: slugToTitleCase(category),
+    }));
+};
+
+const extractStatuses = (items: any) => {
+    return sortStringsByLength([
+        ...new Set<string>(
+            items
+                .map((item: any) => item.data?.status)
+                .filter(Boolean) as string[]
+        )
+    ]).map((status) => ({
+        id: status,
+        value: status,
+        label: slugToTitleCase(status),
+    }));
+};
+
+const extractAllMetadata = (items) => {
+    return {
+        keywords: extractKeywords(items),
+        categories: extractCategories(items),
+        statuses: extractStatuses(items),
     };
-
-    objects.forEach(obj => {
-        switch (obj.data.status) {
-            case 'ongoing':
-                result.ongoing.push(obj);
-                break;
-            case 'finished':
-                result.finished.push(obj);
-                break;
-            case 'european':
-                result.european.push(obj);
-                break;
-            default:
-                break;
-        }
-    });
-
-    return result;
-
-}
+};
 
 const projects = await getCollection('projects');
-const groupedProjects = groupByProjectType(projects);
----
 
-<Layout title="Funding & Projects">
-    {[...Object.entries(groupedProjects)].map(([title, value]) => {
-        return (
-            <section class="flex flex-col gap-y-8 mt-12">
-                <h1 class="text-3xl font-bold underline">{title}</h1>
-                <div class="flex flex-col gap-y-6">
-                    {value.map((project) => {
-                        return (
-                                <ProjectCard title={project.data.title} href={`/funding-and-projects/${project.slug}`}>
-                                    {project.data.summary}
-                                </ProjectCard>
-                        );
-                    })}
-                </div>
-            </section>
-        )
-    })}
-</Layout>
+const _projects = projects.map(
+    ({slug, id, data}) => ({slug, id, ...data})
+);
+
+const _filters = [
+
+    {
+        name: "Category",
+        values: extractCategories(projects)
+    },
+    {
+        name: "Status",
+        values: extractStatuses(projects)
+    },
+    {
+        name: "Keywords",
+        values: extractKeywords(projects)
+    },
+];
+---
+<ComplexLayout title="Funding & Projects" sidebar="equal">
+
+    <div slot="left">
+        <div>
+            <h2 class="text-xl font-bold">Refine your search</h2>
+        </div>
+        <script is:inline>
+            document.addEventListener("DOMContentLoaded", () => {
+                function getKeywordsFromUrl() {
+                    const params = new URLSearchParams(window.location.search);
+                    return new Set(params.getAll('Keywords'));
+                }
+                function getCategoryFromUrl() {
+                    const params = new URLSearchParams(window.location.search);
+                    return new Set(params.getAll('Category'));
+                }
+                function getStatusFromUrl() {
+                    const params = new URLSearchParams(window.location.search);
+                    return new Set(params.getAll('Status'));
+                }
+                // Function to hide/show elements based on tags
+                function updateVisibility() {
+                    const keywords = getKeywordsFromUrl();
+                    const status = getStatusFromUrl();
+                    const category = getCategoryFromUrl();
+                    const container = document.querySelector('[data-projects-container]');
+                    if (!container) return;
+                    // FIXME
+                    [['keywords', keywords], ['category', category], ['status', status]].forEach(([a, b]) => {
+                        container.querySelectorAll(`[data-${a}]`).forEach(element => {
+                            const elementTags = new Set(element.getAttribute(`data-${a}`).split(','));
+                            if (b.size === 0 || [...b].some(tag => elementTags.has(tag))) {
+                                element.classList.remove('hidden');
+                                element.classList.add('block');
+                            } else {
+                                element.classList.remove('block');
+                                element.classList.add('hidden');
+                            }
+                        });
+                    })
+                }
+
+                // Initial visibility update
+                updateVisibility();
+                // Watch for URL changes and update visibility
+                window.addEventListener('url-change', updateVisibility);
+                // Handle initial load with URL parameters
+                window.addEventListener('load', updateVisibility);
+            });
+        </script>
+        <MetadataFilter client:load filters={_filters}/>
+    </div>
+
+    <section class="flex flex-col gap-y-8 mt-12">
+        <ol class="columns-1 lg:columns-2 gap-x-4" data-projects-container="1">
+            {_projects.filter(({draft}) => !draft).map((project) => {
+                return (
+                        <ProjectCard project={project} title={project.title}
+                                     href={`/funding-and-projects/${project.slug}`}>
+                            {project.summary}
+                        </ProjectCard>
+                );
+            })}
+        </ol>
+    </section>
+
+</ComplexLayout>
 
