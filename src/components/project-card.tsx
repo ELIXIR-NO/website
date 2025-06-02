@@ -1,6 +1,9 @@
-export default function ProjectCard({project, title, children}) {
+import {GrLinkNext} from "react-icons/gr";
+
+export default function ProjectCard({project, title, children, href = "#"}) {
     return (
         <li className="break-inside-avoid mb-4"
+            data-project="1"
             data-keywords={project.keywords.join(',')}
             data-category={project.category}
             data-status={project.status}>
