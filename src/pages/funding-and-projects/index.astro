@@ -64,15 +64,15 @@ const _projects = projects.map(
 const _filters = [
 
     {
-        name: "Category",
+        name: "category",
         values: extractCategories(projects)
     },
     {
-        name: "Status",
+        name: "status",
         values: extractStatuses(projects)
     },
     {
-        name: "Keywords",
+        name: "keywords",
         values: extractKeywords(projects)
     },
 ];
@@ -87,36 +87,68 @@ const _filters = [
             document.addEventListener("DOMContentLoaded", () => {
                 function getKeywordsFromUrl() {
                     const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('Keywords'));
+                    return new Set(params.getAll('keywords'));
                 }
+
                 function getCategoryFromUrl() {
                     const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('Category'));
+                    return new Set(params.getAll('category'));
                 }
+
                 function getStatusFromUrl() {
                     const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('Status'));
+                    return new Set(params.getAll('status'));
                 }
+
+                function hasIntersection(a, b) {
+                    for (let elem of a) {
+                        if (b.has(elem)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
                 // Function to hide/show elements based on tags
                 function updateVisibility() {
-                    const keywords = getKeywordsFromUrl();
-                    const status = getStatusFromUrl();
-                    const category = getCategoryFromUrl();
+                    const [keywords, status, category] = [
+                        getKeywordsFromUrl(),
+                        getStatusFromUrl(),
+                        getCategoryFromUrl()
+                    ];
+                    console.log({keywords, status, category})
                     const container = document.querySelector('[data-projects-container]');
-                    if (!container) return;
-                    // FIXME
-                    [['keywords', keywords], ['category', category], ['status', status]].forEach(([a, b]) => {
-                        container.querySelectorAll(`[data-${a}]`).forEach(element => {
-                            const elementTags = new Set(element.getAttribute(`data-${a}`).split(','));
-                            if (b.size === 0 || [...b].some(tag => elementTags.has(tag))) {
-                                element.classList.remove('hidden');
-                                element.classList.add('block');
-                            } else {
-                                element.classList.remove('block');
-                                element.classList.add('hidden');
+                    const allProjectElements = container.querySelectorAll(`[data-project]`);
+                    console.log({allProjectElements})
+                    if (!container)
+                        // if no containing parent, we ignore the toggles
+                        return;
+                    allProjectElements.forEach(element => {
+                        const pk = new Set(element.getAttribute(`data-keywords`).split(','));
+                        const ps = new Set([element.getAttribute(`data-status`)]);
+                        const pc = new Set([element.getAttribute(`data-category`)]);
+                        console.log({
+                            pk, ps, pc, el: element.getAttribute('data-project'), showIf: {
+                                "keywords-size0": keywords.size === 0,
+                                "status.size0": status.size === 0,
+                                "category.size0": category.size === 0,
+                                "keywords.intersection": keywords.intersection(pk).size,
+                                "status.intersection": status.intersection(ps).size,
+                                "category.intersection": category.intersection(pc).size,
                             }
-                        });
-                    })
+                        })
+                        if (
+                            (keywords.size === 0 || keywords.intersection(pk).size) ||
+                            (status.size === 0 || status.intersection(ps).size) ||
+                            (category.size === 0 && category.intersection(pc).size)
+                        ) {
+                            element.classList.remove('hidden');
+                            element.classList.add('block');
+                        } else {
+                            element.classList.remove('block');
+                            element.classList.add('hidden');
+                        }
+                    });
                 }
 
                 // Initial visibility update

@@ -11,3 +11,11 @@ export const sortStringsByLength = (strings: string[]): string[] => {
 export const classNames = (...classes): string => {
     return classes.filter(Boolean).join(' ')
 }
+
+export const stringToKebabCase = (str: string) => {
+    return str
+        .toLowerCase() // convert to lowercase
+        .replace(/[^a-z0-9\s]/g, '') // remove non-alphanumeric characters except spaces
+        .trim() // remove leading/trailing spaces
+        .replace(/\s+/g, '-'); // replace spaces with hyphens
+};

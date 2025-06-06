@@ -8,17 +8,18 @@ export type FilterValue = {
 
 export type FilterGroup = {
     name: string;
+    type?: "input" | "checkbox";
     values: FilterValue[];
 };
 
 export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[] }) {
+
     const [selectedFilters, setSelectedFilters] = useState<Record<string, (number | string)[]>>({});
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const initialSelections: Record<string, (number | string)[]> = {};
-
-        filters.forEach(({ name, values }) => {
+        filters.forEach(({ name, type, values }) => {
             const selectedFromUrl = params.getAll(name);
             if (selectedFromUrl.length > 0) {
                 // Convert URL strings back to their original types by matching with available values
@@ -38,7 +39,6 @@ export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[
 
     const updateUrl = (newSelectedFilters: Record<string, (number | string)[]>) => {
         const params = new URLSearchParams();
-
         Object.entries(newSelectedFilters).forEach(([filterName, selectedValues]) => {
             // Find the filter group to get the actual values
             const filterGroup = filters.find(f => f.name === filterName);
@@ -51,7 +51,6 @@ export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[
                 });
             }
         });
-
         window.history.replaceState(
             null,
             '',
@@ -62,9 +61,6 @@ export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[
     };
 
     const toggleFilter = (filterName: string, id: number | string) => {
-        console.assert(!!id, "TagsFilter: {id} cannot be null|undefined");
-        console.log(filterName, id)
-
         setSelectedFilters((prevSelectedFilters) => {
             const currentSelected = prevSelectedFilters[filterName] || [];
             const newSelected = currentSelected.includes(id)
@@ -75,23 +71,19 @@ export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[
                 ...prevSelectedFilters,
                 [filterName]: newSelected
             };
-
             // Remove empty filter groups from the object
             if (newSelected.length === 0) {
                 delete newSelectedFilters[filterName];
             }
-
             // Update URL with new selected filters
             updateUrl(newSelectedFilters);
-            console.log(newSelectedFilters)
             return newSelectedFilters;
         });
-
     };
 
     return (
         <div className="mt-6 space-y-6">
-            {filters.map(({ name, values }) => (
+            {filters.map(({ name, type, values }) => (
                 <div key={name} className="space-y-3">
                     <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 capitalize">
                         {name.replace(/([A-Z])/g, ' $1').trim()}
@@ -103,28 +95,14 @@ export default function MetadataFilter({ filters = [] }: { filters: FilterGroup[
                                 <div key={`${name}-${id}`}>
                                     <label
                                         onClick={() => toggleFilter(name, id)}
-                                        className={`
-                                            inline-flex items-center py-2 px-3 rounded-full cursor-pointer text-sm font-medium
-                                            transition-all duration-200 ease-in-out
-                                            border border-gray-300 dark:border-gray-600
-                                            bg-white dark:bg-gray-800
-                                            text-gray-700 dark:text-gray-300
-                                            hover:bg-gray-50 dark:hover:bg-gray-700
-                                            hover:border-gray-400 dark:hover:border-gray-500
-                                            ${isSelected
-                                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                                            : ''
-                                        }
-                                        `}>
+                                        className={`items-center py-1 px-3 inline-flex flex-shrink-0 rounded-full cursor-pointer text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300 border border-gray-300 dark:border-gray-700 has-[:checked]:border-brand-primary bg-slate-50 dark:bg-dark-surface has-[:checked]:dark:bg-brand-primary/50`}>
                                         {label}
                                         {isSelected && (
                                             <span
-                                                className="ml-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 hover:scale-110 transition-transform duration-150"
+                                                className="ml-2 hover:scale-105 hover:font-bold"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    toggleFilter(name, id);
-                                                }}>
-                                                ✕
+                                                    toggleFilter(name, id);                                                }}>✕
                                             </span>
                                         )}
                                         <input
