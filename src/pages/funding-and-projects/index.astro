@@ -55,7 +55,9 @@ const extractAllMetadata = (items) => {
     };
 };
 
-const projects = await getCollection('projects');
+const projects =
+    (await getCollection('projects') as any[])
+        .filter((item: any) => !item.data.draft);
 
 const _projects = projects.map(
     ({slug, id, data}) => ({slug, id, ...data})
@@ -164,7 +166,7 @@ const _filters = [
 
     <section class="flex flex-col gap-y-8 mt-12">
         <ol class="columns-1 lg:columns-2 gap-x-4" data-projects-container="1">
-            {_projects.filter(({draft}) => !draft).map((project) => {
+            {_projects.map((project) => {
                 return (
                         <ProjectCard project={project} title={project.title}
                                      href={`/funding-and-projects/${project.slug}`}>
