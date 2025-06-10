@@ -1,17 +1,20 @@
-import { GrLinkNext } from "react-icons/gr";
+import {GrLinkNext} from "react-icons/gr";
+import {stringToKebabCase} from "../lib/utils.ts";
 
-export default function ProjectCard({ title, children, href="#" }) {
+export default function ProjectCard({project, title, children, href = "#"}) {
     return (
-        <div className="divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
-            <div className="px-4 py-5 sm:px-6">
-                <h1 className="font-bold text-xl">{title}</h1>
-            </div>
-            <div className="px-4 py-5 sm:p-6">
-                {children}
-            </div>
-            <div className="px-4 py-4 sm:px-6 flex flex-row-reverse">
-                <a href={href} className="text-blue-600 flex gap-x-1 items-center">Read more <GrLinkNext className="p-0 m-0" /></a>
-            </div>
-        </div>
-    )
+        <li className="break-inside-avoid mb-4 bg-light-surface dark:bg-dark-surface outline outline-slate-200/75 dark:outline-gray-700/75 rounded-lg cursor-pointer hover:outline-offset-2 transition-all animate__animated animate__fadeIn [>a]:unset"
+            data-project={stringToKebabCase(project.title)}
+            data-keywords={project.keywords.join(',')}
+            data-category={project.category}
+            data-status={project.status}
+        >
+            <a className="![all:unset] block overflow-hidden" href={href} target="_blank">
+                <div className="px-4 py-5 sm:p-6">
+                    <h1 className="font-bold text-2xl">{title}</h1>
+                    <div className="mt-2">{children}</div>
+                </div>
+            </a>
+        </li>
+    );
 }
