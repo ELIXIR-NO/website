@@ -19,3 +19,9 @@ export const stringToKebabCase = (str: string) => {
         .trim() // remove leading/trailing spaces
         .replace(/\s+/g, '-'); // replace spaces with hyphens
 };
+
+export const truncateStringToLength = (string: string, length: number) => {
+    return (string.length > length)
+        ? `${string.substring(0, length).trim()}...`
+        : string
+};
