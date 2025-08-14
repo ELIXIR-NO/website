@@ -4,7 +4,7 @@ import { components } from "../../components/elements";
 import Projects from "../../layouts/complex.astro";
 
 export async function getStaticPaths() {
-    const projects = await getCollection('projects');
+    const projects = await getCollection('funding-and-projects');
     return projects.map(entry => ({
         params: {
             project: entry.slug
