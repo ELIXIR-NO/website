@@ -13,8 +13,8 @@ export default {
             },
             colors: {
                 brand: {
-                    "primary": "#F57D20",
-                    "secondary": "#023452",
+                    "primary": "#023452",
+                    "secondary": "#F57D20",
                 },
                 light: {
                     // Basic
