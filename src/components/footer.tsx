@@ -36,11 +36,6 @@ const ElixirBrand = () => {
                 </a>
                 <div className="flex space-x-4 sm:order-2">
                     <SocialButton
-                        name="Twitter"
-                        link="https://twitter.com/elixirnorway"
-                        icon={<FaTwitter className="h-8 w-8"/>}
-                    />
-                    <SocialButton
                         name="LinkedIn"
                         link="https://www.linkedin.com/company/elixir-norway"
                         icon={<SiLinkedin className="h-8 w-8"/>}
