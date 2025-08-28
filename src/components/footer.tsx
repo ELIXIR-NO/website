@@ -116,7 +116,7 @@ const Links = () => {
             <div role="list" className="flex sm:flex-row lg:flex-col gap-y-2 gap-x-2 [&_*]:text-gray-800">
                 <a href="research-support" className="text-sm leading-6">Support </a>
                 <a href="https://elixir-europe.org/about-us/vacancies" className="text-sm leading-6">Careers</a>
-                <a href="about" className="text-sm leading-6">Organizations</a>
+                <a href="about" className="text-sm leading-6">Organisations</a>
             </div>
         </div>
     );
