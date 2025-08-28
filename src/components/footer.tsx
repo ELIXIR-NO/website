@@ -7,7 +7,6 @@ const Footer = () => {
         <footer className="bg-slate-50 py-12 px-4 md:px-12 dark:bg-dark-surface mt-24" aria-labelledby="footer-heading">
             <h2 id="footer-heading" className="sr-only">Footer</h2>
             <div className="mx-auto max-w-full flex flex-col-reverse gap-y-6">
-                <NewsletterSubscription/>
                 <div className="grid grid-cols-4 grid-flow-row auto-rows-min gap-y-12">
                     <ElixirBrand/>
                     <ElixirOrgs/>
