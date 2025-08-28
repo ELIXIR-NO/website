@@ -15,7 +15,7 @@ const events = await getCollection('events');
                             <img src={"/assets/og/default.jpg"} alt="Event Cover" class="w-auto h-auto"/>
                         </div>
                         <a href={`/events/${entry.slug}`} class="flex px-6 pt-4 pb-6 flex-col gap-y-2">
-                            <time class="block font-light text-orange-600">{entry.data.date}</time>
+                            <time class="block font-light">{entry.data.date}</time>
                             <span class="block text-xl font-bold">{entry.data.title}</span>
                             {entry.data.summary && <span class="block text-sm font-light">{truncateStringToLength(entry.data.summary, 120)}</span>}
                         </a>
