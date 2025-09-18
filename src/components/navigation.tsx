@@ -83,7 +83,7 @@ export const Navigation = ({ pathname }) => {
                         {navigation.map((item) => (
                             <a key={item.name}
                                href={item.href}
-                               className={`hover:text-brand-primary/75 text-base font-semibold leading-6 ${pathname === item.href ? "text-brand-primary" : "text-slate-950 dark:text-slate-50"}`}>
+                               className={`hover:text-brand-primary/75 text-lg font-semibold leading-6 ${pathname === item.href ? "text-brand-primary" : "text-slate-950 dark:text-slate-50"}`}>
                                 {item.name}
                             </a>
                         ))}
