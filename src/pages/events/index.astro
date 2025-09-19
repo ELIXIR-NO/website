@@ -4,7 +4,19 @@ import {getCollection} from "astro:content";
 import {truncateStringToLength} from "../../lib/utils";
 import CardV2 from "../../components/card.v2";
 
+// Function to normalize the date
+function parseDate(dateString: string): number {
+    // Try to create a date using the Date constructor
+    const parsedDate = new Date(Date.parse(dateString));
+    // If the date is invalid, return a default timestamp (0 represents the epoch)
+    if (isNaN(parsedDate.getTime())) {
+        return new Date(0).getTime(); // Return the default date's timestamp
+    }
+    return parsedDate.getTime(); // Return the timestamp of the parsed date
+}
+
 const events = await getCollection('events');
+events.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
 ---
 
 <FullWidthLayout title="Events">
