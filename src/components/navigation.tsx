@@ -72,6 +72,7 @@ export const Navigation = ({ pathname }) => {
                         <button
                             type="button"
                             onClick={() => setMobileMenuOpen(true)}
+                            aria-label="Open main menu"
                             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                         >
                             <span className="sr-only">Open main menu</span>
@@ -82,14 +83,14 @@ export const Navigation = ({ pathname }) => {
                         {navigation.map((item) => (
                             <a key={item.name}
                                href={item.href}
-                               className={`hover:text-brand-primary/75 text-base font-semibold leading-6 ${pathname === item.href ? "text-brand-primary" : "text-slate-950 dark:text-slate-50"}`}>
+                               className={`hover:text-brand-primary/75 text-lg font-semibold leading-6 ${pathname === item.href ? "text-brand-primary" : "text-slate-950 dark:text-slate-50"}`}>
                                 {item.name}
                             </a>
                         ))}
                     </div>
                     <div className="hidden lg:flex gap-x-2 lg:flex-1 lg:justify-end">
                         <ThemeToggle/>
-                        <button onClick={onSearchClick}>
+                        <button onClick={onSearchClick} aria-label="Search">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
                                  stroke="currentColor" className="size-6">
                                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -98,7 +99,7 @@ export const Navigation = ({ pathname }) => {
                         </button>
                     </div>
                 </nav>
-                <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
+                <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden" >
                     <div className="fixed inset-0 z-50"/>
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
@@ -115,6 +116,7 @@ export const Navigation = ({ pathname }) => {
                                 type="button"
                                 onClick={() => setMobileMenuOpen(false)}
                                 className="flex items-center justify-center"
+                                aria-label="Close menu"
                             >
                                 <span className="sr-only">Close menu</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

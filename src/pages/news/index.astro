@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import FullWidthLayout from "../../layouts/full-width.astro";
+import CardV2 from "../../components/card.v2";
 
 // Function to normalize the date
 function parseDate(dateString: string): number {
@@ -27,16 +28,13 @@ news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
     <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12">
         {news.map((entry) => {
             return (
-                    <li class="shadow-xl bg-light-surface dark:bg-dark-surface rounded-lg overflow-clip">
-                        <div class="h-48 bg-white overflow-clip flex items-center justify-center">
-                            <img src={entry.data?.cover?.source ?? "/assets/og/default.jpg"} alt="Article Cover" class="w-auto h-auto"/>
-                        </div>
-                        <a href={`/news/${entry.slug}`} class="flex px-6 pt-4 pb-6 flex-col gap-y-2">
-                            <time class="block font-light text-orange-600">{entry.data.date}</time>
-                            <span class="block text-xl font-bold">{entry.data.title}</span>
-                            {entry.data.summary && <span class="block text-sm font-light">{truncateStringToLength(entry.data.summary, 120)}</span>}
-                        </a>
-                    </li>
+                    <CardV2
+                            link={`/news/${entry.slug}`}
+                            title={entry.data.title}
+                            summary={entry.data.summary}
+                            cover={entry.data?.cover?.source}
+                            date={entry.data.date}
+                    />
             )
         })}
     </ol>
