@@ -102,14 +102,14 @@ const _filters = [
                     return new Set(params.getAll('status'));
                 }
 
-                //function hasIntersection(a, b) {
-                //   for (let elem of a) {
-                //        if (b.has(elem)) {
-                //           return true;
-                //        }
-                //    }
-                //    return false;
-                //}
+                function hasIntersection(a, b) {
+                    for (let elem of a) {
+                        if (b.has(elem)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
 
                 // Function to hide/show elements based on tags
                 function updateVisibility() {
