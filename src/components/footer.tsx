@@ -7,7 +7,6 @@ const Footer = () => {
         <footer className="bg-slate-50 py-12 px-4 md:px-12 dark:bg-dark-surface mt-24" aria-labelledby="footer-heading">
             <h2 id="footer-heading" className="sr-only">Footer</h2>
             <div className="mx-auto max-w-full flex flex-col-reverse gap-y-6">
-                <NewsletterSubscription/>
                 <div className="grid grid-cols-4 grid-flow-row auto-rows-min gap-y-12">
                     <ElixirBrand/>
                     <ElixirOrgs/>
@@ -35,11 +34,6 @@ const ElixirBrand = () => {
                     />
                 </a>
                 <div className="flex space-x-4 sm:order-2">
-                    <SocialButton
-                        name="Twitter"
-                        link="https://twitter.com/elixirnorway"
-                        icon={<FaTwitter className="h-8 w-8"/>}
-                    />
                     <SocialButton
                         name="LinkedIn"
                         link="https://www.linkedin.com/company/elixir-norway"
@@ -120,45 +114,14 @@ const Links = () => {
         <div
             className="col-span-full lg:col-span-1 text-right place-content-end place-items-end place-self-center lg:place-self-end">
             <div role="list" className="flex sm:flex-row lg:flex-col gap-y-2 gap-x-2 [&_*]:text-gray-800">
-                <a href="#" className="text-sm leading-6">Helpdesk</a>
-                <a href="#" className="text-sm leading-6">Careers</a>
-                <a href="#" className="text-sm leading-6">Organizations</a>
-                <a href="#" className="text-sm leading-6">Sitemap</a>
+                <a href="research-support" className="text-sm leading-6">Support </a>
+                <a href="https://elixir-europe.org/about-us/vacancies" className="text-sm leading-6">Careers</a>
+                <a href="about" className="text-sm leading-6">Organisations</a>
             </div>
         </div>
     );
 };
 
-const NewsletterSubscription = () => {
-    return (
-        <div className="mt-4 border-t border-gray-900/10 lg:flex lg:items-center lg:justify-between">
-            <div className="mt-6">
-                <h3 className="text-base font-semibold leading-6">
-                    Subscribe to our newsletter
-                </h3>
-                <p className="text-sm">
-                    Get the latest news, articles, and resources
-                    delivered straight to your inbox.
-                </p>
-            </div>
-            <form className="mt-6 sm:flex sm:max-w-md">
-                <label htmlFor="email-address" className="sr-only">Email address</label>
-                <input type="email"
-                       name="email-address"
-                       id="email-address"
-                       autoComplete="email"
-                       required
-                       className="w-full min-w-0 appearance-none rounded-md border-0 bg-slate-50 dark:bg-dark-surface px-3 py-1.5 text-base text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-primary sm:w-56 sm:text-sm sm:leading-6"
-                       placeholder="Enter your email"/>
-                <div className="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
-                    <button type="submit"
-                            className="flex w-full items-center justify-center rounded-md bg-brand-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-primary hover:saturate-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary">Subscribe
-                    </button>
-                </div>
-            </form>
-        </div>
-    );
-};
 
 const SocialButton = ({ name, link, icon }) => {
     return (
