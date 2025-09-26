@@ -53,7 +53,7 @@ export const P: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = (props) =
     <p {...props} className="text-lg my-6 leading-relaxed [&:last-child]:mb-0 [&:first-child]:mt-0"/>
 );
 
-export const PRE: React.FC<React.HTMLAttributes<HTMLPreElement>> = (props) => (
+export const Pre: React.FC<React.HTMLAttributes<HTMLPreElement>> = (props) => (
     <pre {...props} className="bg-gray-100 p-4 rounded-md overflow-x-auto my-4"/>
 );
 
@@ -106,7 +106,7 @@ export const Td: React.FC<React.TdHTMLAttributes<HTMLTableDataCellElement>> = (p
 );
 
 export const Em: React.FC<any> = (props) => (
-    <em {...props} className="font-emphasized font-normal text-brand-primary"/>
+    <em {...props} className="font-emphasized font-normal text-brand-primary dark:text-brand-secondary"/>
 );
 
 export const Strong: React.FC<any> = (props) => (
@@ -128,7 +128,7 @@ export const components = {
     em: Em,
     strong: Strong,
     p: P,
-    pre: PRE,
+    pre: Pre,
     figure: Figure,
     img: Img,
     blockquote: Blockquote,

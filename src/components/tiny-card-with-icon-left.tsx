@@ -4,7 +4,7 @@ export default function TinyCardWithIconLeft({ icon: Icon, title, children }) {
             className="relative pl-24 h-full w-full animate__animated animate__fadeIn">
             <dt className="text-lg font-semibold">
                 <div className="absolute left-0 top-0 flex h-16 w-16 items-center justify-center rounded-lg">
-                    <Icon className="text-brand-primary w-full h-14"/>
+                    <Icon className="text-brand-primary dark:text-brand-secondary w-full h-14"/>
                 </div>
                 <span>{title}</span>
             </dt>

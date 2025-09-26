@@ -17,7 +17,7 @@ const TwoColHero: LandingComponent = ({ children }) => {
 };
 
 const Header = ({ children }) => (
-    <h1 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl lg:col-span-2 xl:col-auto [&_a]:text-brand-primary [&_a]:no-underline [&_a]:hover:saturate-150 animate__animated animate__fadeIn">
+    <h1 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl lg:col-span-2 xl:col-auto [&_a]:text-brand-primary [&_a]:dark:text-brand-secondary [&_a]:no-underline [&_a]:hover:saturate-150 animate__animated animate__fadeIn">
         {children}
     </h1>
 );
