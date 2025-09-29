@@ -1,8 +1,6 @@
 ---
 import Navigation from "../components/navigation";
 import Footer from "../components/footer";
-import Banner from "../components/banner.astro";
-import BannerPrimaryContent from "../content/banner/primary.mdx";
 import { components } from "../components/elements";
 import "../styles/global.scss";
 ---
@@ -38,11 +36,6 @@ import "../styles/global.scss";
     </script>
 </head>
 <body class="relative min-h-full">
-<Banner>
-    <Fragment>
-        <BannerPrimaryContent components={components}/>
-    </Fragment>
-</Banner>
 <Navigation client:load pathname={Astro.url.pathname}/>
 <div class="isolate px-6 sm:px-8 pb-12 pt-16">
     <slot/>
