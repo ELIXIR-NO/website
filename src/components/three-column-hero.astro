@@ -1,12 +1,12 @@
 <div class="mx-auto lg:max-w-7xl min-h-full">
     <div class="mx-auto grid grid-cols-6 gap-x-8 gap-y-10 grid-flow-row auto-rows-min">
-        <aside class="col-span-full lg:col-span-3 xl:col-span-2 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:mt-0 [&_h1]:mb-6 [&_h1>*:first-child]:mt-0 [&_p]:mt-4 [&_p]:leading-7 [&_p]:text-lg animate__animated animate__fadeIn">
+        <aside aria-label="first column content" class="col-span-full lg:col-span-3 xl:col-span-2 [&_h1]:text-4xl [&_h1]:font-bold [&_h1]:mt-0 [&_h1]:mb-6 [&_h1>*:first-child]:mt-0 [&_p]:mt-4 [&_p]:leading-7 [&_p]:text-lg animate__animated animate__fadeIn">
             <slot name="left"/>
         </aside>
-        <div class="mx-auto w-full col-span-full lg:col-span-3 align-middle self-center animate__animated animate__fadeIn">
+        <div aria-label="second column content" class="mx-auto w-full col-span-full lg:col-span-3 align-middle self-center animate__animated animate__fadeIn">
             <slot/>
         </div>
-        <aside class="col-span-full xl:col-span-1 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-0 [&_h1]:mb-6 [&_h1>*:first-child]:mt-0 animate__animated animate__fadeIn">
+        <aside aria-label="third column content" class="col-span-full xl:col-span-1 [&_h1]:text-2xl [&_h1]:font-bold [&_h1]:mt-0 [&_h1]:mb-6 [&_h1>*:first-child]:mt-0 animate__animated animate__fadeIn">
             <slot name="right"/>
         </aside>
     </div>

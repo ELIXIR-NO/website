@@ -1,20 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
-import { components } from "../../components/elements";
+import {getCollection, render} from 'astro:content';
+import {components} from "../../components/elements";
 
 export async function getStaticPaths() {
-    const organizations = await getCollection('about');
+    const organizations = await getCollection('organizations');
     return organizations.map(entry => ({
-        params: {
-            organization: entry.slug
-        },
-        props: {
-            entry
-        },
+        params: {organization: entry.id},
+        props: {entry},
     }));
 }
-const { entry } = Astro.props;
-const { Content } = await entry.rendered.Content;
+
+const {entry} = Astro.props;
+
+if (!entry) throw new Error('Could not find organization!');
+
+const {Content} = await render(entry);
 ---
 
-<Content components={components} />
+<Content class="content" components={components}/>

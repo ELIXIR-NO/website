@@ -22,6 +22,6 @@ export default defineConfig({
             transformer: "sass"
         }
     },
-    output: "server",
+    output: "static",
     adapter: cloudflare(),
 });

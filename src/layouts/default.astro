@@ -44,7 +44,7 @@ import "../styles/global.scss";
     </Fragment>
 </Banner>
 <Navigation client:load pathname={Astro.url.pathname}/>
-<div class="isolate px-6 sm:px-8 pb-12 pt-16">
+<div class="isolate px-6 sm:px-8 pb-12 pt-16" aria-label="page primary content">
     <slot/>
 </div>
 <Footer/>
