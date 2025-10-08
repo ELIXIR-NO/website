@@ -117,6 +117,8 @@ const Links = () => {
                 <a href="research-support" className="text-sm leading-6">Support </a>
                 <a href="https://elixir-europe.org/about-us/vacancies" className="text-sm leading-6">Careers</a>
                 <a href="about" className="text-sm leading-6">Organisations</a>
+		<a href="https://elixir-europe.org/about-us/vacancies" className="text-sm leading-6">Accessibility</a>
+
             </div>
         </div>
     );
