@@ -6,61 +6,44 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
+    const [isPaused, setIsPaused] = useState(false); // 👈 new state
     const autoSlideTimeout = useRef(null);
 
-    const nextSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    };
+    const nextSlide = () => setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    const prevSlide = () => setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
 
-    const prevSlide = () => {
-        setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
-    };
-
-    const handleImageClick = () => {
-        setIsZoomed(true);
-    };
-
-    const closeZoom = () => {
-        setIsZoomed(false);
-    };
+    const handleImageClick = () => setIsZoomed(true);
+    const closeZoom = () => setIsZoomed(false);
 
     const handleZoomAreaClick = (e) => {
-        if (e.target === e.currentTarget) {
-            closeZoom();
-        }
+        if (e.target === e.currentTarget) closeZoom();
     };
 
-    // Auto slide
+    // Auto slide (pausable)
     useEffect(() => {
-        autoSlideTimeout.current = setTimeout(nextSlide, autoSlideInterval);
+        if (!isPaused) {
+            autoSlideTimeout.current = setTimeout(nextSlide, autoSlideInterval);
+        }
         return () => clearTimeout(autoSlideTimeout.current);
-    }, [currentIndex, autoSlideInterval]);
+    }, [currentIndex, autoSlideInterval, isPaused]);
 
-    // Handle mouse gestures
     const handleMouseDown = (e) => {
         const startX = e.pageX;
         const handleMouseUp = (upEvent) => {
             const endX = upEvent.pageX;
-            if (startX > endX + 50) {
-                nextSlide();
-            } else if (startX < endX - 50) {
-                prevSlide();
-            }
+            if (startX > endX + 50) nextSlide();
+            else if (startX < endX - 50) prevSlide();
             window.removeEventListener('mouseup', handleMouseUp);
         };
         window.addEventListener('mouseup', handleMouseUp);
     };
 
-    // Handle touch gestures
     const handleTouchStart = (e) => {
         const startX = e.touches[0].clientX;
         const handleTouchEnd = (endEvent) => {
             const endX = endEvent.changedTouches[0].clientX;
-            if (startX > endX + 50) {
-                nextSlide();
-            } else if (startX < endX - 50) {
-                prevSlide();
-            }
+            if (startX > endX + 50) nextSlide();
+            else if (startX < endX - 50) prevSlide();
             window.removeEventListener('touchend', handleTouchEnd);
         };
         window.addEventListener('touchend', handleTouchEnd);
@@ -93,8 +76,7 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                                 onClick={handleImageClick}
                             />
                             {image.caption && (
-                                <div
-                                    className="absolute bottom-0 left-0 w-full bg-black bg-opacity-75 text-white text-sm p-2">
+                                <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-75 text-white text-sm p-2">
                                     {image.caption}
                                 </div>
                             )}
@@ -102,36 +84,47 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                     ))}
                 </div>
             </div>
-            <div
-                className="absolute inset-0 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
+
+            {/* Navigation arrows */}
+            <div className="absolute inset-0 flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                     onClick={prevSlide}
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2"
                     aria-label="Previous slide"
                 >
                     <IoIosArrowBack className="h-6 w-6"/>
                 </button>
                 <button
                     onClick={nextSlide}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2"
                     aria-label="Next slide"
                 >
                     <IoIosArrowForward className="h-6 w-6"/>
                 </button>
             </div>
-            <div
-                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 group-hover:opacity-100 transition-opacity opacity-20">
+
+            {/* Pagination dots */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 group-hover:opacity-100 transition-opacity opacity-20">
                 {images.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-3 h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${
+                        className={`w-3 h-3 rounded-full focus:outline-none ${
                             index === currentIndex ? 'bg-brand-primary' : 'bg-gray-300'
                         }`}
-                        aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}
             </div>
+
+            {/* ▶️ Pause/Play button */}
+            <button
+                onClick={() => setIsPaused(!isPaused)}
+                className="absolute top-4 right-4 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full hover:bg-opacity-75"
+            >
+                {isPaused ? 'Play' : 'Pause'}
+            </button>
+
+            {/* Zoomed view */}
             {isZoomed && (
                 <div
                     className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
