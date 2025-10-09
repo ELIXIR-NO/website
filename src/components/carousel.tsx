@@ -6,7 +6,7 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isZoomed, setIsZoomed] = useState(false);
-    const [isPaused, setIsPaused] = useState(false); // 👈 new state
+    const [isPaused, setIsPaused] = useState(false);
     const autoSlideTimeout = useRef(null);
 
     const nextSlide = () => setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
