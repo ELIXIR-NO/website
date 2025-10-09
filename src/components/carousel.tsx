@@ -116,7 +116,6 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                 ))}
             </div>
 
-            {/* ▶️ Pause/Play button */}
             <button
                 onClick={() => setIsPaused(!isPaused)}
                 className="absolute top-4 right-4 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full hover:bg-opacity-75"
