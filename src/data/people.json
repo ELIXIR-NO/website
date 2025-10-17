@@ -172,9 +172,18 @@
         },
         {
           "name": "Michael Dondrup",
-          "title": "Researcher",
-          "photo": "/assets/people/michael-dondrup.png",
+          "title": "Senior Engineer",
+          "photo": "Senior Engineer,",
           "profile-url": "https://www4.uib.no/en/find-employees/Michael.Dondrup",
+          "affiliations": [],
+          "elixir-groups": [
+          ]
+        },
+	{
+          "name": "Mahima Gomladu",
+          "title": "Senior Engineer",
+          "photo": "/assets/people/Mahima-Gomladu.jpeg",
+          "profile-url": "https://www4.uib.no/en/find-employees/Mahima.Sanjay.Gomladu",
           "affiliations": [],
           "elixir-groups": [
           ]
