@@ -25,7 +25,7 @@ import BasicFeature from "../../components/sections/basic-feature.astro";
         ELIXIR Norway builds upon the Norwegian Bioinformatics Platform, which has
         provided support and tools for Norwegian life science research for over two decades.
     </div>
-    <Carousel client:visible images={[
+    <Carousel client:visible autoSlideInterval={8000} images={[
         {
             src: '/assets/slides/eosc-entrust.png',
             alt: 'EOSC-ENTRUST',
