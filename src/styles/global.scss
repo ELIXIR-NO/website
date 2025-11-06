@@ -16,6 +16,10 @@
 
   h1, h2, h3, h4, h5, h6, dt {
     @apply tracking-tight text-pretty text-slate-950 dark:text-slate-50;
+
+    #main-content &:first-child {
+      @apply mt-0;
+    }
   }
 
   p, dd, button, li, th, td, span, figcaption {

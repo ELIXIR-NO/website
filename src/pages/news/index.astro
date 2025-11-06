@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import FullWidthLayout from "../../layouts/full-width.astro";
+import Page from "../../layouts/page.astro";
 import CardV2 from "../../components/card.v2";
 
 // Function to normalize the date
@@ -24,7 +24,7 @@ const news = await getCollection('news');
 news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
 ---
 
-<FullWidthLayout title="News">
+<Page title="News" variant="full">
     <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12">
         {news.map((entry) => {
             return (
@@ -38,4 +38,4 @@ news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
             )
         })}
     </ol>
-</FullWidthLayout>
+</Page>
