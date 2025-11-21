@@ -1,19 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 import { components } from "../../components/elements";
-import ComplexLayout from "../../layouts/complex.astro";
 
 export async function getStaticPaths() {
-    const events = await getCollection('events');
-    return events.map((entry, index) => {
-        return ({
+    const events = await getCollection("events");
+    return events.map((entry) => {
+        return {
             params: {
-                events: entry.slug
+                events: entry.slug,
             },
             props: {
                 entry,
             },
-        })
+        };
     });
 }
 
@@ -21,7 +20,4 @@ const { entry } = Astro.props;
 const { Content: MarkdownContent } = await entry.render();
 ---
 
-<ComplexLayout {...entry.data} sidebar="equal">
-    <MarkdownContent components={components}/>
-</ComplexLayout>
-
+<MarkdownContent components={components} />

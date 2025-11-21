@@ -1,7 +1,6 @@
 ---
-import FullWidthLayout from "../../layouts/full-width.astro";
-import {getCollection} from "astro:content";
-import {truncateStringToLength} from "../../lib/utils";
+import Page from "../../layouts/page.astro";
+import { getCollection } from "astro:content";
 import CardV2 from "../../components/card.v2";
 
 // Function to normalize the date
@@ -15,22 +14,26 @@ function parseDate(dateString: string): number {
     return parsedDate.getTime(); // Return the timestamp of the parsed date
 }
 
-const events = await getCollection('events');
+const events = await getCollection("events");
 events.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
 ---
 
-<FullWidthLayout title="Events">
-    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12">
-        {events.map((entry) => {
-            return (
+<Page title="Events" variant="full">
+    <ol
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12"
+    >
+        {
+            events.map((entry) => {
+                return (
                     <CardV2
-                            link={`/events/${entry.slug}`}
-                            title={entry.data.title}
-                            summary={entry.data.summary}
-                            cover={entry.data?.cover?.source}
-                            date={entry.data.date}
+                        link={`/events/${entry.slug}`}
+                        title={entry.data.title}
+                        summary={entry.data.summary}
+                        cover={entry.data?.cover?.source}
+                        date={entry.data.date}
                     />
-            )
-        })}
+                );
+            })
+        }
     </ol>
-</FullWidthLayout>
+</Page>

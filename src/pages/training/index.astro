@@ -1,15 +1,13 @@
 ---
 import MainContent from "../../content/training/index.mdx";
 import { components } from "../../components/elements";
-import Projects from "../../layouts/complex.astro";
-import LinkWithFigure from "../../components/link-with-figure";
-import Card from "../../components/card";
+import Page from "../../layouts/page.astro";
 import NavigationList from "../../components/navigation-list.astro";
 ---
 
-<Projects title="Training" sidebar="equal">
+<Page title="Training" variant="sidebar">
 
-    <div slot="left">
+    <div slot="sidebar">
         <NavigationList
                 links={[
                     { href: "#upcoming-events", text: "Upcoming training" },
@@ -21,23 +19,4 @@ import NavigationList from "../../components/navigation-list.astro";
 
     <MainContent components={components} class="content"/>
 
-    <div slot="right">
-        <Card title="Useful links" margin={false}>
-            <div class="flex flex-col gap-2">
-                <LinkWithFigure
-                        href="https://tess.elixir-europe.org/"
-                        logoSrc="/assets/logos/elixir-tess.png"
-                        linkText="ELIXIR TeSS"
-                        altText="ELIXIR TeSS"
-                />
-                <LinkWithFigure
-                        href="https://elixir.mf.uni-lj.si/"
-                        logoSrc="/assets/logos/elixir-training-platform.png"
-                        linkText="ELIXIR EeLP"
-                        altText="ELIXIR TeSS"
-                />
-            </div>
-        </Card>
-    </div>
-
-</Projects>
+</Page>

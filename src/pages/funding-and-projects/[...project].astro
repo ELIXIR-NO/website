@@ -1,16 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 import { components } from "../../components/elements";
-import Projects from "../../layouts/complex.astro";
 
 export async function getStaticPaths() {
-    const projects = await getCollection('funding-and-projects');
-    return projects.map(entry => ({
+    const projects = await getCollection("funding-and-projects");
+    return projects.map((entry) => ({
         params: {
-            project: entry.slug
+            project: entry.slug,
         },
         props: {
-            entry
+            entry,
         },
     }));
 }
@@ -18,7 +17,4 @@ const { entry } = Astro.props;
 const { Content: MarkdownContent } = await entry.render();
 ---
 
-<Projects title={entry.data.title} sidebar="equal">
-    <MarkdownContent components={components} class="content"/>
-</Projects>
-
+<MarkdownContent components={components} class="content" />

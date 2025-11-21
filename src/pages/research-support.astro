@@ -2,14 +2,14 @@
 import Content from "../content/research-support/index.mdx";
 import { components } from "../components/elements";
 import SidebarList from "../components/sidebar-list";
-import Projects from "../layouts/complex.astro";
+import Page from "../layouts/page.astro";
 ---
 
-<Projects title="Research Support" sidebar="left-prominent">
+<Page title="Research Support" variant="sidebar">
 
     <Content components={components}/>
 
-    <div slot="left" class="flex flex-col gap-y-6">
+    <div slot="sidebar" class="flex flex-col gap-y-6">
         <SidebarList
                 title="We offer the following types of support for you: -"
                 items={[

@@ -2,7 +2,7 @@
 import ProjectCard from "../../components/project-card";
 import {getCollection} from 'astro:content';
 import {slugToTitleCase, sortStringsByLength} from "../../lib/utils";
-import ComplexLayout from "../../layouts/complex.astro";
+import Page from "../../layouts/page.astro";
 import MetadataFilter from "../../components/metadata-filter";
 
 const extractKeywords = (items: any) => {
@@ -79,11 +79,11 @@ const _filters = [
     },
 ];
 ---
-<ComplexLayout title="Funding & Projects" sidebar="equal">
+<Page title="Funding & Projects" variant="sidebar">
 
-    <div slot="left">
+    <div slot="sidebar">
         <div>
-            <h2 class="text-xl font-bold">Refine your search</h2>
+            <h2 class="text-lg underline">Refine your search</h2>
         </div>
         <script is:inline>
             document.addEventListener("DOMContentLoaded", () => {
@@ -164,7 +164,7 @@ const _filters = [
         <MetadataFilter client:load filters={_filters}/>
     </div>
 
-    <section class="flex flex-col gap-y-8 mt-12">
+    <section class="flex flex-col gap-y-8">
         <ol class="columns-1 lg:columns-2 gap-x-4" data-projects-container="1">
             {_projects.map((project) => {
                 return (

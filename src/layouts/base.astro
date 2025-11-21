@@ -1,0 +1,78 @@
+---
+import Navigation from "../components/navigation";
+import Footer from "../components/footer";
+import SEOHead from "../components/seo-head.astro";
+import "../styles/global.scss";
+
+interface Props {
+    seo?: {
+        title?: string;
+        description?: string;
+        image?: string;
+        article?: boolean;
+        publishedTime?: string;
+        modifiedTime?: string;
+        author?: string;
+        tags?: string[];
+        canonical?: string;
+    };
+}
+
+const { seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="bg-white dark:bg-dark-background">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+        <SEOHead {...seo} />
+
+        <!-- Pagefind Search -->
+        <script is:inline>
+            (async () => {
+                try {
+                    window.pagefind = await import("/pagefind/pagefind.js");
+                    await window.pagefind.options({
+                        ranking: { pageLength: 0.35 },
+                    });
+                    window.pagefind.init();
+                } catch (error) {
+                    console.error("Failed to load Pagefind:", error);
+                }
+            })();
+        </script>
+
+        <!-- Dark Mode -->
+        <script is:inline>
+            const theme = localStorage.getItem("theme") || "light";
+            if (
+                theme === "light" ||
+                !window.matchMedia("(prefers-color-scheme: dark)").matches
+            ) {
+                document.documentElement.classList.remove("dark");
+            } else {
+                document.documentElement.classList.add("dark");
+            }
+        </script>
+    </head>
+
+    <body class="relative min-h-screen flex flex-col">
+        <!-- Skip to content link for accessibility -->
+        <a
+            href="#main-content"
+            class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-brand-primary focus:text-white focus:rounded focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2"
+        >
+            Skip to main content
+        </a>
+
+        <Navigation client:load pathname={Astro.url.pathname} />
+
+        <slot />
+
+        <Footer />
+    </body>
+</html>

@@ -1,35 +1,32 @@
 ---
-import { getCollection } from 'astro:content';
-import ComplexLayout from "../../layouts/complex.astro";
+import { getCollection } from "astro:content";
+import Page from "../../layouts/page.astro";
 import ServicesList from "../../components/services-list.astro";
 import { P } from "../../components/elements";
 import TagsFilter from "../../components/tags-filter";
 import { slugToTitleCase, sortStringsByLength } from "../../lib/utils";
 
-const services = await getCollection('services');
+const services = await getCollection("services");
 
 const tags = sortStringsByLength([
     ...new Set(
         services
-            .map((s) => (s.data?.tags ?? []))
-            .reduce((pv, cv) => pv.concat(cv), []) as string[]
-    )
+            .map((s) => s.data?.tags ?? [])
+            .reduce((pv, cv) => pv.concat(cv), []) as string[],
+    ),
 ]).map((tag) => {
-    return ({
+    return {
         id: tag,
         value: tag,
         label: slugToTitleCase(tag),
-    });
+    };
 });
 
-const _services = services.map(
-    ({ slug, id, data }) => ({ slug, id, ...data })
-);
+const _services = services.map(({ slug, id, data }) => ({ slug, id, ...data }));
 ---
 
-<ComplexLayout title="Services" sidebar="equal">
-
-    <div slot="left">
+<Page title="Services" variant="sidebar">
+    <div slot="sidebar">
         <div>
             <h2 class="text-xl font-bold">Refine your search</h2>
         </div>
@@ -38,41 +35,51 @@ const _services = services.map(
                 // Function to get tags from URL query parameters
                 function getTagsFromUrl() {
                     const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('tags')); // Use a Set to store unique tag IDs
+                    return new Set(params.getAll("tags")); // Use a Set to store unique tag IDs
                 }
                 // Function to hide/show elements based on tags
                 function updateVisibility() {
                     const selectedTags = getTagsFromUrl();
-                    const container = document.querySelector('[data-tags-container]');
+                    const container = document.querySelector(
+                        "[data-tags-container]",
+                    );
                     if (!container) return;
-                    container.querySelectorAll('[data-tags]').forEach(element => {
-                        const elementTags = new Set(element.getAttribute('data-tags').split(','));
-                        if (selectedTags.size === 0 || [...selectedTags].some(tag => elementTags.has(tag))) {
-                            element.classList.remove('hidden');
-                            element.classList.add('block');
-                        } else {
-                            element.classList.remove('block');
-                            element.classList.add('hidden');
-                        }
-                    });
+                    container
+                        .querySelectorAll("[data-tags]")
+                        .forEach((element) => {
+                            const elementTags = new Set(
+                                element.getAttribute("data-tags").split(","),
+                            );
+                            if (
+                                selectedTags.size === 0 ||
+                                [...selectedTags].some((tag) =>
+                                    elementTags.has(tag),
+                                )
+                            ) {
+                                element.classList.remove("hidden");
+                                element.classList.add("block");
+                            } else {
+                                element.classList.remove("block");
+                                element.classList.add("hidden");
+                            }
+                        });
                 }
                 // Initial visibility update
                 updateVisibility();
                 // Watch for URL changes and update visibility
-                window.addEventListener('url-change', updateVisibility);
+                window.addEventListener("url-change", updateVisibility);
                 // Handle initial load with URL parameters
-                window.addEventListener('load', updateVisibility);
+                window.addEventListener("load", updateVisibility);
             });
         </script>
-        <TagsFilter client:load name="tags" tags={tags}/>
+        <TagsFilter client:load name="tags" tags={tags} />
     </div>
-
-    <P>ELIXIR Norway offers services and infrastructure for life science, including software tools and workflows,
-        databases and storage. In addition ELIXIR Norway provides support through its national helpdesk and offers
-        trainings. Moreover, ELIXIR Norway provides services to the international research community.
+    <P
+        >ELIXIR Norway offers services and infrastructure for life science,
+        including software tools and workflows, databases and storage. In
+        addition ELIXIR Norway provides support through its national helpdesk
+        and offers trainings. Moreover, ELIXIR Norway provides services to the
+        international research community.
     </P>
-
-    <ServicesList services={_services}/>
-
-</ComplexLayout>
-
+    <ServicesList services={_services} />
+</Page>

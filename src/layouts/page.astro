@@ -1,0 +1,133 @@
+---
+import BaseLayout from "./base.astro";
+import Breadcrumbs from "../components/breadcrumbs.astro";
+
+type Variant = "article" | "wide" | "full" | "sidebar";
+
+interface Props {
+    variant?: Variant;
+    title?: string;
+    date?: Date | string;
+    cover?: {
+        source: string;
+        caption?: string;
+        alt?: string;
+    };
+    breadcrumbs?: Array<{ label: string; href?: string }>;
+    seo?: any;
+    class?: string;
+    frontmatter?: any;
+}
+
+const {
+    variant = "wide",
+    title,
+    date,
+    cover,
+    breadcrumbs,
+    seo,
+    class: className = "",
+    frontmatter,
+} = Astro.props;
+
+// If using MDX with frontmatter, merge those values
+const finalVariant = frontmatter?.variant || variant;
+const finalTitle = frontmatter?.title || title;
+const finalDate = frontmatter?.date || date;
+const finalCover = frontmatter?.cover || cover;
+const finalSeo = frontmatter?.seo || seo;
+
+// Convert string date to Date if needed
+const dateObj = finalDate
+    ? typeof finalDate === "string"
+        ? new Date(finalDate)
+        : finalDate
+    : null;
+
+// Max width classes based on variant
+const containerClasses = {
+    article: "max-w-3xl",
+    wide: "max-w-5xl",
+    full: "max-w-6xl",
+    sidebar: "max-w-6xl",
+};
+
+const hasSidebar = finalVariant === "sidebar";
+---
+
+<BaseLayout seo={finalSeo}>
+    <div class="isolate px-6 sm:px-8 pb-12 pt-16 flex-1">
+        <div class={`mx-auto ${containerClasses[finalVariant]}`}>
+            <!-- Breadcrumbs -->
+            {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
+            <!-- Page Header -->
+            {
+                (finalTitle || finalCover) && (
+                    <header class="mb-12">
+                        {finalTitle && (
+                            <h1 class="text-3xl font-bold tracking-tight sm:text-5xl mb-4 text-gray-900 dark:text-white">
+                                {finalTitle}
+                            </h1>
+                        )}
+
+                        {dateObj && (
+                            <time
+                                datetime={dateObj.toISOString()}
+                                class="text-sm text-gray-600 dark:text-gray-400 block mb-4"
+                            >
+                                {dateObj.toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })}
+                            </time>
+                        )}
+
+                        {finalCover && (
+                            <figure class="mb-12">
+                                <img
+                                    src={finalCover.source}
+                                    alt={
+                                        finalCover.alt ||
+                                        finalTitle ||
+                                        "Cover image"
+                                    }
+                                    class="w-full rounded-lg"
+                                    loading="lazy"
+                                />
+                                {finalCover.caption && (
+                                    <figcaption class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center">
+                                        {finalCover.caption}
+                                    </figcaption>
+                                )}
+                            </figure>
+                        )}
+                    </header>
+                )
+            }
+            <!-- Main Content with Optional Left Sidebar -->
+            {
+                hasSidebar ? (
+                    <div class="grid lg:grid-cols-[250px_1fr] xl:grid-cols-[280px_1fr] gap-16 items-start">
+                        <aside
+                            class="hidden lg:block"
+                            aria-label="Sidebar navigation"
+                        >
+                            <div class="sticky top-24">
+                                <slot name="sidebar" />
+                            </div>
+                        </aside>
+
+                        <main id="main-content" class={`min-w-0 ${className}`}>
+                            <slot />
+                        </main>
+                    </div>
+                ) : (
+                    <main id="main-content" class={className}>
+                        <slot />
+                    </main>
+                )
+            }
+        </div>
+    </div>
+</BaseLayout>
