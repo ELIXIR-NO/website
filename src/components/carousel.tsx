@@ -120,7 +120,7 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                 onClick={() => setIsPaused(!isPaused)}
                 className="absolute top-4 right-4 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full hover:bg-opacity-75"
             >
-                {isPaused ? 'Play' : 'Pause'}
+                {isPaused ? '▶ Play' : '⏸ Pause'}
             </button>
 
             {/* Zoomed view */}
