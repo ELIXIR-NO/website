@@ -1,16 +1,21 @@
 ---
-const { links } = Astro.props;
+const {links} = Astro.props;
+
+const hash = Astro.url.hash;
 ---
 
 <div class="overflow-hidden sm:rounded-md">
     <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
-        {links?.map((link) => {
-            return (
-                    <li>
-                        <a href={link.href}
-                           class={`text-base text-slate-600 dark:text-slate-400 block py-4 px-6 transition duration-150 ease-in-out`}>{link.text}</a>
-                    </li>
-            )
-        })}
+        {links?.map((link) => (
+                <li>
+                    <a
+                            href={link.href}
+                            class={`text-base block w-full h-full py-2 px-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-primary`}
+                            aria-current={hash === link.href ? 'page' : undefined}
+                    >
+                        {link.text}
+                    </a>
+                </li>
+        ))}
     </ul>
 </div>
