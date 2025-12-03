@@ -57,14 +57,18 @@ export const Navigation = ({ pathname }) => {
                         <a href="/" className="-m-1.5 p-1.5">
                             <span className="sr-only">ELIXIR Norway</span>
                             <img
-                                alt="ELIXIR.NO Logo"
+                                alt="ELIXIR Norway logo"
                                 src="/assets/logos/elixir-no-light.svg"
                                 className="hidden dark:block h-20 w-auto"
+                                width="auto"
+                                height="80"
                             />
                             <img
-                                alt="ELIXIR.NO Logo"
+                                alt="ELIXIR Norway logo"
                                 src="/assets/logos/elixir-no-dark.svg"
                                 className="block dark:hidden h-20 w-auto"
+                                width="auto"
+                                height="80"
                             />
                         </a>
                     </div>
@@ -81,9 +85,12 @@ export const Navigation = ({ pathname }) => {
                     </div>
                     <div className="hidden lg:flex lg:gap-x-12">
                         {navigation.map((item) => (
-                            <a key={item.name}
-                               href={item.href}
-                               className={`hover:text-brand-primary/75 text-lg font-semibold leading-6 ${pathname === item.href ? "text-brand-primary" : "text-slate-950 dark:text-slate-50"}`}>
+                            <a
+                                key={item.name}
+                                href={item.href}
+                                className={`hover:text-brand-primary/75 text-lg font-semibold leading-6 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded ${pathname === item.href ? 'text-brand-primary' : 'text-gray-900 dark:text-white'}`}
+                                aria-current={pathname === item.href ? 'page' : undefined}
+                            >
                                 {item.name}
                             </a>
                         ))}
@@ -107,9 +114,18 @@ export const Navigation = ({ pathname }) => {
                             <a href="/" className="-m-1.5 p-1.5">
                                 <span className="sr-only">ELIXIR Norway</span>
                                 <img
-                                    alt="ELIXIR.NO Logo"
+                                    alt="ELIXIR Norway logo"
+                                    src="/assets/logos/elixir-no-light.svg"
+                                    className="hidden dark:block h-16 w-auto"
+                                    width="auto"
+                                    height="80"
+                                />
+                                <img
+                                    alt="ELIXIR Norway logo"
                                     src="/assets/logos/elixir-no-dark.svg"
-                                    className="h-16 w-auto"
+                                    className="block dark:hidden h-16 w-auto"
+                                    width="auto"
+                                    height="80"
                                 />
                             </a>
                             <button
@@ -140,8 +156,12 @@ export const Navigation = ({ pathname }) => {
                                     ))}
                                 </div>
                                 <div className="py-6">
-                                    <button onClick={onSearchClick}>
-                                        <IoSearch/>
+                                    <button
+                                        onClick={onSearchClick}
+                                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 transition-colors"
+                                        aria-label="Open search"
+                                    >
+                                        <IoSearch className="h-6 w-6" aria-hidden="true" />
                                     </button>
                                 </div>
                             </div>
@@ -152,28 +172,6 @@ export const Navigation = ({ pathname }) => {
         </Fragment>
     );
 
-};
-
-export const ContextualHeader = ({ sections }) => {
-    return (
-        <nav
-            className={`sticky top-0 z-40 bg-white dark:bg-basic-black shadow-lg animate__animated animate__fadeInDown ${sections?.length > 0 ? "" : "hidden"}`}>
-            <div
-                className="max-w-7xl mx-auto px-6 py-3 text-gray-900 text-sm">
-                <div className="flex flex-wrap items-center justify-center divide-x divide-gray-500">
-                    {sections.map((section) => (
-                        <a
-                            key={section.id}
-                            href={`#${section.id}`}
-                            className="first:px-l-0 last:px-r-0 px-2 text-center hover:underline"
-                        >
-                            {section.name}
-                        </a>
-                    ))}
-                </div>
-            </div>
-        </nav>
-    )
 };
 
 export default Navigation;

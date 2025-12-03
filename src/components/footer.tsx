@@ -23,14 +23,18 @@ const ElixirBrand = () => {
             <div className="flex flex-col justify-between items-center lg:items-start gap-y-12">
                 <a href="/" className="sm:order-1">
                     <img
-                        alt="ELIXIR.NO Logo"
+                        alt="ELIXIR Norway Logo"
                         src="/assets/logos/elixir-no-light.svg"
                         className="hidden dark:block h-28 lg:h-36 w-auto"
+                        width="auto"
+                        height="144"
                     />
                     <img
-                        alt="ELIXIR.NO Logo"
+                        alt="ELIXIR Norway Logo"
                         src="/assets/logos/elixir-no-dark.svg"
                         className="block dark:hidden h-24 w-auto"
+                        width="auto"
+                        height="96"
                     />
                 </a>
                 <div className="flex space-x-4 sm:order-2">

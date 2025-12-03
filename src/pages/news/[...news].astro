@@ -1,51 +1,29 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
 import { components } from "../../components/elements";
-import ComplexLayout from "../../layouts/complex.astro";
-// import { FaArrowRightLong, FaArrowLeftLong } from "react-icons/fa6"
 
 export async function getStaticPaths() {
-    const news = await getCollection('news');
+    const news = await getCollection("news");
     return news.map((entry, index) => {
         let [previousArticle, nextArticle] = [
             index === 0 ? null : news[index - 1],
-            index + 1 === news.length ? null : news[index + 1]
+            index + 1 === news.length ? null : news[index + 1],
         ];
-        return ({
+        return {
             params: {
-                news: entry.slug
+                news: entry.slug,
             },
             props: {
                 entry,
                 previousArticle,
-                nextArticle
+                nextArticle,
             },
-        })
+        };
     });
 }
 
 const { entry } = Astro.props;
 const { Content: MarkdownContent } = await entry.render();
 ---
-<ComplexLayout {...entry.data} sidebar="equal">
-    <MarkdownContent components={components}/>
-    <!--<div class="flex flex-wrap gap-y-4 md:justify-between mt-12 -mx-4">-->
-    <!--    {[-->
-    <!--        [previousArticle, "Previous", "flex-row-reverse", FaArrowLeftLong],-->
-    <!--        [nextArticle, "Next", "", FaArrowRightLong]-->
-    <!--    ].map(([article, text, iconWrapperClass, Icon]) => (-->
-    <!--            <a href={`/news/${article?.slug}`} class="flex w-full md:w-auto items-start flex-col p-4">-->
-    <!--                <div class={`flex gap-x-1 items-center justify-center hover:scale-105 transition ${iconWrapperClass}`}>-->
-    <!--                    <span class="font-bold text-lg">{text}</span>-->
-    <!--                    <span class="block">-->
-    <!--                        <Icon class="h-4 w-4"/>-->
-    <!--                    </span>-->
-    <!--                </div>-->
-    <!--                <span class="block text-sm max-w-56 text-pretty text-slate-500 dark:text-slate-300">-->
-    <!--                    {article?.data.title}-->
-    <!--                </span>-->
-    <!--            </a>-->
-    <!--    ))}-->
-    <!--</div>-->
-</ComplexLayout>
 
+<MarkdownContent components={components} />
