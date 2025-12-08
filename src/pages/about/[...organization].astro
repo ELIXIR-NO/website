@@ -1,14 +1,12 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import { components } from "../../components/elements";
-
-export const prerender = true;
 
 export async function getStaticPaths() {
     const organizations = await getCollection("about");
     return organizations.map((entry) => ({
         params: {
-            organization: entry.id,
+            organization: entry.slug,
         },
         props: {
             entry,
@@ -16,7 +14,7 @@ export async function getStaticPaths() {
     }));
 }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content } = await entry.render();
 ---
 
 <Content components={components} />
