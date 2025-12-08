@@ -10,7 +10,7 @@ const news = (await getCollection("news"))
     {news.map((article) => {
         return (
                 <li>
-                    <a href={`/news/${article.slug}`}>
+                    <a href={`/news/${article.id}`}>
                         <span class="link block">{article.data.title}</span>
                         <time class="datetime block text-sm">{article.data.date}</time>
                     </a>

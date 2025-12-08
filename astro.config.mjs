@@ -22,6 +22,6 @@ export default defineConfig({
             transformer: "sass"
         }
     },
-    output: "hybrid",
+    output: "server",
     adapter: cloudflare(),
 });
