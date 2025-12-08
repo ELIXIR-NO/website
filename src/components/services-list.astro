@@ -7,7 +7,7 @@ const { services } = Astro.props;
         {services.map((service) => (
                 <li class={`overflow-clip bg-light-surface dark:bg-dark-surface shadow-2xl relative px-6 py-6 flex animate__animated animate__fadeIn`}
                     data-tags={`${service.tags?.join(",")}`}>
-                    <a href={`/services/${service.slug}`}>
+                    <a href={`/services/${service.id}`}>
                         {service.tags.includes("service") && (
                                 <span class="absolute shadow top-0 z-10 text-xs right-0 text-white bg-brand-primary px-1.5 py-0.5 rounded-bl opacity-75">
                                     Node Service

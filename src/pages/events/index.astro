@@ -26,7 +26,7 @@ events.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
             events.map((entry) => {
                 return (
                     <CardV2
-                        link={`/events/${entry.slug}`}
+                        link={`/events/${entry.id}`}
                         title={entry.data.title}
                         summary={entry.data.summary}
                         cover={entry.data?.cover?.source}
