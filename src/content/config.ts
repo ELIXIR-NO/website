@@ -43,7 +43,7 @@ const events = defineCollection({
 const about = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     summary: z.string().optional(),
     logo: z.string().optional(),
     layout: z.string().optional(),
