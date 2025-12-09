@@ -8,7 +8,7 @@ export async function getStaticPaths() {
     const projects = await getCollection("funding-and-projects");
     return projects.map((entry) => ({
         params: {
-            project: entry.id,
+            project: entry.slug,
         },
         props: {
             entry,

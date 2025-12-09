@@ -9,7 +9,7 @@ export async function getStaticPaths() {
     return events.map((entry) => {
         return {
             params: {
-                events: entry.id,
+                events: entry.slug,
             },
             props: {
                 entry,
