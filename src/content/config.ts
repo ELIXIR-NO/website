@@ -68,7 +68,7 @@ const fundingAndProjects = defineCollection({
 const accessibility = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     layout: z.string().optional(),
     variant: z.string().optional(),
   }),
@@ -77,7 +77,7 @@ const accessibility = defineCollection({
 const banner = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     layout: z.string().optional(),
     variant: z.string().optional(),
   }),
@@ -86,7 +86,7 @@ const banner = defineCollection({
 const landing = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     layout: z.string().optional(),
     variant: z.string().optional(),
   }),
@@ -95,7 +95,7 @@ const landing = defineCollection({
 const researchSupport = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     summary: z.string().optional(),
     layout: z.string().optional(),
     variant: z.string().optional(),
@@ -105,7 +105,7 @@ const researchSupport = defineCollection({
 const training = defineCollection({
   type: 'content',
   schema: z.object({
-    title: z.string(),
+    title: z.string().optional(),
     summary: z.string().optional(),
     date: z.string().optional(),
     layout: z.string().optional(),
