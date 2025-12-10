@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import { components } from "../../components/elements";
+import { idToSlug } from "../../lib/utils";
 
 export const prerender = true;
 
@@ -8,7 +9,7 @@ export async function getStaticPaths() {
     const projects = await getCollection("funding-and-projects");
     return projects.map((entry) => ({
         params: {
-            project: entry.slug,
+            project: idToSlug(entry.id),
         },
         props: {
             entry,

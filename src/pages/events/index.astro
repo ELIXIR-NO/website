@@ -2,6 +2,7 @@
 import Page from "../../layouts/page.astro";
 import { getCollection } from "astro:content";
 import CardV2 from "../../components/card.v2";
+import { idToSlug } from "../../lib/utils";
 
 // Function to normalize the date
 function parseDate(dateString: string): number {
@@ -26,7 +27,7 @@ events.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
             events.map((entry) => {
                 return (
                     <CardV2
-                        link={`/events/${entry.slug}`}
+                        link={`/events/${idToSlug(entry.id)}`}
                         title={entry.data.title}
                         summary={entry.data.summary}
                         cover={entry.data?.cover?.source}

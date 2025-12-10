@@ -1,4 +1,3 @@
-import {GrLinkNext} from "react-icons/gr";
 import {stringToKebabCase} from "../lib/utils.ts";
 
 export default function ProjectCard({project, title, children, href = "#"}) {

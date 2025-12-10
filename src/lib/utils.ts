@@ -25,3 +25,16 @@ export const truncateStringToLength = (string: string, length: number) => {
         ? `${string.substring(0, length).trim()}...`
         : string
 };
+
+/**
+ * Converts Astro v5 content id to URL-safe slug
+ * Strips .mdx/.md extension and extracts filename
+ *
+ * Examples:
+ * - "news/article.mdx" → "article"
+ * - "services/galaxy.mdx" → "galaxy"
+ * - "about/index.mdx" → "index"
+ */
+export const idToSlug = (id: string): string => {
+    return id.replace(/\.(mdx|md)$/, '').split('/').pop() || id;
+};

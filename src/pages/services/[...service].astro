@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import { components } from "../../components/elements";
+import { idToSlug } from "../../lib/utils";
 
 export const prerender = true;
 
@@ -8,7 +9,7 @@ export async function getStaticPaths() {
     const services = await getCollection("services");
     return services.map((entry) => ({
         params: {
-            service: entry.slug,
+            service: idToSlug(entry.id),
         },
         props: {
             entry,

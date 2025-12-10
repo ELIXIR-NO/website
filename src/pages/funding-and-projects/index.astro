@@ -1,7 +1,7 @@
 ---
 import ProjectCard from "../../components/project-card";
 import {getCollection} from 'astro:content';
-import {slugToTitleCase, sortStringsByLength} from "../../lib/utils";
+import {slugToTitleCase, sortStringsByLength, idToSlug} from "../../lib/utils";
 import Page from "../../layouts/page.astro";
 import MetadataFilter from "../../components/metadata-filter";
 
@@ -60,7 +60,7 @@ const projects =
         .filter((item: any) => !item.data.draft);
 
 const _projects = projects.map(
-    ({slug, id, data}) => ({slug, id, ...data})
+    ({id, data}) => ({id, ...data})
 );
 
 const _filters = [
@@ -169,7 +169,7 @@ const _filters = [
             {_projects.map((project) => {
                 return (
                         <ProjectCard project={project} title={project.title}
-                                     href={`/funding-and-projects/${project.slug}`}>
+                                     href={`/funding-and-projects/${idToSlug(project.id)}`}>
                             {project.summary}
                         </ProjectCard>
                 );
