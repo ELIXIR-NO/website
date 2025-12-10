@@ -22,7 +22,7 @@ const tags = sortStringsByLength([
     };
 });
 
-const _services = services.map(({ slug, id, data }) => ({ slug, id, ...data }));
+const _services = services.map(({ id, data }) => ({ id, ...data }));
 ---
 
 <Page title="Services" variant="sidebar">

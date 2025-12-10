@@ -1,20 +1,25 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 import { components } from "../../components/elements";
+
+export const prerender = true;
 
 export async function getStaticPaths() {
     const organizations = await getCollection("about");
-    return organizations.map((entry) => ({
-        params: {
-            organization: entry.slug,
-        },
-        props: {
-            entry,
-        },
-    }));
+    return organizations.map((entry) => {
+        console.log(entry)
+        return ({
+            params: {
+                organization: entry.slug,
+            },
+            props: {
+                entry,
+            },
+        })
+    });
 }
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 <Content components={components} />
