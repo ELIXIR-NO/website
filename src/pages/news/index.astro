@@ -15,12 +15,6 @@ function parseDate(dateString: string): number {
     return parsedDate.getTime(); // Return the timestamp of the parsed date
 }
 
-function truncateStringToLength(string: string, length: number) {
-    return (string.length > length)
-        ? `${string.substring(0, length).trim()}...`
-        : string
-}
-
 const news = await getCollection('news');
 news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
 ---

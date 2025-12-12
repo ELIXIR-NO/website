@@ -58,6 +58,17 @@ const { seo } = Astro.props;
                 document.documentElement.classList.add("dark");
             }
         </script>
+
+        <!-- Matomo Tag Manager -->
+        <script is:inline>
+            var _mtm = window._mtm = window._mtm || [];
+            _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+            (function() {
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.async=true; g.src='https://si.elixir.no/matomo/js/container_bKpkpUuj.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+        <!-- End Matomo Tag Manager -->
     </head>
 
     <body class="relative min-h-screen flex flex-col">
