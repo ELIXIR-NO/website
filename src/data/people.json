@@ -354,14 +354,6 @@
           ]
         },
         {
-          "name": "Terje Klemetsen",
-          "title": "Chief Engineer",
-          "photo": "/assets/people/terje-klemetsen.png",
-          "profile-url": "https://uit.no/ansatte/person?p_document_id=379069",
-          "elixir-groups": [],
-          "affiliations": []
-        },
-        {
           "name": "Danilo Martins",
           "title": "Divisional Engineer",
           "photo": "/assets/people/danilo-martins.png",
@@ -370,13 +362,6 @@
           "affiliations": []
         },
         {
-          "name": "Dorota Buczek",
-          "title": "Postdoctoral Fellow, Researcher",
-          "photo": "/assets/people/dorota-buczek.png",
-          "profile-url": "https://uit.no/ansatte/person?p_document_id=668151",
-          "elixir-groups": [],
-          "affiliations": []
-        },
         {
           "name": "Joshua Baskaran",
           "title": "Senior Engineer",
@@ -394,15 +379,7 @@
           "affiliations": []
         },
         {
-          "name": "Bastiaan Ribbers",
-          "title": "Senior Engineer",
-          "photo": "/assets/people/bastiaan-ribbers.png",
-          "profile-url": "https://uit.no/ansatte/person?p_document_id=827208",
-          "elixir-groups": [],
-          "affiliations": []
-        },
-        {
-          "name": "Hans Christpher",
+          "name": "Hans Christopher-Bernstein",
           "title": "Professor",
           "photo": "/assets/people/hans-christopher-bernstein.png",
           "profile-url": "https://en.uit.no/ansatte/person?p_document_id=569039",
