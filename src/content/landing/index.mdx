@@ -5,6 +5,7 @@ variant: "full"
 
 import ThreeColumnHero from "../../components/three-column-hero.astro";
 import Carousel from "../../components/carousel.tsx";
+import slides from "../../data/slides.json";
 import TinyCardWithIconLeft from "../../components/tiny-card-with-icon-left.tsx";
 import {IoMdHelpCircle} from "react-icons/io";
 import {FaFingerprint, FaServer, FaTools} from "react-icons/fa";
@@ -26,33 +27,7 @@ import BasicFeature from "../../components/sections/basic-feature.astro";
         ELIXIR Norway builds upon the Norwegian Bioinformatics Platform, which has
         provided support and tools for Norwegian life science research for over two decades.
     </div>
-    <Carousel client:visible autoSlideInterval={8000} images={[
-        {
-            src: '/assets/slides/eosc-entrust.png',
-            alt: 'EOSC-ENTRUST',
-            caption: "Pål Sætrom and Miikka Kallberg co-led the 2nd TRE Evaluation Workshop, bringing together 30 stakeholders to advance the TRE Blueprint and strengthen Trusted Research Environments across Europe. Organizers included Ingeborg Winge, Christine Stansberg, and Stefanie Kirschenmann."
-        },
-        {
-            src: '/assets/slides/elixir-no-all-hands-2025.jpg',
-            alt: 'Group photo for ELIXIR Norway All Hands 2025',
-            caption: "This year's ELIXIR Norway All Hands was organised physically in Ås!"
-        },
-        {
-            src: '/assets/slides/nels.png',
-            alt: 'NeLS Landing Page',
-            caption: "NeLS, the Norwegian e-Infrastructure for Life Sciences, for data analysis, sharing and storage"
-        },
-        {
-            src: '/assets/slides/genomic-data-infrastructure.png',
-            alt: 'Genomic Data Infrastructure (GDI)',
-            caption: "ELIXIR Norway is deploying GDI infrastructure to go live by 2026 with existing datasets and Genome of Europe (GoE) reference data, enabling federated discovery and analysis across 27+ European countries."
-        },
-        {
-            src: '/assets/slides/rdm-promotion.png',
-            alt: 'RDMkit',
-            caption: "The ELIXIR RDMkit: research data management made simple"
-        }
-    ]}/>
+    <Carousel client:visible autoSlideInterval={8000} images={slides}/>
     <div slot="right" className="landing">
         # News
         <FeaturedNews/>
