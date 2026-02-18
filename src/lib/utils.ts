@@ -27,14 +27,42 @@ export const truncateStringToLength = (string: string, length: number) => {
 };
 
 /**
- * Converts Astro v5 content id to URL-safe slug
- * Strips .mdx/.md extension and extracts filename
+ * Converts Astro v5 content id to URL-safe slug.
+ * entry.id is relative to the collection directory (no collection prefix).
+ * Handles both flat files and slug/index.mdx folder structure.
  *
- * Examples:
- * - "news/article.mdx" → "article"
- * - "services/galaxy.mdx" → "galaxy"
- * - "about/index.mdx" → "index"
+ * Examples (entry.id values):
+ * - "article.mdx" → "article"
+ * - "article/index.mdx" → "article"
+ * - "galaxy.mdx" → "galaxy"
+ * - "index.mdx" → "index"  (collection-level flat index stays as-is)
  */
 export const idToSlug = (id: string): string => {
-    return id.replace(/\.(mdx|md)$/, '').split('/').pop() || id;
+    const withoutExt = id.replace(/\.(mdx|md)$/, '');
+    const parts = withoutExt.split('/');
+    const last = parts.pop();
+    // slug/index.mdx → use slug (the folder name), not "index"
+    // parts.length > 0 means there's a parent folder name to use as slug
+    if (last === 'index' && parts.length > 0) {
+        return parts.pop() || last;
+    }
+    return last || id;
+};
+
+/**
+ * Resolves a relative asset path (starting with './') from a content entry
+ * to its public URL under /content/. Non-relative paths are returned unchanged.
+ *
+ * Pass `${entry.collection}/${entry.id}` as entryId so the collection name
+ * is included in the resolved URL path.
+ *
+ * Examples:
+ * - ("news/2025-05-26_ELITMa/index.mdx", "./cover.jpg") → "/content/news/2025-05-26_ELITMa/cover.jpg"
+ * - ("services/galaxy/index.mdx", "/assets/logos/galaxy.png") → "/assets/logos/galaxy.png"
+ */
+export const resolveContentAsset = (entryId: string, assetPath: string): string => {
+    if (!assetPath?.startsWith('./')) return assetPath;
+    // "news/2025-05-26_ELITMa/index.mdx" → strip filename → "news/2025-05-26_ELITMa"
+    const dir = entryId.replace(/\/[^/]+$/, '');
+    return `/content/${dir}/${assetPath.slice(2)}`;
 };

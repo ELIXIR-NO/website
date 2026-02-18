@@ -68,7 +68,7 @@ const Member = ({ name, title, organization, displayOrgLogo = true, photo, hideP
             {!hidePhoto && <div className="relative">
                 <img
                     className="w-full rounded-2xl aspect-[6/6] object-cover"
-                    src={photo ?? "/assets/people/empty.png"}
+                    src={photo ?? "/assets/placeholders/person.png"}
                     alt={name}
                 />
                 {organization && displayOrgLogo ? MemberOrgLogo : null}

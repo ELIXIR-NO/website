@@ -34,8 +34,18 @@ const {
 const finalVariant = frontmatter?.variant || variant;
 const finalTitle = frontmatter?.title || title;
 const finalDate = frontmatter?.date || date;
-const finalCover = frontmatter?.cover || cover;
+const rawCover = frontmatter?.cover || cover;
 const finalSeo = frontmatter?.seo || seo;
+
+// Resolve relative asset paths (./file.png) to their public URL using the page pathname
+function resolvePageAsset(src: string): string {
+    if (!src?.startsWith('./')) return src;
+    const pagePath = Astro.url.pathname.replace(/\/$/, '');
+    return `/content${pagePath}/${src.slice(2)}`;
+}
+const finalCover = rawCover
+    ? { ...rawCover, source: resolvePageAsset(rawCover.source) }
+    : undefined;
 
 // Convert string date to Date if needed
 const dateObj = finalDate
