@@ -5,6 +5,7 @@ import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
 import cloudflare from '@astrojs/cloudflare';
 import { copyContentAssets } from './src/plugins/content-assets.mjs';
+import { rehypeRelativeAssets } from './src/plugins/rehype-relative-assets.mjs';
 
 // https://astro.build/config
 export default defineConfig({
@@ -27,7 +28,8 @@ export default defineConfig({
     integrations: [
         mdx({
             rehypePlugins: [
-                rehypeHeadingIds
+                rehypeHeadingIds,
+                rehypeRelativeAssets,
             ]
         }),
         react(),
