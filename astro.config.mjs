@@ -11,25 +11,14 @@ import fs from 'fs';
 /**
  * Astro integration that post-processes _routes.json after build.
  *
- * Cloudflare limits _routes.json to 100 rules. With hundreds of prerendered
- * pages the adapter would silently truncate the list, causing many pages to
- * be served via the Worker instead of directly as static files.
+ * Cloudflare limits _routes.json to 100 rules. The adapter auto-generates
+ * one rule per prerendered page which blows past that limit quickly.
  *
- * This replaces per-page entries with per-section wildcards (safe because
- * every page in these sections is prerendered) and collapses all pagefind
- * files into a single wildcard, keeping the total rule count low regardless
- * of how many articles are added in the future.
+ * The correct split: only exclude true static assets (JS, CSS, images)
+ * from the Worker. All HTML — prerendered or SSR — goes through the Worker
+ * as normal. This keeps the rule count tiny and independent of article count.
  */
 function consolidateRoutes() {
-    // Sections where every page is prerendered — safe to wildcard.
-    const staticSections = [
-        '/news',
-        '/events',
-        '/services',
-        '/about',
-        '/funding-and-projects',
-    ];
-
     return {
         name: 'consolidate-cloudflare-routes',
         hooks: {
@@ -37,21 +26,14 @@ function consolidateRoutes() {
                 const routesPath = new URL('_routes.json', dir);
                 if (!fs.existsSync(routesPath)) return;
                 const routes = JSON.parse(fs.readFileSync(routesPath, 'utf8'));
-
-                // Remove all per-page entries for fully-static sections
-                // and the individual pagefind file entries.
-                routes.exclude = routes.exclude.filter(r =>
-                    !staticSections.some(s => r === s || r.startsWith(s + '/')) &&
-                    !r.startsWith('/pagefind/')
-                );
-
-                // Add one wildcard per section (covers index + all sub-pages)
-                // and a single pagefind wildcard.
-                routes.exclude.unshift(
+                routes.exclude = [
                     '/pagefind/*',
-                    ...staticSections.flatMap(s => [s, s + '/*']),
-                );
-
+                    '/_astro/*',
+                    '/favicon.svg',
+                    '/assets/*',
+                    '/content/*',
+                    '/data/*',
+                ];
                 fs.writeFileSync(routesPath, JSON.stringify(routes, null, 2));
             },
         },
