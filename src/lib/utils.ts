@@ -27,26 +27,20 @@ export const truncateStringToLength = (string: string, length: number) => {
 };
 
 /**
- * Converts Astro v5 content id to URL-safe slug.
+ * Converts Astro v5 content id to a URL-safe slug path.
  * entry.id is relative to the collection directory (no collection prefix).
- * Handles both flat files and slug/index.mdx folder structure.
+ * Strips the trailing /index segment so the folder path becomes the slug.
  *
  * Examples (entry.id values):
- * - "article.mdx" → "article"
- * - "article/index.mdx" → "article"
- * - "galaxy.mdx" → "galaxy"
- * - "index.mdx" → "index"  (collection-level flat index stays as-is)
+ * - "article.mdx"                    → "article"
+ * - "article/index.mdx"              → "article"
+ * - "2025/ahm-europe/index.mdx"      → "2025/ahm-europe"
+ * - "2021/ai-and-protein-folding/index.mdx" → "2021/ai-and-protein-folding"
  */
 export const idToSlug = (id: string): string => {
-    const withoutExt = id.replace(/\.(mdx|md)$/, '');
-    const parts = withoutExt.split('/');
-    const last = parts.pop();
-    // slug/index.mdx → use slug (the folder name), not "index"
-    // parts.length > 0 means there's a parent folder name to use as slug
-    if (last === 'index' && parts.length > 0) {
-        return parts.pop() || last;
-    }
-    return last || id;
+    return id
+        .replace(/\.(mdx|md)$/, '')  // strip extension
+        .replace(/\/index$/, '');    // strip trailing /index
 };
 
 /**

@@ -5,20 +5,38 @@ function copyAll(root = '.') {
     const contentDir = path.join(root, 'src/content');
     const publicContentDir = path.join(root, 'public/content');
 
-    // Copy assets from each collection's slug subfolders
-    for (const collection of fs.readdirSync(contentDir)) {
-        const collPath = path.join(contentDir, collection);
-        if (!fs.statSync(collPath).isDirectory()) continue;
-        for (const slug of fs.readdirSync(collPath)) {
-            const slugPath = path.join(collPath, slug);
-            if (!fs.statSync(slugPath).isDirectory()) continue;
-            for (const file of fs.readdirSync(slugPath)) {
-                if (/\.(mdx?|md)$/i.test(file)) continue;  // skip MDX
-                const src = path.join(slugPath, file);
-                const dest = path.join(publicContentDir, collection, slug, file);
+    // Recursively scan for entry folders (those containing index.mdx).
+    // Handles arbitrary depth: collection/slug/ or collection/year/slug/.
+    function processDir(dir, relPath) {
+        const entries = fs.readdirSync(dir);
+        if (entries.some(f => /^index\.mdx?$/i.test(f))) {
+            // Entry folder — copy every non-MDX file to public/content/
+            for (const file of entries) {
+                if (/\.(mdx?|md)$/i.test(file)) continue;
+                const src = path.join(dir, file);
+                if (fs.statSync(src).isDirectory()) continue;
+                const dest = path.join(publicContentDir, relPath, file);
                 fs.mkdirSync(path.dirname(dest), { recursive: true });
                 fs.copyFileSync(src, dest);
             }
+        } else {
+            for (const entry of entries) {
+                const full = path.join(dir, entry);
+                if (fs.statSync(full).isDirectory())
+                    processDir(full, path.join(relPath, entry));
+            }
+        }
+    }
+
+    for (const collection of fs.readdirSync(contentDir)) {
+        const collPath = path.join(contentDir, collection);
+        if (!fs.statSync(collPath).isDirectory()) continue;
+        // Iterate direct children of the collection dir rather than treating
+        // the collection root as an entry (it may contain a flat index.mdx).
+        for (const entry of fs.readdirSync(collPath)) {
+            const entryPath = path.join(collPath, entry);
+            if (fs.statSync(entryPath).isDirectory())
+                processDir(entryPath, path.join(collection, entry));
         }
     }
 
