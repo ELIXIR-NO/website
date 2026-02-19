@@ -24,8 +24,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const args = process.argv.slice(2);
-const PORT = Number(args[args.indexOf('--port') + 1] || 4321);
-const DIST = path.resolve(ROOT, args[args.indexOf('--dist') + 1] || 'dist');
+function arg(flag, fallback) {
+  const i = args.indexOf(flag);
+  return i !== -1 && i + 1 < args.length ? args[i + 1] : fallback;
+}
+const PORT = Number(arg('--port', '4321'));
+const DIST = path.resolve(ROOT, arg('--dist', 'dist'));
 const SITE_ORIGIN = `http://localhost:${PORT}`;
 
 // MIME types for the static server

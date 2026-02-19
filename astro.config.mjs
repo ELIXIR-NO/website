@@ -9,6 +9,10 @@ import { copyContentAssets } from './src/plugins/content-assets.mjs';
 import { rehypeRelativeAssets } from './src/plugins/rehype-relative-assets.mjs';
 import fs from 'fs';
 
+// Set GITHUB_PAGES=true when building for GitHub Pages (static, no Worker).
+// Leave unset for the default Cloudflare deployment.
+const isGithubPages = process.env.GITHUB_PAGES === 'true';
+
 /**
  * Astro integration that post-processes _routes.json after build.
  *
@@ -177,7 +181,7 @@ export default defineConfig({
         react(),
         tailwind(),
         sitemap(),
-        consolidateRoutes(),
+        ...(isGithubPages ? [] : [consolidateRoutes()]),
     ],
     vite: {
         css: {
@@ -185,6 +189,6 @@ export default defineConfig({
         },
         plugins: [copyContentAssets()],
     },
-    output: "server",
-    adapter: cloudflare(),
+    output: isGithubPages ? "static" : "server",
+    ...(isGithubPages ? {} : { adapter: cloudflare() }),
 });
