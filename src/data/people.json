@@ -176,24 +176,30 @@
           "photo": "/data/people/michael-dondrup.png",
           "profile-url": "https://www4.uib.no/en/find-employees/Michael.Dondrup",
           "affiliations": [],
-          "elixir-groups": [
-          ]
+          "elixir-groups": []
         },
-	{
+        {
           "name": "Mahima Gomladu",
           "title": "Senior Engineer",
           "photo": "/data/people/Mahima-Gomladu.jpeg",
           "profile-url": "https://www4.uib.no/en/find-employees/Mahima.Sanjay.Gomladu",
           "affiliations": [],
-          "elixir-groups": [
-          ]
+          "elixir-groups": []
+        },
+        {
+          "name": "Yasin Tharak Miran",
+          "title": "Senior Engineer",
+          "photo": "/data/people/yasin.png",
+          "profile-url": "https://www4.uib.no/en/find-employees/Yasin.Tharak.Miran",
+          "affiliations": [],
+          "elixir-groups": []
         }
       ]
     },
     "uio": {
-	"name": "University of Oslo",
-	"people": [
-	{
+      "name": "University of Oslo",
+      "people": [
+        {
           "name": "Rein Aasland",
           "title": "Professor, Head of Node",
           "photo": "/data/people/rein-aasland.png",
@@ -288,14 +294,14 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	{
+        {
           "name": "Ole Kristian Tørresen",
           "title": "Researcher, PhD",
           "photo": "/data/people/ole-christian-toerresen.png",
           "profile-url": "https://www.mn.uio.no/cees/english/people/researcher-postdoc/olekto/",
           "affiliations": [],
           "elixir-groups": []
-        }  
+        }
       ]
     },
     "uit": {
