@@ -1,6 +1,8 @@
 import type { FunctionComponent, PropsWithChildren } from "react";
 import React from "react";
 
+const BASE = import.meta.env.BASE_URL;
+
 type TeamSectionComponent = FunctionComponent<PropsWithChildren<{
     title?: string,
     layout?: "relaxed" | "compact"
@@ -56,7 +58,7 @@ const Member = ({ name, title, organization, displayOrgLogo = true, photo, hideP
         <div
             className={`absolute w-12 p-0.5 ${resolveOrgCssShape()} bottom-2 right-2 overflow-hidden bg-white border-2 border-white`}>
             <img
-                src={`/assets/logos/orgs/${resolveMemberOrgImageAsset()}`}
+                src={`${BASE}assets/logos/orgs/${resolveMemberOrgImageAsset()}`}
                 alt="Organization Logo"
                 className="w-full h-full object-contain"
             />
@@ -68,7 +70,7 @@ const Member = ({ name, title, organization, displayOrgLogo = true, photo, hideP
             {!hidePhoto && <div className="relative">
                 <img
                     className="w-full rounded-2xl aspect-[6/6] object-cover"
-                    src={photo ?? "/assets/placeholders/person.png"}
+                    src={photo ?? `${BASE}assets/placeholders/person.png`}
                     alt={name}
                 />
                 {organization && displayOrgLogo ? MemberOrgLogo : null}

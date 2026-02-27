@@ -1,33 +1,35 @@
 import React from "react";
 
+const BASE = import.meta.env.BASE_URL;
+
 const Universities = () => {
     return (
         <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-5 place-content-center">
             <Entry
-                src="/assets/logos/orgs/uib.svg"
+                src={`${BASE}assets/logos/orgs/uib.svg`}
                 alt="University of Bergen"
                 location="Bergen"
-                href="/about/bergen"/>
+                href={`${BASE}about/bergen`}/>
             <Entry
-                src="/assets/logos/orgs/uio.svg"
+                src={`${BASE}assets/logos/orgs/uio.svg`}
                 alt="University of Oslo"
                 location="Oslo"
-                href="/about/oslo"/>
+                href={`${BASE}about/oslo`}/>
             <Entry
-                src="/assets/logos/orgs/uit.svg"
+                src={`${BASE}assets/logos/orgs/uit.svg`}
                 alt="The Arctic University of Norway"
                 location="Tromsø"
-                href="/about/tromso"/>
+                href={`${BASE}about/tromso`}/>
             <Entry
-                src="/assets/logos/orgs/nmbu.svg"
+                src={`${BASE}assets/logos/orgs/nmbu.svg`}
                 alt="Norwegian University of Life Sciences"
                 location="Ås"
-                href="/about/aas"/>
+                href={`${BASE}about/aas`}/>
             <Entry
-                src="/assets/logos/orgs/ntnu.svg"
+                src={`${BASE}assets/logos/orgs/ntnu.svg`}
                 alt="Norwegian University of Science and Technology"
                 location="Trondheim"
-                href="/about/trondheim"/>
+                href={`${BASE}about/trondheim`}/>
         </div>
     );
 }

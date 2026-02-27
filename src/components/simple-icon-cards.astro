@@ -3,24 +3,25 @@ import { FaBookOpen } from "react-icons/fa";
 import { RiGovernmentFill } from "react-icons/ri";
 import { IoIosPaper } from "react-icons/io";
 
+const BASE = import.meta.env.BASE_URL;
 const cards = [
     {
         name: 'Case Studies',
         Icon: FaBookOpen,
         color: "bg-green-500",
-        href: '/about/case-studies',
+        href: `${BASE}about/case-studies`,
     },
     {
         name: 'Publications',
         Icon: IoIosPaper,
         color: "bg-red-500",
-        href: '/about/publications',
+        href: `${BASE}about/publications`,
     },
     {
         name: 'Political Impact',
         Icon: RiGovernmentFill,
         color: "bg-yellow-500",
-        href: '/about/political-impact',
+        href: `${BASE}about/political-impact`,
     },
 ]
 ---

@@ -176,7 +176,7 @@ export default defineConfig({
         mdx({
             rehypePlugins: [
                 rehypeHeadingIds,
-                rehypeRelativeAssets,
+                [rehypeRelativeAssets, { base: isGithubPages ? '/website' : '' }],
             ]
         }),
         react(),
