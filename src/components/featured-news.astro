@@ -4,14 +4,14 @@ import { HiArrowSmRight } from "react-icons/hi";
 const news = (await getCollection("news"))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
     .splice(0, 3);
-const BASE = import.meta.env.BASE_URL;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <ul class="flex flex-col gap-y-4">
     {news.map((article) => {
         return (
                 <li>
-                    <a href={`${BASE}news/${article.id.replace(/\.mdx$/, "")}`}>
+                    <a href={`${BASE}/news/${article.id.replace(/\.mdx$/, "")}`}>
                         <span class="link block">{article.data.title}</span>
                         <time class="datetime block text-sm">{article.data.date}</time>
                     </a>
@@ -19,7 +19,7 @@ const BASE = import.meta.env.BASE_URL;
         )
     })}
     <li>
-        <a href={`${BASE}news`} class="link flex items-center">
+        <a href={`${BASE}/news`} class="link flex items-center">
             More news
             <HiArrowSmRight/>
         </a>

@@ -5,11 +5,11 @@ import { IoSearch } from "react-icons/io5";
 import CommandPalette from "./command-palette.tsx";
 import ThemeToggle from "./theme-toggle.tsx";
 
-const BASE = import.meta.env.BASE_URL;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const navigation = [
     {
-        href: `${BASE}about`,
+        href: `${BASE}/about`,
         name: "About",
         sections: [
             { id: "organization", name: "Organization" },
@@ -18,12 +18,12 @@ const navigation = [
             { id: "international-collaboration", name: "International Collaboration\n" },
         ]
     },
-    { href: `${BASE}research-support`, name: "Research Support" },
-    { href: `${BASE}services`, name: "Services" },
-    { href: `${BASE}events`, name: "Events" },
-    { href: `${BASE}training`, name: "Training" },
-    { href: `${BASE}funding-and-projects`, name: "Funding & Projects" },
-    { href: `${BASE}news`, name: "News" },
+    { href: `${BASE}/research-support`, name: "Research Support" },
+    { href: `${BASE}/services`, name: "Services" },
+    { href: `${BASE}/events`, name: "Events" },
+    { href: `${BASE}/training`, name: "Training" },
+    { href: `${BASE}/funding-and-projects`, name: "Funding & Projects" },
+    { href: `${BASE}/news`, name: "News" },
 ];
 
 export const Navigation = ({ pathname }) => {
@@ -56,18 +56,18 @@ export const Navigation = ({ pathname }) => {
                      className="sticky max-w-full 2xl:max-w-[90%] top-0 z-50 flex items-center justify-between pb-6 px-6 pt-6 lg:pb-0 lg:px- mx-auto">
                     <CommandPalette {...{ open, setOpen }} />
                     <div className="flex lg:flex-1">
-                        <a href={BASE} className="-m-1.5 p-1.5">
+                        <a href={`${BASE}/`} className="-m-1.5 p-1.5">
                             <span className="sr-only">ELIXIR Norway</span>
                             <img
                                 alt="ELIXIR Norway logo"
-                                src={`${BASE}assets/logos/elixir-no-light.svg`}
+                                src={`${BASE}/assets/logos/elixir-no-light.svg`}
                                 className="hidden dark:block h-20 w-auto"
                                 width="auto"
                                 height="80"
                             />
                             <img
                                 alt="ELIXIR Norway logo"
-                                src={`${BASE}assets/logos/elixir-no-dark.svg`}
+                                src={`${BASE}/assets/logos/elixir-no-dark.svg`}
                                 className="block dark:hidden h-20 w-auto"
                                 width="auto"
                                 height="80"
@@ -113,18 +113,18 @@ export const Navigation = ({ pathname }) => {
                     <DialogPanel
                         className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
                         <div className="flex items-center justify-between">
-                            <a href={BASE} className="-m-1.5 p-1.5">
+                            <a href={`${BASE}/`} className="-m-1.5 p-1.5">
                                 <span className="sr-only">ELIXIR Norway</span>
                                 <img
                                     alt="ELIXIR Norway logo"
-                                    src={`${BASE}assets/logos/elixir-no-light.svg`}
+                                    src={`${BASE}/assets/logos/elixir-no-light.svg`}
                                     className="hidden dark:block h-16 w-auto"
                                     width="auto"
                                     height="80"
                                 />
                                 <img
                                     alt="ELIXIR Norway logo"
-                                    src={`${BASE}assets/logos/elixir-no-dark.svg`}
+                                    src={`${BASE}/assets/logos/elixir-no-dark.svg`}
                                     className="block dark:hidden h-16 w-auto"
                                     width="auto"
                                     height="80"

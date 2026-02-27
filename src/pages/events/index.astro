@@ -27,7 +27,7 @@ events.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
             events.map((entry) => {
                 return (
                     <CardV2
-                        link={`${import.meta.env.BASE_URL}events/${idToSlug(entry.id)}`}
+                        link={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/events/${idToSlug(entry.id)}`}
                         title={entry.data.title}
                         summary={entry.data.summary}
                         cover={entry.data?.cover?.source

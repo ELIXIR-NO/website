@@ -75,7 +75,7 @@ const resolveLayoutClass = () => {
 <Fragment>
     {isSummary ? (
             <div class="text-center">
-                <A href={`${import.meta.env.BASE_URL}about/everyone`}>70 amazing souls collaborate at Elixir Norway. See them all here.</A>.
+                <A href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/about/everyone`}>70 amazing souls collaborate at Elixir Norway. See them all here.</A>.
             </div>
     ) : (
             <ul class={`grid gap-y-4 gap-x-4 place-content-center ${resolveLayoutClass()}`}>
@@ -90,7 +90,7 @@ const resolveLayoutClass = () => {
                                     {!hidePicture && (
                                             <div class="mt-1 mr-2 flex-shrink-0 w-14 h-14 rounded-full overflow-hidden">
                                                 <img alt={person.name}
-                                                     src={`${import.meta.env.BASE_URL}${person.photo.replace(/^\//, '')}`}
+                                                     src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}${person.photo}`}
                                                      class="object-cover aspect-square"/>
                                             </div>
                                     )}
