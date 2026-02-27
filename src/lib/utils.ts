@@ -58,5 +58,6 @@ export const resolveContentAsset = (entryId: string, assetPath: string): string 
     if (!assetPath?.startsWith('./')) return assetPath;
     // "news/2025-05-26_ELITMa/index.mdx" → strip filename → "news/2025-05-26_ELITMa"
     const dir = entryId.replace(/\/[^/]+$/, '');
-    return `/content/${dir}/${assetPath.slice(2)}`;
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+    return `${base}/content/${dir}/${assetPath.slice(2)}`;
 };

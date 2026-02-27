@@ -14,7 +14,8 @@ function walk(node, fn) {
     if (node.children) node.children.forEach(c => walk(c, fn));
 }
 
-export function rehypeRelativeAssets() {
+export function rehypeRelativeAssets(options = {}) {
+    const base = (options.base ?? '').replace(/\/$/, '');
     return (tree, vfile) => {
         const filePath = vfile.history?.[0];
         if (!filePath) return;
@@ -24,7 +25,7 @@ export function rehypeRelativeAssets() {
         const match = filePath.match(/src\/content\/(.+)\/[^/]+\.mdx?$/);
         if (!match) return;
 
-        const publicBase = `/content/${match[1]}/`;
+        const publicBase = `${base}/content/${match[1]}/`;
 
         walk(tree, node => {
             if (node.type !== 'element') return;
