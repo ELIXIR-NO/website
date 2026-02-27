@@ -13,6 +13,8 @@ import DetailedFeature from "../../components/sections/detailed-feature.astro";
 import Data from "../../data/people.json";
 import PageLayout from "../../layouts/page.astro";
 
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 <TwoColHero>
     <TwoColHero.Header>Collaborative Life Science Hub Linking Five Organisations to [ELIXIR
         Europe](https://www.elixir-europe.org)</TwoColHero.Header>
@@ -21,7 +23,7 @@ import PageLayout from "../../layouts/page.astro";
         Tromsø](https://uit.no/), [NTNU Trondheim](https://www.ntnu.no/), and [NMBU Ås](https://www.nmbu.no/). This
         intergovernmental network supports and advances life science research by integrating resources and expertise
         nationwide.</TwoColHero.Description>
-    <TwoColHero.Figure alt="ELIXIR Norway in a nutshell" src="/assets/figures/elixir-no-in-a-nutshell.png"/>
+    <TwoColHero.Figure alt="ELIXIR Norway in a nutshell" src={`${BASE}/assets/figures/elixir-no-in-a-nutshell.png`}/>
 </TwoColHero>
 
 <BaseContentSection title="Organisation" marginTop>
@@ -69,7 +71,7 @@ import PageLayout from "../../layouts/page.astro";
     </Fragment>
     <div className="mt-20 flex flex-col gap-y-12">
         <figure className="text-center">
-            <img src="/assets/figures/impact.svg"
+            <img src={`${BASE}/assets/figures/impact.svg`}
                  alt="Product screenshot"
                  className="lg:mt-6 lg:scale-125 max-h-[500px] mx-auto"
                  width="auto"/>
@@ -81,7 +83,7 @@ import PageLayout from "../../layouts/page.astro";
 
 <BaseContentSection title="International Collaboration" marginTop>
 
-    <DetailedFeature figSrc="/assets/figures/nodes-map.svg"
+    <DetailedFeature figSrc={`${BASE}/assets/figures/nodes-map.svg`}
                      figCaption="Map of member states within ELIXIR. Each member state establishes a 'Node' in its country, which is a network of institutes that carry out the scientific and technical work of ELIXIR within that country. Orange = member states; pale orange = observers. Observers are countries working towards full membership.">
 
         We are a European intergovernmental organisation composed of life scientists, computer scientists, and support
@@ -99,7 +101,7 @@ import PageLayout from "../../layouts/page.astro";
 
     </DetailedFeature>
 
-<DetailedFeature figSrc="/assets/logos/orgs/gbc-main.svg"
+<DetailedFeature figSrc={`${BASE}/assets/logos/orgs/gbc-main.svg`}
                      figCaption="Global Biodata Coalition logo">
 
         ELIXIR Norway is closely coordinating with the Norwegian representatives to the [Global Biodata Coalition](https://globalbiodata.org/). The Global Biodata Coalition convenes the world’s research funders to exchange knowledge and share strategies for supporting biodata resources, and provides a discussion forum for the managers of data resources, with the aim of developing principles and models for the coordinated funding of global core biodata.

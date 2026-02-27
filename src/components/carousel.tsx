@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const Carousel = ({ images, autoSlideInterval = 3000 }) => {
 
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -70,7 +72,7 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                             className="absolute inset-0 w-full h-full"
                         >
                             <img
-                                src={image.src}
+                                src={`${BASE}${image.src}`}
                                 alt={image.alt}
                                 className="w-full h-full object-cover cursor-pointer aspect-auto"
                                 onClick={handleImageClick}

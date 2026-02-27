@@ -1,5 +1,7 @@
 import Placeholder from "../../components/placeholder.astro";
 
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 # Training by ELIXIR Norway
 ELIXIR Norway aims to provide high-quality bioinformatics training and a wide set of services, designed to support researchers and professionals in life science research, to both the local and global community. Our training programs provide comprehensive resources to enhance your skills and knowledge, enabling you to stay at the forefront of cutting-edge scientific advancements. Regardless of the experience you have as scientist or data analyst, we offer a diverse array of courses, workshops and materials tailored to meet your specific needs, all crafted by instructors with relevant expertise and competency. Our trainings materials are open-access. 
 
@@ -31,17 +33,17 @@ Navigating ELIXIR's Training programs by exploring our catalogue of available co
 
 <div id="tess-widget-events-list" className="tess-widget tess-widget-list"></div>
 <Placeholder id="tess-widget-events-list-placeholder" height="h-44" className="hidden">No upcoming events at the moment.</Placeholder>
-<script async="" defer="" src="/assets/scripts/upcoming-events.js" onLoad="initTeSSWidgets()"></script>
+<script async="" defer="" src={`${BASE}/assets/scripts/upcoming-events.js`} onLoad="initTeSSWidgets()"></script>
 
 # Training Material
 
 <div id="training-materials-list" className="tess-widget tess-widget-list"></div>
-<script async="" defer="" src="/assets/scripts/training-material.js" onLoad="initTrainingMaterials()"></script>
+<script async="" defer="" src={`${BASE}/assets/scripts/training-material.js`} onLoad="initTrainingMaterials()"></script>
 
 # Past Events
 
 <div id="past-training-materials-list" className="tess-widget tess-widget-list"></div>
-<script async="" defer="" src="/assets/scripts/past-events.js" onLoad="initPastTrainingMaterials()"></script>
+<script async="" defer="" src={`${BASE}/assets/scripts/past-events.js`} onLoad="initPastTrainingMaterials()"></script>
 
 <script async=""
         defer=""

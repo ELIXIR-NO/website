@@ -91,6 +91,54 @@ git push origin feature/new-feature-name
 
 That’s it! You're now ready to contribute to the project.
 
+## Deployment
+
+The site has two deployment targets:
+
+| Target | URL | Adapter |
+|---|---|---|
+| **Cloudflare** (production) | `https://elixir.no` | `@astrojs/cloudflare`, SSR |
+| **GitHub Pages** (preview) | `https://elixir-no.github.io/website/` | static, no adapter |
+
+GitHub Pages is triggered automatically on every push to `main` via `.github/workflows/gh-pages.yml`.
+
+### GitHub Pages build
+
+The workflow sets `GITHUB_PAGES=true`, which switches `astro.config.mjs` to:
+- `output: "static"` (no Cloudflare adapter)
+- `base: "/website"` (GitHub Pages serves from a subpath)
+- Passes `base` to the `rehypeRelativeAssets` MDX plugin
+
+### Base URL rule for content authors
+
+Because GitHub Pages serves the site under `/website/`, all local asset URLs must be prefixed with the base path at runtime. **Never hardcode absolute paths** like `/assets/...` or `/data/...` in content files or components.
+
+**In MDX files** — use relative paths for images and links:
+
+```mdx
+![My image](./photo.png)
+[Download](./report.pdf)
+```
+
+These are rewritten automatically by the `rehypeRelativeAssets` plugin.
+
+For paths in **JSX component props** inside MDX (e.g. `src=`, `figSrc=`), relative paths are not rewritten. Export a `BASE` constant at the top of the file instead:
+
+```mdx
+export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+<MyComponent src={`${BASE}/assets/figures/my-image.svg`} />
+```
+
+**In `.astro` and `.tsx` components** — use the same pattern:
+
+```ts
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+// then: `${BASE}/assets/...`, `${BASE}/data/...`, etc.
+```
+
+`import.meta.env.BASE_URL` is `/website` on GitHub Pages and `` (empty after stripping) on Cloudflare, so this works correctly in both environments.
+
 ## Questions?
 
 If you have any questions, feel free to reach out through the project's communication channels.
