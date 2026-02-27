@@ -169,7 +169,7 @@ const _filters = [
             {_projects.map((project) => {
                 return (
                         <ProjectCard project={project} title={project.title}
-                                     href={`${import.meta.env.BASE_URL}funding-and-projects/${idToSlug(project.id)}`}>
+                                     href={`/funding-and-projects/${idToSlug(project.id)}`}>
                             {project.summary}
                         </ProjectCard>
                 );

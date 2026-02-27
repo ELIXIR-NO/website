@@ -24,7 +24,7 @@ news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
         {news.map((entry) => {
             return (
                     <CardV2
-                            link={`${import.meta.env.BASE_URL}news/${idToSlug(entry.id)}`}
+                            link={`/news/${idToSlug(entry.id)}`}
                             title={entry.data.title}
                             summary={entry.data.summary}
                             cover={entry.data?.cover?.source
