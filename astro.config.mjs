@@ -48,7 +48,6 @@ function consolidateRoutes() {
 // https://astro.build/config
 export default defineConfig({
     site: isGithubPages ? 'https://elixir-no.github.io' : 'https://elixir.no',
-    base: isGithubPages ? '/website' : undefined,
     redirects: {
         // ── Legacy underscore/mixed-case slugs → year/slug ──────────────────────
         '/events/2025-06-10_arendalsuka':                           { destination: '/events/2025/arendalsuka',                                    status: 301 },

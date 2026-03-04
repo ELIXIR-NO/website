@@ -93,25 +93,83 @@ That’s it! You're now ready to contribute to the project.
 
 ## Deployment
 
-The site has two deployment targets:
+The site is built as a **static site** and deployed to **GitHub Pages**, served publicly via a reverse proxy at `https://elixir.no`.
 
-| Target | URL | Adapter |
-|---|---|---|
-| **Cloudflare** (production) | `https://elixir.no` | `@astrojs/cloudflare`, SSR |
-| **GitHub Pages** (preview) | `https://elixir-no.github.io/website/` | static, no adapter |
+```
+Browser → elixir.no (UiO reverse proxy, Harika cert)
+              ↓
+    elixir-no.github.io/website/  (GitHub Pages, static)
+```
 
 GitHub Pages is triggered automatically on every push to `main` via `.github/workflows/gh-pages.yml`.
 
-### GitHub Pages build
+---
 
-The workflow sets `GITHUB_PAGES=true`, which switches `astro.config.mjs` to:
-- `output: "static"` (no Cloudflare adapter)
-- `base: "/website"` (GitHub Pages serves from a subpath)
-- Passes `base` to the `rehypeRelativeAssets` MDX plugin
+### Migrating away from Cloudflare
+
+The site previously used `@astrojs/cloudflare` for SSR deployment to `website-70w.pages.dev`, proxied via `elixir.no`. To fully remove Cloudflare and switch to GitHub Pages + reverse proxy, the following changes are required.
+
+#### Code changes
+
+**`astro.config.mjs`**
+
+Remove all Cloudflare and `GITHUB_PAGES` conditional logic. The config becomes unconditionally static:
+
+```js
+// Remove these lines:
+import cloudflare from '@astrojs/cloudflare';
+const isGithubPages = process.env.GITHUB_PAGES === 'true';
+// the consolidateRoutes() integration (Cloudflare-specific)
+// output: isGithubPages ? "static" : "server",
+// ...(isGithubPages ? {} : { adapter: cloudflare() }),
+// base: isGithubPages ? '/website' : undefined,
+// site: isGithubPages ? 'https://elixir-no.github.io' : 'https://elixir.no',
+// [rehypeRelativeAssets, { base: isGithubPages ? '/website' : '' }],
+
+// Replace with:
+site: 'https://elixir.no',
+// no base, no adapter, no output (static is the default)
+// rehypeRelativeAssets with no options
+```
+
+**`package.json`**
+
+Remove the Cloudflare adapter dependency:
+
+```bash
+pnpm remove @astrojs/cloudflare
+```
+
+**`.github/workflows/gh-pages.yml`**
+
+Remove the `GITHUB_PAGES: true` env var from the build step — it is no longer needed.
+
+#### DevOps changes
+
+Update the reverse proxy target from `website-70w.pages.dev` to `elixir-no.github.io/website/`:
+
+```nginx
+location / {
+    proxy_pass        https://elixir-no.github.io/website/;
+    proxy_set_header  Host elixir-no.github.io;  # required — GH Pages routes by Host header
+    proxy_ssl_server_name on;                     # SNI for GitHub's TLS
+
+    # Rewrite Location headers from GH Pages 301/302 redirects
+    # (e.g. trailing-slash normalisation) so users stay on elixir.no
+    proxy_redirect    https://elixir-no.github.io/website/ https://elixir.no/;
+}
+```
+
+Key points:
+- `Host: elixir-no.github.io` is critical — without it GitHub Pages returns 404 for every request
+- `proxy_ssl_server_name on` is required for SNI when proxying to an HTTPS upstream
+- `proxy_redirect` prevents users being bounced to the raw `elixir-no.github.io` URL when GitHub Pages issues a redirect
+
+---
 
 ### Base URL rule for content authors
 
-Because GitHub Pages serves the site under `/website/`, all local asset URLs must be prefixed with the base path at runtime. **Never hardcode absolute paths** like `/assets/...` or `/data/...` in content files or components.
+**Never hardcode absolute paths** like `/assets/...` or `/data/...` in content files or components. These break whenever the site is served from a subpath (e.g. during GitHub Pages preview without a proxy).
 
 **In MDX files** — use relative paths for images and links:
 
@@ -137,7 +195,7 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 // then: `${BASE}/assets/...`, `${BASE}/data/...`, etc.
 ```
 
-`import.meta.env.BASE_URL` is `/website` on GitHub Pages and `` (empty after stripping) on Cloudflare, so this works correctly in both environments.
+In production (no base configured), `BASE` is an empty string and paths resolve to `/assets/...` as expected. The pattern is forward-compatible: if a base is ever set, all paths adjust automatically.
 
 ## Questions?
 
