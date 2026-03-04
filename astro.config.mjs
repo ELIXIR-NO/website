@@ -3,51 +3,13 @@ import {rehypeHeadingIds} from '@astrojs/markdown-remark';
 import react from '@astrojs/react';
 import tailwind from "@astrojs/tailwind";
 import mdx from "@astrojs/mdx";
-import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import { copyContentAssets } from './src/plugins/content-assets.mjs';
 import { rehypeRelativeAssets } from './src/plugins/rehype-relative-assets.mjs';
-import fs from 'fs';
-
-// Set GITHUB_PAGES=true when building for GitHub Pages (static, no Worker).
-// Leave unset for the default Cloudflare deployment.
-const isGithubPages = process.env.GITHUB_PAGES === 'true';
-
-/**
- * Astro integration that post-processes _routes.json after build.
- *
- * Cloudflare limits _routes.json to 100 rules. The adapter auto-generates
- * one rule per prerendered page which blows past that limit quickly.
- *
- * The correct split: only exclude true static assets (JS, CSS, images)
- * from the Worker. All HTML — prerendered or SSR — goes through the Worker
- * as normal. This keeps the rule count tiny and independent of article count.
- */
-function consolidateRoutes() {
-    return {
-        name: 'consolidate-cloudflare-routes',
-        hooks: {
-            'astro:build:done': ({ dir }) => {
-                const routesPath = new URL('_routes.json', dir);
-                if (!fs.existsSync(routesPath)) return;
-                const routes = JSON.parse(fs.readFileSync(routesPath, 'utf8'));
-                routes.exclude = [
-                    '/pagefind/*',
-                    '/_astro/*',
-                    '/favicon.svg',
-                    '/assets/*',
-                    '/content/*',
-                    '/data/*',
-                ];
-                fs.writeFileSync(routesPath, JSON.stringify(routes, null, 2));
-            },
-        },
-    };
-}
 
 // https://astro.build/config
 export default defineConfig({
-    site: isGithubPages ? 'https://elixir-no.github.io' : 'https://elixir.no',
+    site: 'https://elixir.no',
     redirects: {
         // ── Legacy underscore/mixed-case slugs → year/slug ──────────────────────
         '/events/2025-06-10_arendalsuka':                           { destination: '/events/2025/arendalsuka',                                    status: 301 },
@@ -60,7 +22,6 @@ export default defineConfig({
         '/news/2025-10-20_ELIXIR_Industry_Engagement_Day':           { destination: '/news/2025/elixir-industry-engagement-day',                  status: 301 },
         '/news/2025-10-27_NeLS_scheduled_maintenance_November':      { destination: '/news/2025/nels-scheduled-maintenance-november',             status: 301 },
         '/news/2026-01-12_Jaspar_CDR':                               { destination: '/news/2026/jaspar-cdr',                                      status: 301 },
-
         // ── Flat slug → year/slug (all news & events) ───────────────────────────
         '/events/arendalsuka':                                                                    { destination: '/events/2025/arendalsuka',                                                                    status: 301 },
         '/events/dln-hackathon':                                                                  { destination: '/events/2025/dln-hackathon',                                                                  status: 301 },
@@ -175,13 +136,12 @@ export default defineConfig({
         mdx({
             rehypePlugins: [
                 rehypeHeadingIds,
-                [rehypeRelativeAssets, { base: isGithubPages ? '/website' : '' }],
+                [rehypeRelativeAssets],
             ]
         }),
         react(),
         tailwind(),
         sitemap(),
-        ...(isGithubPages ? [] : [consolidateRoutes()]),
     ],
     vite: {
         css: {
@@ -189,6 +149,5 @@ export default defineConfig({
         },
         plugins: [copyContentAssets()],
     },
-    output: isGithubPages ? "static" : "server",
-    ...(isGithubPages ? {} : { adapter: cloudflare() }),
+    output: "static",
 });

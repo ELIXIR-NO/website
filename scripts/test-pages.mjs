@@ -224,8 +224,6 @@ async function main() {
 
     progress(i + 1, sitemapUrls.length, pagePath);
 
-    // Skip SSR pages — they don't have static HTML in dist/ and are served by
-    // the Cloudflare Worker at runtime. They can't be tested locally here.
     if (!findStaticHtml(pagePath)) {
       ssrPages.push(siteUrl);
       continue;
@@ -280,7 +278,7 @@ async function main() {
   console.log(`  │  Pages   ${String(pageOk).padStart(4)}/${String(staticTotal).padEnd(4)} ok   ${pageErrors.length > 0 ? c.red(`${pageErrors.length} failed`) : c.green('all passed')}           │`);
   console.log(`  │  Assets  ${String(assetOk).padStart(4)}/${String(totalAssets).padEnd(4)} ok   ${assetErrors.length > 0 ? c.red(`${assetErrors.length} failed`) : c.green('all passed')}           │`);
   if (ssrPages.length > 0)
-    console.log(`  │  SSR     ${String(ssrPages.length).padStart(4)} pages skipped (Worker-rendered)     │`);
+    console.log(`  │  SSR     ${String(ssrPages.length).padStart(4)} pages skipped (no static HTML)      │`);
   console.log('  └─────────────────────────────────────────────┘\n');
 
   if (pageErrors.length > 0) {
