@@ -179,7 +179,7 @@
           "elixir-groups": [
           ]
         },
-	{
+	    {
           "name": "Mahima Gomladu",
           "title": "Senior Engineer",
           "photo": "/data/people/Mahima-Gomladu.jpeg",
@@ -280,7 +280,7 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	{
+	    {
           "name": "Ole Kristian Tørresen",
           "title": "Researcher, PhD",
           "photo": "/data/people/ole-christian-toerresen.png",
@@ -288,7 +288,7 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	{
+	    {
           "name": "Yehia Farag",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/yehia_f.jpg",
@@ -296,15 +296,15 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	{
+	    {
           "name": "Ralph Niederlöhner",
           "title": "Senior Engineer",
           "photo": "/data/people/ralph_n.jpg",
           "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/ralphn/index.html",
           "affiliations": [],
           "elixir-groups": []
-        } ,
-	{
+        },
+	    {
           "name": "Tharvesh Liyakat",
           "title": "Special Engineer, Phd",
           "photo": "/data/people/tharvesh.jpg",
