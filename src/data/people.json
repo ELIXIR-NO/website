@@ -241,14 +241,6 @@
           "elixir-groups": []
         },
         {
-          "name": "Annbjørg Barbakken",
-          "title": "Engineer",
-          "photo": "/data/people/annbjorg.png",
-          "profile-url": "https://ous-research.no/home/bioinformatics/Group+members/22362",
-          "affiliations": [],
-          "elixir-groups": []
-        },
-        {
           "name": "Sveinung Gundersen",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/sveinung-gundersen.png",
@@ -295,7 +287,31 @@
           "profile-url": "https://www.mn.uio.no/cees/english/people/researcher-postdoc/olekto/",
           "affiliations": [],
           "elixir-groups": []
-        }  
+        },
+	{
+          "name": "Yehia Farag",
+          "title": "Senior Engineer, PhD",
+          "photo": "/data/people/yehia_f.jpg",
+          "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/yehiamf/index.html",
+          "affiliations": [],
+          "elixir-groups": []
+        },
+	{
+          "name": "Ralph Niederlöhner",
+          "title": "Senior Engineer",
+          "photo": "/data/people/ralph_n.jpg",
+          "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/ralphn/index.html",
+          "affiliations": [],
+          "elixir-groups": []
+        } ,
+	{
+          "name": "Tharvesh Liyakat",
+          "title": "Special Engineer, Phd",
+          "photo": "/data/people/tharvesh.jpg",
+          "profile-url": "https://ous-research.no/home/bioinformatics/Group+members/22362",
+          "affiliations": [],
+          "elixir-groups": []
+        }    
       ]
     },
     "uit": {
