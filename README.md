@@ -1,186 +1,125 @@
-# Elixir.no Website
+# ELIXIR Norway Website
 
-Welcome to the project! This README will help you get started and understand how the project is structured. Let’s dive right in!
+Source for the [elixir.no](https://elixir.no) website — the public face of the Norwegian ELIXIR node.
+
+Built with [Astro](https://astro.build) (static output), [React](https://react.dev), [Tailwind CSS](https://tailwindcss.com), and [MDX](https://mdxjs.com). Content is managed through MDX files in `src/content/`.
+
+---
+
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [Content Authoring](#content-authoring)
+- [Development Commands](#development-commands)
+- [Deployment](#deployment)
+- [Contributing](#contributing)
+
+---
 
 ## Prerequisites
 
-Before you can work on this project, you need to have **Node.js** installed on your machine. You can download it from [here](https://nodejs.org/).
-
-To check if you already have Node.js installed, run the following command in your terminal:
+- **Node.js** v20 or later — [nodejs.org](https://nodejs.org)
+- **pnpm** — install globally with `npm install -g pnpm`
 
 ```bash
-node -v
+node -v   # should print v20.x.x or higher
+pnpm -v
 ```
 
-This should return the version number of Node.js installed. If you see something like v16.x.x or higher, you're good to go!
+---
 
-## Cloning the Repository
-
-To get started, you need to clone the repository. Run this command in your terminal:
+## Getting Started
 
 ```bash
 git clone https://github.com/ELIXIR-NO/website.git
-```
-
-Once cloned, navigate into the project directory:
-
-```bash
 cd website
-```
-
-## Installing Dependencies
-
-After cloning the repository, you’ll need to install the necessary dependencies. We use `pnpm` as our package manager. Install the dependencies using:
-
-```bash
 pnpm install
-```
-
-If you don’t have pnpm installed globally, you can install it by running:
-
-```bash
-npm install -g pnpm
-```
-
-## Project Structure
-
-This project follows a specific directory structure to organize the content. As a contributor, you will primarily be working inside the src/content/ folder. Below is a breakdown of the key directories within src/content/:
-
-- `about`: Contains all the pages related to Elixir Node information. You will find details about the node services, missions, and visions here.
-- `banner`: Holds the content for the top overlay banner that appears across the website. If you need to update the banner, this is where you do it.
-- `landing`: The main landing page content resides here. Any changes or updates to the homepage should be made in this folder.
-- `news`: This is where all the news articles are stored. If you're adding new articles or updating existing ones, you will be working here.
-- `projects`: Deprecated folder for old project-related content. This will be removed in future updates, so avoid making changes here.
-- `research`-support: This folder holds the content for the Research Support page. You will find research-related resources and support documents here.
-- `services`: Contains content for all the service-related pages. If you need to edit or add new services to the website, work here.
-- `training`: This is where you manage the content for the Training page, including courses, workshops, and any related training materials.
-
-## Running the Project Locally
-
-To run the project locally, use the following command:
-
-```bash
 pnpm start
 ```
 
-This will start a local server, and you can view the project by going to http://localhost:4321 in your web browser. Any changes you make in the src/content/ folder will be reflected here in real-time.
-
-## Contributing
-
-> For minor changes and edits, please refer to the wiki guide available at [https://github.com/ELIXIR-NO/website/wiki](https://github.com/ELIXIR-NO/website/wiki).
-
-Clone the repository as shown above.
-
-Create a new branch for your changes:
-
-```bash
-git checkout -b feature/new-feature-name
-```
-
-After making your changes, commit them:
-
-```bash
-git commit -m "Add a clear and concise commit message"
-```
-
-Push your changes and create a pull request:
-
-```bash
-git push origin feature/new-feature-name
-```
-
-That’s it! You're now ready to contribute to the project.
-
-## Deployment
-
-The site is built as a **static site** and deployed to **GitHub Pages**, served publicly via a reverse proxy at `https://elixir.no`.
-
-```
-Browser → elixir.no (UiO reverse proxy, Harika cert)
-              ↓
-    elixir-no.github.io/website/  (GitHub Pages, static)
-```
-
-GitHub Pages is triggered automatically on every push to `main` via `.github/workflows/gh-pages.yml`.
+Open [http://localhost:4321](http://localhost:4321) in your browser. Changes to `src/content/` are reflected immediately.
 
 ---
 
-### Migrating away from Cloudflare
+## Project Structure
 
-The site previously used `@astrojs/cloudflare` for SSR deployment to `website-70w.pages.dev`, proxied via `elixir.no`. To fully remove Cloudflare and switch to GitHub Pages + reverse proxy, the following changes are required.
-
-#### Code changes
-
-**`astro.config.mjs`**
-
-Remove all Cloudflare and `GITHUB_PAGES` conditional logic. The config becomes unconditionally static:
-
-```js
-// Remove these lines:
-import cloudflare from '@astrojs/cloudflare';
-const isGithubPages = process.env.GITHUB_PAGES === 'true';
-// the consolidateRoutes() integration (Cloudflare-specific)
-// output: isGithubPages ? "static" : "server",
-// ...(isGithubPages ? {} : { adapter: cloudflare() }),
-// base: isGithubPages ? '/website' : undefined,
-// site: isGithubPages ? 'https://elixir-no.github.io' : 'https://elixir.no',
-// [rehypeRelativeAssets, { base: isGithubPages ? '/website' : '' }],
-
-// Replace with:
-site: 'https://elixir.no',
-// no base, no adapter, no output (static is the default)
-// rehypeRelativeAssets with no options
+```
+website/
+├── .github/
+│   └── workflows/
+│       ├── gh-pages.yml        # Deploy to GitHub Pages on push to main
+│       └── pr-test.yml         # Build check on pull requests
+├── public/                     # Static assets served as-is
+├── src/
+│   ├── components/             # Astro and React components
+│   │   └── sections/           # Page section building blocks
+│   ├── content/                # MDX content (the main area for contributors)
+│   │   ├── about/              # ELIXIR node information by institution
+│   │   ├── banner/             # Top overlay banner content
+│   │   ├── events/             # Events, organised by year (events/YYYY/slug/)
+│   │   ├── funding-and-projects/ # Funded projects and initiatives
+│   │   ├── landing/            # Homepage content
+│   │   ├── news/               # News articles, organised by year (news/YYYY/slug/)
+│   │   ├── research-support/   # Research support page
+│   │   ├── accessibility/      # Accessibility statement
+│   │   └── config.ts           # Content collection schemas
+│   ├── lib/                    # Shared hooks and utilities
+│   ├── pages/                  # Astro page routes
+│   ├── plugins/                # Custom Astro/Vite/rehype plugins
+│   ├── styles/                 # Global SCSS
+│   └── types/                  # TypeScript type definitions
+├── astro.config.mjs            # Astro configuration
+├── tailwind.config.mjs         # Tailwind CSS configuration
+└── package.json
 ```
 
-**`package.json`**
+### Key source directories
 
-Remove the Cloudflare adapter dependency:
-
-```bash
-pnpm remove @astrojs/cloudflare
-```
-
-**`.github/workflows/gh-pages.yml`**
-
-Remove the `GITHUB_PAGES: true` env var from the build step — it is no longer needed.
-
-#### DevOps changes
-
-Update the reverse proxy target from `website-70w.pages.dev` to `elixir-no.github.io/website/`:
-
-```nginx
-location / {
-    proxy_pass        https://elixir-no.github.io/website/;
-    proxy_set_header  Host elixir-no.github.io;  # required — GH Pages routes by Host header
-    proxy_ssl_server_name on;                     # SNI for GitHub's TLS
-
-    # Rewrite Location headers from GH Pages 301/302 redirects
-    # (e.g. trailing-slash normalisation) so users stay on elixir.no
-    proxy_redirect    https://elixir-no.github.io/website/ https://elixir.no/;
-}
-```
-
-Key points:
-- `Host: elixir-no.github.io` is critical — without it GitHub Pages returns 404 for every request
-- `proxy_ssl_server_name on` is required for SNI when proxying to an HTTPS upstream
-- `proxy_redirect` prevents users being bounced to the raw `elixir-no.github.io` URL when GitHub Pages issues a redirect
+| Directory | Purpose |
+|---|---|
+| `src/content/about/` | Institutional pages for each ELIXIR Norway partner (Oslo, Bergen, Tromsø, Trondheim, AAS) |
+| `src/content/news/` | News articles, one MDX file per article inside `news/YYYY/slug/` |
+| `src/content/events/` | Upcoming and past events, organised as `events/YYYY/slug/` |
+| `src/content/funding-and-projects/` | Individual project pages for grants and EU projects |
+| `src/content/landing/` | Homepage copy and structure |
+| `src/content/banner/` | Sitewide top banner (e.g. maintenance notices) |
+| `src/content/research-support/` | Research support landing page content |
+| `src/components/` | Shared UI components (Astro + React + TSX) |
+| `src/plugins/` | `rehypeRelativeAssets` (rewrites MDX asset paths) and `copyContentAssets` (copies co-located images to `dist/`) |
 
 ---
 
-### Base URL rule for content authors
+## Content Authoring
 
-**Never hardcode absolute paths** like `/assets/...` or `/data/...` in content files or components. These break whenever the site is served from a subpath (e.g. during GitHub Pages preview without a proxy).
+Most day-to-day changes are edits to MDX files inside `src/content/`. For a step-by-step guide on common tasks, see the [project wiki](https://github.com/ELIXIR-NO/website/wiki).
 
-**In MDX files** — use relative paths for images and links:
+### Adding news or events
+
+Create a new directory under the appropriate year and add an `index.mdx`:
+
+```
+src/content/news/2026/my-article/
+└── index.mdx
+src/content/events/2026/my-event/
+└── index.mdx
+```
+
+Co-locate any images in the same directory alongside the MDX file.
+
+### Asset paths in MDX
+
+**Never hardcode absolute paths** like `/assets/...` or `/data/...`. These break when the site is served from a subpath.
+
+**Standard images and links** — use relative paths; they are rewritten automatically by the `rehypeRelativeAssets` plugin:
 
 ```mdx
 ![My image](./photo.png)
 [Download](./report.pdf)
 ```
 
-These are rewritten automatically by the `rehypeRelativeAssets` plugin.
-
-For paths in **JSX component props** inside MDX (e.g. `src=`, `figSrc=`), relative paths are not rewritten. Export a `BASE` constant at the top of the file instead:
+**JSX component props inside MDX** (e.g. `src=`, `figSrc=`) — relative paths are not processed by rehype. Use the `BASE` pattern instead:
 
 ```mdx
 export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -188,16 +127,122 @@ export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 <MyComponent src={`${BASE}/assets/figures/my-image.svg`} />
 ```
 
-**In `.astro` and `.tsx` components** — use the same pattern:
+**In `.astro` and `.tsx` components** — same pattern:
 
 ```ts
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 // then: `${BASE}/assets/...`, `${BASE}/data/...`, etc.
 ```
 
-In production (no base configured), `BASE` is an empty string and paths resolve to `/assets/...` as expected. The pattern is forward-compatible: if a base is ever set, all paths adjust automatically.
+In production `BASE` is an empty string, so paths resolve normally. If a base path is ever configured, all references adjust automatically.
+
+---
+
+## Development Commands
+
+| Command | Description |
+|---|---|
+| `pnpm start` | Start local dev server at `localhost:4321` |
+| `pnpm build` | Type-check, build static output, and run Pagefind indexing |
+| `pnpm preview` | Preview the production build locally |
+| `pnpm dev:build` | Full build then start dev server (needed for search to work locally) |
+| `pnpm test:pages` | Smoke-test all generated pages |
+
+Search (Pagefind) is not available during plain `pnpm start`. Run `pnpm dev:build` once to generate the index, then use `pnpm start` for subsequent development.
+
+---
+
+## Deployment
+
+The site is built as a fully static site and deployed to **GitHub Pages**, publicly accessible via a reverse proxy at `https://elixir.no`.
+
+```
+Browser → elixir.no (UiO reverse proxy, Harika TLS cert)
+              |
+    elixir-no.github.io/website/  (GitHub Pages, static)
+```
+
+### CI/CD
+
+Deployment is fully automated:
+
+- **Push to `main`** triggers `.github/workflows/gh-pages.yml`, which builds the site and deploys to GitHub Pages.
+- **Pull requests** trigger `.github/workflows/pr-test.yml`, which runs a build check without deploying.
+
+No manual steps are required to deploy — merging to `main` is sufficient.
+
+### Reverse proxy
+
+DNS for `elixir.no` is managed by UiO. Traffic is routed through a reverse proxy managed by UiB (hosted on NREC), which forwards requests to the static site on GitHub Pages. This keeps the public URL stable and independent of the underlying hosting provider.
+
+```
+  DNS                   Proxy                   Website
+  UiO Managed           UiB Managed
+┌─────────────┐       ┌─────────────┐       ┌──────────────────────┐
+│             │ <──── │             │ <──── │                      │
+│  elixir.no  │       │  <ip nrec>  │       │  elixir-no.github.io │
+│             │ ────> │             │ ────> │                      │
+└─────────────┘       └─────────────┘       └──────────────────────┘
+```
+
+---
+
+## Maintenance Scripts
+
+Two interactive bash scripts are provided to manage slides and people without manually editing JSON.
+
+**Requirement:** `jq` must be installed (`sudo apt install jq` or `brew install jq`). Bash 4+ is required (macOS ships with Bash 3 — run `brew install bash` if needed).
+
+### Slides
+
+```bash
+bash scripts/manage-slides.sh
+```
+
+Manages `src/data/slides.json` and the images in `public/data/slides/`.
+
+| Action | What it does |
+|---|---|
+| Add | Prompts for an image file (copies it to `src/data/slides/`), alt text, and caption |
+| Remove | Lists slides by index; prompts for confirmation before deleting |
+| Update | Edit the image, alt text, or caption of an existing slide |
+
+### People
+
+```bash
+bash scripts/manage-people.sh
+```
+
+Manages `src/data/people.json` and the photos in `public/data/people/`.
+
+| Action | What it does |
+|---|---|
+| Add | Select an existing org (or create a new one), fill in name/title/photo/profile URL, assign ELIXIR group memberships. Photo is copied to `src/data/people/`. |
+| Remove | Select by org then by person; prompts for confirmation |
+| Update | Edit any field — name, title, photo, profile URL, or group memberships |
+| List | Shows all people grouped by organisation |
+
+---
+
+## Contributing
+
+For minor edits and content updates, see the [wiki](https://github.com/ELIXIR-NO/website/wiki).
+
+For code changes:
+
+1. Fork or clone the repository.
+2. Create a feature branch:
+   ```bash
+   git checkout -b feature/your-change
+   ```
+3. Make your changes and verify the build:
+   ```bash
+   pnpm build
+   ```
+4. Commit and push, then open a pull request against `main`.
+
+---
 
 ## Questions?
 
-If you have any questions, feel free to reach out through the project's communication channels.
-
+Open an issue at [github.com/ELIXIR-NO/website/issues](https://github.com/ELIXIR-NO/website/issues) or reach out through the project's communication channels.
