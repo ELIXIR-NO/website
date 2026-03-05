@@ -182,7 +182,7 @@
 	    {
           "name": "Mahima Gomladu",
           "title": "Senior Engineer",
-          "photo": "/data/people/Mahima-Gomladu.jpeg",
+          "photo": "/data/people/mahima-gomladu.jpeg",
           "profile-url": "https://www4.uib.no/en/find-employees/Mahima.Sanjay.Gomladu",
           "affiliations": [],
           "elixir-groups": [
@@ -291,7 +291,7 @@
 	    {
           "name": "Yehia Farag",
           "title": "Senior Engineer, PhD",
-          "photo": "/data/people/yehia_f.jpg",
+          "photo": "/data/people/yehia-f.jpg",
           "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/yehiamf/index.html",
           "affiliations": [],
           "elixir-groups": []
@@ -299,7 +299,7 @@
 	    {
           "name": "Ralph Niederlöhner",
           "title": "Senior Engineer",
-          "photo": "/data/people/ralph_n.jpg",
+          "photo": "/data/people/ralph-n.jpg",
           "profile-url": "https://www.mn.uio.no/ibv/english/people/adm/ralphn/index.html",
           "affiliations": [],
           "elixir-groups": []

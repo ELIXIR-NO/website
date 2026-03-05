@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "postbuild": "pagefind --site dist",
+    "test:slugs": "node scripts/check-slugs.mjs",
     "test:pages": "node scripts/test-pages.mjs"
   },
   "dependencies": {
