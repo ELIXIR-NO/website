@@ -3,9 +3,7 @@ layout: "../../layouts/page.astro"
 variant: "full"
 ---
 
-import ThreeColumnHero from "../../components/three-column-hero.astro";
-import Carousel from "../../components/carousel.tsx";
-import slides from "../../data/slides.json";
+import Hero from "../../components/hero.tsx";
 import TinyCardWithIconLeft from "../../components/tiny-card-with-icon-left.tsx";
 import {IoMdHelpCircle} from "react-icons/io";
 import {FaFingerprint, FaServer, FaTools} from "react-icons/fa";
@@ -14,25 +12,7 @@ import FeaturedNews from "../../components/featured-news.astro";
 import GridFeature from "../../components/sections/grid-feature.astro";
 import BasicFeature from "../../components/sections/basic-feature.astro";
 
-<ThreeColumnHero>
-    <div slot="left">
-        # ELIXIR Norway
-
-        ELIXIR Norway is a national node of [ELIXIR](https://elixir-europe.org/), the pan-European
-        infrastructure for _biological information_, supporting life science research
-        and its translation to medicine, the environment, the bioindustries and society.
-
-        ELIXIR Norway is funded by the [Research Council of Norway](https://www.forskningsradet.no/en/),
-        its partner institutions, and the [ELIXIR Hub](https://elixir-europe.org/about-us/who-we-are/hub).
-        ELIXIR Norway builds upon the Norwegian Bioinformatics Platform, which has
-        provided support and tools for Norwegian life science research for over two decades.
-    </div>
-    <Carousel client:visible autoSlideInterval={8000} images={slides}/>
-    <div slot="right" className="landing">
-        # News
-        <FeaturedNews/>
-    </div>
-</ThreeColumnHero>
+<Hero client:only="react" />
 
 <GridFeature>
     <div slot="intro">

@@ -9,31 +9,28 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
-                emphasized: ['Sriracha', ...defaultTheme.fontFamily.sans]
             },
             colors: {
                 brand: {
                     "primary": "#023452",
-                    "secondary": "#F57D20",
+                    "secondary": "#f47d20",
+                    "grey": "#4d4848",
+                    "green": "#bebf32",
                 },
                 light: {
-                    // Basic
                     "background": colors.white,
                     "surface": "#f8f9fa",
-                    // Text
-                    "on-background": colors.gray["900"],
-                    "on-surface": colors.slate["700"],
-                    "on-primary": "#F57D20"
+                    "on-background": "#4d4848",
+                    "on-surface": "#4d4848",
+                    "on-primary": "#f47d20",
                 },
                 dark: {
-                    // Basics
                     "background": "#121212",
                     "surface": "#202020",
-                    // Text
                     "on-background": colors.slate["100"],
                     "on-surface": colors.slate["200"],
-                    "on-primary": colors.white
-                }
+                    "on-primary": colors.white,
+                },
             },
             invert: {
                 25: '.25',
@@ -41,7 +38,7 @@ export default {
                 75: '.75',
                 85: '.85',
                 95: '.95',
-            }
+            },
         },
     },
     plugins: [
