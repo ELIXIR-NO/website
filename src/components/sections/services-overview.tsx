@@ -98,7 +98,7 @@ export default function ServicesOverview() {
                                 href={svc.href}
                                 variants={shouldReduceMotion ? undefined : item}
                                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                                className="group relative px-5 py-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-transparent transition-all duration-300 hover:bg-white hover:border-gray-200/80 dark:hover:bg-dark-surface dark:hover:border-gray-700/50 hover:shadow-md hover:shadow-black/[0.04] dark:hover:shadow-black/20 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                className="group relative px-5 py-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-transparent transition-[border-color,box-shadow,background-color] duration-200 hover:bg-white hover:border-gray-200/80 dark:hover:bg-dark-surface dark:hover:border-gray-700/50 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
                             >
                                 <div
                                     className="w-9 h-9 rounded-lg flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"

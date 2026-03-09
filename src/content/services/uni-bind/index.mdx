@@ -9,20 +9,28 @@ tags: ["functional-genomics", "data-platform"]
 
 ## Introduction
 
-UniBind is a portal to access a database storing collections of direct interactions between transcription factors and DNA (also called transcription factor binding sites) in nine species. This portal provides a comprehensive map of direct interactions between transcription factor (TFs) and DNA. High confidence TF binding site predictions were obtained from uniform processing of thousands of ChIP-seq data sets using the ChIP-eat software. This service is hosted by the University of Oslo, ELIXIR Norway.
+UniBind is a database of direct interactions between transcription factors (TFs) and DNA across nine species, hosted by the University of Oslo and ELIXIR Norway. The portal provides a comprehensive map of transcription factor binding sites (TFBSs) derived from uniform processing of thousands of ChIP-seq datasets using the [ChIP-eat](https://bitbucket.org/CBGR/chip-eat/) software.
 
-Datasets in UniBind are separated into robust and permissive collections based on two quality control metrics. First, we filtered out datasets where the DAMO-optimized TF binding motif was not similar to the expected canonical motif. Second, we filtered out datasets where TFBSs are not enriched around their summits. Datasets satisfying both criteria were classified as part as the robust collection, while the rest were classified as part of the permissive collection.
+Datasets in UniBind are separated into **robust** and **permissive** collections based on two quality control metrics: similarity of the DAMO-optimized TF binding motif to the expected canonical motif, and enrichment of TFBSs around ChIP-seq peak summits. Datasets satisfying both criteria are classified as robust; the remainder as permissive.
 
-https://unibind.uio.no/about/
+## Key Features
 
-## About this service
+- **Nine species** — TF binding site data across human, mouse, rat, and six other species
+- **Thousands of ChIP-seq datasets** — uniformly processed for consistency and comparability
+- **Robust and permissive collections** — quality-tiered datasets so users can choose the confidence level appropriate for their analysis
+- **High-confidence predictions** — binding site calls validated against canonical motifs and peak summit enrichment
+- **ChIP-eat pipeline** — standardized processing ensures reproducibility across all datasets
+- **Open access** — all data freely available through the web portal and for bulk download
 
-UniBind, hosted by the University of Oslo and ELIXIR Norway, offers a detailed map of direct interactions between transcription factors (TFs) and DNA across nine species. The portal includes high-confidence TF binding site predictions obtained from uniform processing of thousands of ChIP-seq datasets using the ChIP-eat software. Datasets are categorized into robust and permissive collections based on quality control metrics, ensuring high data reliability.
+## Getting Started
 
-## Why use this service
+1. Visit [UniBind](https://unibind.uio.no/) to browse available species and transcription factors
+2. Select a species and TF of interest to view binding site predictions
+3. Choose between **robust** and **permissive** collections based on your confidence requirements
+4. Download datasets for integration with your own genomic analyses
 
-UniBind is invaluable for researchers studying gene regulation, transcription factors, and DNA interactions. It provides high-quality, validated data, enhancing the understanding of transcriptional regulation mechanisms. The portal’s comprehensive and accessible data make it a critical resource for genetic and genomic research.
+## Links
 
-## How to get started
-
-Researchers can explore UniBind’s datasets and resources by visiting its portal. Start using UniBind to access high-confidence TF-DNA interaction data for your research projects.
+- [UniBind](https://unibind.uio.no/)
+- [About UniBind](https://unibind.uio.no/about/)
+- [ChIP-eat software](https://bitbucket.org/CBGR/chip-eat/)

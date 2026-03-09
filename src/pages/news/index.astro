@@ -1,38 +1,281 @@
 ---
 import { getCollection } from 'astro:content';
 import Page from "../../layouts/page.astro";
-import CardV2 from "../../components/card.v2";
-import { idToSlug, resolveContentAsset } from "../../lib/utils";
+import { idToSlug, resolveContentAsset, slugToTitleCase } from "../../lib/utils";
 
-// Function to normalize the date
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 function parseDate(dateString: string): number {
-    // Try to create a date using the Date constructor
-    const parsedDate = new Date(Date.parse(dateString));
-    // If the date is invalid, return a default timestamp (0 represents the epoch)
-    if (isNaN(parsedDate.getTime())) {
-        return new Date(0).getTime(); // Return the default date's timestamp
-    }
-    return parsedDate.getTime(); // Return the timestamp of the parsed date
+    const parsed = new Date(Date.parse(dateString));
+    return isNaN(parsed.getTime()) ? 0 : parsed.getTime();
+}
+
+function formatDate(dateString: string): string {
+    const d = new Date(Date.parse(dateString));
+    if (isNaN(d.getTime())) return dateString;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 const news = await getCollection('news');
 news.sort((a, b) => parseDate(b.data.date) - parseDate(a.data.date));
+
+// Build year list with counts (newest first)
+const yearCounts = new Map<string, number>();
+news.forEach(n => {
+    const d = new Date(Date.parse(n.data.date));
+    if (!isNaN(d.getTime())) {
+        const y = String(d.getFullYear());
+        yearCounts.set(y, (yearCounts.get(y) ?? 0) + 1);
+    }
+});
+const years = [...yearCounts.entries()].sort((a, b) => Number(b[0]) - Number(a[0]));
+
+// Build tag list with counts
+const tagCounts = new Map<string, number>();
+news.forEach(n => (n.data.tags ?? []).forEach((t: string) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+
+function getYear(dateString: string): string {
+    const d = new Date(Date.parse(dateString));
+    return isNaN(d.getTime()) ? '' : String(d.getFullYear());
+}
+
+const INITIAL_COUNT = 18;
 ---
 
-<Page title="News" variant="full">
-    <ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-12 gap-x-12">
-        {news.map((entry) => {
+<Page variant="wide">
+
+    <!-- Hero -->
+    <div class="max-w-3xl">
+        <p class="text-sm font-semibold text-brand-secondary tracking-wide uppercase">News</p>
+        <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15]">
+            Latest from ELIXIR&nbsp;Norway
+        </h1>
+        <p class="mt-6 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 max-w-2xl">
+            Updates on projects, publications, events, and developments across the
+            Norwegian bioinformatics infrastructure.
+        </p>
+    </div>
+
+    <!-- Year filter -->
+    <div class="mt-12 flex flex-wrap items-center gap-2" id="year-filter" role="group" aria-label="Filter by year">
+        <button
+            class="year-btn active rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary bg-brand-primary text-white dark:bg-brand-secondary dark:text-white"
+            data-year="all"
+        >
+            All
+            <span class="ml-1.5 text-xs text-white/70">{news.length}</span>
+        </button>
+        {years.map(([year, count]) => (
+            <button
+                class="year-btn rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600"
+                data-year={year}
+            >
+                {year}
+                <span class="ml-1.5 text-xs text-brand-grey/40 dark:text-gray-600">{count}</span>
+            </button>
+        ))}
+    </div>
+
+    <!-- Tag filter -->
+    {tags.length > 0 && (
+        <div class="mt-4 flex flex-wrap items-center gap-2" id="tag-filter" role="group" aria-label="Filter by topic">
+            {tags.map(([tag, count]) => (
+                <button
+                    class="tag-btn rounded-full px-3 py-1 text-xs font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600"
+                    data-tag={tag}
+                >
+                    {slugToTitleCase(tag)}
+                    <span class="ml-1 text-[10px] text-brand-grey/40 dark:text-gray-600">{count}</span>
+                </button>
+            ))}
+        </div>
+    )}
+
+    <!-- News grid -->
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="news-grid">
+        {news.map((entry, i) => {
+            const slug = idToSlug(entry.id);
+            const cover = entry.data?.cover?.source
+                ? resolveContentAsset(`${entry.collection}/${entry.id}`, entry.data.cover.source)
+                : null;
+            const isHidden = i >= INITIAL_COUNT;
+
             return (
-                    <CardV2
-                            link={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/news/${idToSlug(entry.id)}`}
-                            title={entry.data.title}
-                            summary={entry.data.summary}
-                            cover={entry.data?.cover?.source
-                                ? resolveContentAsset(`${entry.collection}/${entry.id}`, entry.data.cover.source)
-                                : undefined}
-                            date={entry.data.date}
-                    />
-            )
+                <a
+                    href={`${BASE}/news/${slug}`}
+                    class={`news-card group flex flex-col rounded-xl border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] overflow-hidden transition-[border-color,box-shadow] duration-200 hover:border-brand-secondary/40 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${isHidden ? 'hidden' : ''}`}
+                    data-index={i}
+                    data-year={getYear(entry.data.date)}
+                    data-tags={(entry.data.tags ?? []).join(',')}
+                >
+                    {cover ? (
+                        <div class="h-40 bg-gray-50 dark:bg-white/5 overflow-hidden">
+                            <img
+                                src={cover}
+                                alt={entry.data.title}
+                                class="w-full h-full object-cover"
+                                loading="lazy"
+                            />
+                        </div>
+                    ) : (
+                        <div class="h-40 bg-gradient-to-br from-brand-primary/5 to-brand-secondary/10 dark:from-brand-primary/10 dark:to-brand-secondary/5 flex items-center justify-center">
+                            <svg class="h-10 w-10 text-brand-secondary/20" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                            </svg>
+                        </div>
+                    )}
+                    <div class="flex flex-col flex-1 p-5">
+                        <time class="text-xs font-medium text-brand-grey/60 dark:text-gray-500">
+                            {formatDate(entry.data.date)}
+                        </time>
+                        <h2 class="mt-2 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors line-clamp-2">
+                            {entry.data.title}
+                        </h2>
+                        <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-400 line-clamp-2 flex-1">
+                            {entry.data.summary}
+                        </p>
+                        {(entry.data.tags ?? []).length > 0 && (
+                            <div class="mt-3 flex flex-wrap gap-1.5">
+                                {(entry.data.tags ?? []).map((tag: string) => (
+                                    <span class="rounded-full bg-gray-100 dark:bg-white/5 px-2 py-0.5 text-[10px] font-medium text-brand-grey/70 dark:text-gray-500">
+                                        {slugToTitleCase(tag)}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                        <div class="mt-4 flex items-center gap-1 text-xs font-medium text-brand-grey/40 dark:text-gray-600 group-hover:text-brand-secondary transition-colors">
+                            Read more
+                            <svg class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+            );
         })}
-    </ol>
+    </div>
+
+    <!-- Show more button -->
+    {news.length > INITIAL_COUNT && (
+        <div class="mt-10 text-center" id="load-more-container">
+            <button
+                id="load-more-btn"
+                class="inline-flex items-center gap-2 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] px-6 py-3 text-sm font-semibold text-brand-primary dark:text-white transition-[border-color,box-shadow] duration-200 hover:border-brand-secondary/40 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+            >
+                Show older articles
+                <span class="text-brand-grey/40 dark:text-gray-600" id="remaining-count">
+                    ({news.length - INITIAL_COUNT} more)
+                </span>
+            </button>
+        </div>
+    )}
+
+    <!-- Filter + progressive reveal script -->
+    <script is:inline define:vars={{ INITIAL_COUNT, BATCH_SIZE: 18 }}>
+        document.addEventListener('DOMContentLoaded', function() {
+            var cards = Array.from(document.querySelectorAll('.news-card'));
+            var btn = document.getElementById('load-more-btn');
+            var loadMoreContainer = document.getElementById('load-more-container');
+            var countEl = document.getElementById('remaining-count');
+            var yearBtns = document.querySelectorAll('.year-btn');
+            var tagBtns = document.querySelectorAll('.tag-btn');
+            var activeYear = 'all';
+            var activeTags = new Set();
+            var shown = INITIAL_COUNT;
+
+            var yearActiveCls = 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white';
+            var yearInactiveCls = 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600';
+            var tagActiveCls = 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white';
+            var tagInactiveCls = 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600';
+
+            var hasConstraints = function() { return activeYear !== 'all' || activeTags.size > 0; };
+
+            function updateView() {
+                var filtered = [];
+                for (var i = 0; i < cards.length; i++) {
+                    var c = cards[i];
+                    var yearMatch = activeYear === 'all' || c.getAttribute('data-year') === activeYear;
+                    var tagMatch = true;
+                    if (activeTags.size > 0) {
+                        var cardTags = (c.getAttribute('data-tags') || '').split(',');
+                        tagMatch = false;
+                        var iter = activeTags.values();
+                        var val = iter.next();
+                        while (!val.done) {
+                            if (cardTags.indexOf(val.value) !== -1) { tagMatch = true; break; }
+                            val = iter.next();
+                        }
+                    }
+                    if (yearMatch && tagMatch) filtered.push(c);
+                }
+
+                var limit = hasConstraints() ? filtered.length : shown;
+
+                cards.forEach(function(c) { c.classList.add('hidden'); });
+                for (var j = 0; j < Math.min(limit, filtered.length); j++) {
+                    filtered[j].classList.remove('hidden');
+                }
+
+                if (loadMoreContainer) {
+                    if (hasConstraints() || shown >= cards.length) {
+                        loadMoreContainer.style.display = 'none';
+                    } else {
+                        var remaining = cards.length - shown;
+                        loadMoreContainer.style.display = remaining > 0 ? '' : 'none';
+                        if (countEl && remaining > 0) {
+                            countEl.textContent = '(' + remaining + ' more)';
+                        }
+                    }
+                }
+            }
+
+            function styleYearBtns() {
+                yearBtns.forEach(function(b) {
+                    var isActive = b.getAttribute('data-year') === activeYear;
+                    b.className = 'year-btn rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ' + (isActive ? yearActiveCls : yearInactiveCls);
+                    var span = b.querySelector('span');
+                    if (span) span.className = 'ml-1.5 text-xs ' + (isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600');
+                });
+            }
+
+            function styleTagBtns() {
+                tagBtns.forEach(function(b) {
+                    var tag = b.getAttribute('data-tag');
+                    var isActive = activeTags.has(tag);
+                    b.className = 'tag-btn rounded-full px-3 py-1 text-xs font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ' + (isActive ? tagActiveCls : tagInactiveCls);
+                    var span = b.querySelector('span');
+                    if (span) span.className = 'ml-1 text-[10px] ' + (isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600');
+                });
+            }
+
+            yearBtns.forEach(function(b) {
+                b.addEventListener('click', function() {
+                    activeYear = b.getAttribute('data-year');
+                    styleYearBtns();
+                    updateView();
+                });
+            });
+
+            tagBtns.forEach(function(b) {
+                b.addEventListener('click', function() {
+                    var tag = b.getAttribute('data-tag');
+                    if (activeTags.has(tag)) activeTags.delete(tag);
+                    else activeTags.add(tag);
+                    styleTagBtns();
+                    updateView();
+                });
+            });
+
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    shown = Math.min(shown + BATCH_SIZE, cards.length);
+                    updateView();
+                });
+            }
+
+            updateView();
+        });
+    </script>
+
 </Page>

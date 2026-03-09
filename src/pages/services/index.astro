@@ -1,85 +1,128 @@
 ---
 import { getCollection } from "astro:content";
 import Page from "../../layouts/page.astro";
-import ServicesList from "../../components/services-list.astro";
-import { P } from "../../components/elements";
 import TagsFilter from "../../components/tags-filter";
-import { slugToTitleCase, sortStringsByLength } from "../../lib/utils";
+import { slugToTitleCase, idToSlug, resolveContentAsset } from "../../lib/utils";
 
-const services = await getCollection("services");
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const services = (await getCollection("services")).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const tags = sortStringsByLength([
-    ...new Set(
-        services
-            .map((s) => s.data?.tags ?? [])
-            .reduce((pv, cv) => pv.concat(cv), []) as string[],
-    ),
-]).map((tag) => {
-    return {
-        id: tag,
-        value: tag,
-        label: slugToTitleCase(tag),
-    };
-});
-
-const _services = services.map(({ id, collection, data }) => ({ id, collection, ...data }));
+// Build tag list with counts
+const tagCounts = new Map<string, number>();
+services.forEach(s => (s.data.tags ?? []).forEach(t => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const tags = [...tagCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([id, count]) => ({ id, label: slugToTitleCase(id), count }));
 ---
 
-<Page title="Services" variant="sidebar">
-    <div slot="sidebar">
-        <div>
-            <h2 class="text-xl font-bold">Refine your search</h2>
-        </div>
-        <script is:inline>
-            document.addEventListener("DOMContentLoaded", () => {
-                // Function to get tags from URL query parameters
-                function getTagsFromUrl() {
-                    const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll("tags")); // Use a Set to store unique tag IDs
-                }
-                // Function to hide/show elements based on tags
-                function updateVisibility() {
-                    const selectedTags = getTagsFromUrl();
-                    const container = document.querySelector(
-                        "[data-tags-container]",
-                    );
-                    if (!container) return;
-                    container
-                        .querySelectorAll("[data-tags]")
-                        .forEach((element) => {
-                            const elementTags = new Set(
-                                element.getAttribute("data-tags").split(","),
-                            );
-                            if (
-                                selectedTags.size === 0 ||
-                                [...selectedTags].some((tag) =>
-                                    elementTags.has(tag),
-                                )
-                            ) {
-                                element.classList.remove("hidden");
-                                element.classList.add("block");
-                            } else {
-                                element.classList.remove("block");
-                                element.classList.add("hidden");
-                            }
-                        });
-                }
-                // Initial visibility update
-                updateVisibility();
-                // Watch for URL changes and update visibility
-                window.addEventListener("url-change", updateVisibility);
-                // Handle initial load with URL parameters
-                window.addEventListener("load", updateVisibility);
-            });
-        </script>
-        <TagsFilter client:load name="tags" tags={tags} />
+<Page variant="wide">
+
+    <!-- Hero -->
+    <div class="max-w-3xl">
+        <p class="text-sm font-semibold text-brand-secondary tracking-wide uppercase">Services</p>
+        <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15]">
+            Tools and infrastructure for life science research
+        </h1>
+        <p class="mt-6 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 max-w-2xl">
+            ELIXIR Norway provides software tools, databases, storage and compute infrastructure
+            to support life science researchers across Norway and internationally.
+        </p>
     </div>
-    <P
-        >ELIXIR Norway offers services and infrastructure for life science,
-        including software tools and workflows, databases and storage. In
-        addition ELIXIR Norway provides support through its national helpdesk
-        and offers trainings. Moreover, ELIXIR Norway provides services to the
-        international research community.
-    </P>
-    <ServicesList services={_services} />
+
+    <!-- Filter -->
+    <div class="mt-12">
+        <TagsFilter client:load tags={tags} />
+    </div>
+
+    <!-- Service grid -->
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="services-grid">
+        {services.map((service) => {
+            const slug = idToSlug(service.id);
+            const logo = service.data.logo ? resolveContentAsset(`${service.collection}/${service.id}`, service.data.logo) : null;
+            const serviceTags = service.data.tags ?? [];
+            const isNodeService = serviceTags.includes('service');
+            return (
+                <a
+                    href={`${BASE}/services/${slug}`}
+                    class="service-card group relative flex flex-col rounded-xl border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-5 transition-[border-color,box-shadow] duration-200 hover:border-brand-secondary/40 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                    data-tags={serviceTags.join(',')}
+                >
+                    {isNodeService && (
+                        <span class="absolute top-3 right-3 rounded-full bg-brand-primary/10 dark:bg-brand-secondary/10 px-2 py-0.5 text-[10px] font-semibold text-brand-primary dark:text-brand-secondary">
+                            Node Service
+                        </span>
+                    )}
+
+                    {/* Logo */}
+                    {logo && (
+                        <div class="w-12 h-12 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-200/40 dark:border-gray-700/20 flex items-center justify-center p-1.5 mb-4 overflow-hidden">
+                            <img
+                                src={logo}
+                                alt={`${service.data.title} logo`}
+                                class="w-full h-full object-contain"
+                                loading="lazy"
+                            />
+                        </div>
+                    )}
+
+                    {/* Title */}
+                    <h2 class="text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors">
+                        {service.data.title}
+                    </h2>
+
+                    {/* Summary */}
+                    <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-400 line-clamp-3 flex-1">
+                        {service.data.summary}
+                    </p>
+
+                    {/* Tags */}
+                    {serviceTags.length > 0 && (
+                        <div class="mt-4 flex flex-wrap gap-1.5">
+                            {serviceTags.filter(t => t !== 'service').map(tag => (
+                                <span class="rounded-full bg-gray-100 dark:bg-white/5 px-2 py-0.5 text-[10px] font-medium text-brand-grey/70 dark:text-gray-500">
+                                    {slugToTitleCase(tag)}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Arrow */}
+                    <div class="mt-4 flex items-center gap-1 text-xs font-medium text-brand-grey/40 dark:text-gray-600 group-hover:text-brand-secondary transition-colors">
+                        Learn more
+                        <svg class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                        </svg>
+                    </div>
+                </a>
+            );
+        })}
+    </div>
+
+    <!-- Filtering script -->
+    <script is:inline>
+        function filterCards(selectedTags) {
+            const cards = document.querySelectorAll('.service-card');
+            const noTags = !selectedTags || selectedTags.length === 0;
+            cards.forEach(card => {
+                if (noTags) {
+                    card.style.display = '';
+                    return;
+                }
+                const cardTags = new Set((card.getAttribute('data-tags') || '').split(','));
+                const match = selectedTags.some(t => cardTags.has(t));
+                card.style.display = match ? '' : 'none';
+            });
+        }
+
+        // Listen for React tag filter changes
+        window.addEventListener('tags-changed', (e) => filterCards(e.detail));
+
+        // Handle initial load with URL params
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const tags = params.getAll('tags');
+            if (tags.length) filterCards(tags);
+        });
+    </script>
+
 </Page>
