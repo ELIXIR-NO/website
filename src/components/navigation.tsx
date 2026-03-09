@@ -98,7 +98,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                                     <a
                                         key={item.name}
                                         href={item.href}
-                                        className={`relative px-3 py-2 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                                        className={`relative px-3 py-2 text-sm 2xl:text-base font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
                                             isActive
                                                 ? 'text-brand-primary dark:text-brand-secondary bg-brand-secondary/10 dark:bg-brand-secondary/10'
                                                 : 'text-brand-grey dark:text-gray-300 hover:text-brand-primary dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'

@@ -1,181 +1,315 @@
 ---
-import ProjectCard from "../../components/project-card";
-import {getCollection} from 'astro:content';
-import {slugToTitleCase, sortStringsByLength, idToSlug} from "../../lib/utils";
+import { getCollection } from "astro:content";
 import Page from "../../layouts/page.astro";
-import MetadataFilter from "../../components/metadata-filter";
+import ProjectFilters from "../../components/project-filters";
+import { slugToTitleCase, idToSlug } from "../../lib/utils";
 
-const extractKeywords = (items: any) => {
-    return sortStringsByLength([
-        ...new Set<string>(
-            items
-                .map((item: any) => (item.data?.keywords ?? []))
-                .reduce((pv: any, cv: any) => pv.concat(cv), []) as string[]
-        )
-    ]).map((keyword) => ({
-        id: keyword,
-        value: keyword,
-        label: slugToTitleCase(keyword),
-    }));
-};
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const extractCategories = (items) => {
-    return sortStringsByLength([
-        ...new Set<string>(
-            items
-                .map((item: any) => item.data?.category)
-                .filter(Boolean) as string[]
-        )
-    ]).map((category) => ({
-        id: category,
-        value: category,
-        label: slugToTitleCase(category),
-    }));
-};
+const projects = (await getCollection('funding-and-projects') as any[])
+    .filter((item: any) => !item.data.draft)
+    .sort((a, b) => {
+        // Ongoing first, then by title
+        if (a.data.status === 'ongoing' && b.data.status !== 'ongoing') return -1;
+        if (a.data.status !== 'ongoing' && b.data.status === 'ongoing') return 1;
+        return a.data.title.localeCompare(b.data.title);
+    });
 
-const extractStatuses = (items: any) => {
-    return sortStringsByLength([
-        ...new Set<string>(
-            items
-                .map((item: any) => item.data?.status)
-                .filter(Boolean) as string[]
-        )
-    ]).map((status) => ({
-        id: status,
-        value: status,
-        label: slugToTitleCase(status),
-    }));
-};
+// Build filter groups with counts
+function buildOptions(field: string): { id: string; label: string; count: number }[] {
+    const counts = new Map<string, number>();
+    projects.forEach(p => {
+        const val = p.data[field];
+        if (val && val !== 'unknown') counts.set(val, (counts.get(val) ?? 0) + 1);
+    });
+    return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([id, count]) => ({ id, label: slugToTitleCase(id), count }));
+}
 
-const extractAllMetadata = (items) => {
-    return {
-        keywords: extractKeywords(items),
-        categories: extractCategories(items),
-        statuses: extractStatuses(items),
-    };
-};
+function buildKeywordOptions(): { id: string; label: string; count: number }[] {
+    const counts = new Map<string, number>();
+    projects.forEach(p => {
+        (p.data.keywords ?? []).forEach((k: string) => counts.set(k, (counts.get(k) ?? 0) + 1));
+    });
+    return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([id, count]) => ({ id, label: slugToTitleCase(id), count }));
+}
 
-const projects =
-    (await getCollection('funding-and-projects') as any[])
-        .filter((item: any) => !item.data.draft);
-
-const _projects = projects.map(
-    ({id, data}) => ({id, ...data})
-);
-
-const _filters = [
-
-    {
-        name: "category",
-        values: extractCategories(projects)
-    },
-    {
-        name: "status",
-        values: extractStatuses(projects)
-    },
-    {
-        name: "keywords",
-        values: extractKeywords(projects)
-    },
+const filterGroups = [
+    { key: 'status', label: 'Status', options: buildOptions('status') },
+    { key: 'category', label: 'Category', options: buildOptions('category') },
+    { key: 'keywords', label: 'Topics', options: buildKeywordOptions() },
 ];
+
+const statusColors: Record<string, { bg: string; text: string; dot: string }> = {
+    ongoing: {
+        bg: 'bg-green-100 dark:bg-green-900/20',
+        text: 'text-green-700 dark:text-green-400',
+        dot: 'bg-green-500 dark:bg-green-400',
+    },
+    completed: {
+        bg: 'bg-gray-100 dark:bg-gray-800/40',
+        text: 'text-gray-600 dark:text-gray-400',
+        dot: 'bg-gray-400 dark:bg-gray-500',
+    },
+};
+
+const categoryColors: Record<string, string> = {
+    european: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
+    elixir: 'bg-brand-secondary/10 text-brand-secondary',
+    norwegian: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400',
+    global: 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400',
+};
 ---
-<Page title="Funding & Projects" variant="sidebar">
 
-    <div slot="sidebar">
-        <div>
-            <h2 class="text-lg underline">Refine your search</h2>
-        </div>
-        <script is:inline>
-            document.addEventListener("DOMContentLoaded", () => {
-                function getKeywordsFromUrl() {
-                    const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('keywords'));
-                }
+<Page variant="wide">
 
-                function getCategoryFromUrl() {
-                    const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('category'));
-                }
-
-                function getStatusFromUrl() {
-                    const params = new URLSearchParams(window.location.search);
-                    return new Set(params.getAll('status'));
-                }
-
-                function hasIntersection(a, b) {
-                    for (let elem of a) {
-                        if (b.has(elem)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-
-                // Function to hide/show elements based on tags
-                function updateVisibility() {
-                    const [keywords, status, category] = [
-                        getKeywordsFromUrl(),
-                        getStatusFromUrl(),
-                        getCategoryFromUrl()
-                    ];
-                    console.log({keywords, status, category})
-                    const container = document.querySelector('[data-projects-container]');
-                    const allProjectElements = container.querySelectorAll(`[data-project]`);
-                    console.log({allProjectElements})
-                    if (!container)
-                        // if no containing parent, we ignore the toggles
-                        return;
-                    allProjectElements.forEach(element => {
-                        const pk = new Set(element.getAttribute(`data-keywords`).split(','));
-                        const ps = new Set([element.getAttribute(`data-status`)]);
-                        const pc = new Set([element.getAttribute(`data-category`)]);
-                        console.log({
-                            pk, ps, pc, el: element.getAttribute('data-project'), showIf: {
-                                "keywords-size0": keywords.size === 0,
-                                "status.size0": status.size === 0,
-                                "category.size0": category.size === 0,
-                                "keywords.intersection": keywords.intersection(pk).size,
-                                "status.intersection": status.intersection(ps).size,
-                                "category.intersection": category.intersection(pc).size,
-                            }
-                        })
-                        if (
-                            (keywords.size === 0 || keywords.intersection(pk).size) ||
-                            (status.size === 0 || status.intersection(ps).size) ||
-                            (category.size === 0 && category.intersection(pc).size)
-                        ) {
-                            element.classList.remove('hidden');
-                            element.classList.add('block');
-                        } else {
-                            element.classList.remove('block');
-                            element.classList.add('hidden');
-                        }
-                    });
-                }
-
-                // Initial visibility update
-                updateVisibility();
-                // Watch for URL changes and update visibility
-                window.addEventListener('url-change', updateVisibility);
-                // Handle initial load with URL parameters
-                window.addEventListener('load', updateVisibility);
-            });
-        </script>
-        <MetadataFilter client:load filters={_filters}/>
+    <!-- Hero -->
+    <div class="max-w-3xl">
+        <p class="text-sm font-semibold text-brand-secondary tracking-wide uppercase">Funding & Projects</p>
+        <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15]">
+            Research projects and&nbsp;funding initiatives
+        </h1>
+        <p class="mt-6 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 max-w-2xl">
+            ELIXIR Norway participates in European and national research projects
+            building infrastructure for life science data management, FAIR data, and genomics.
+        </p>
     </div>
 
-    <section class="flex flex-col gap-y-8">
-        <ol class="columns-1 lg:columns-2 gap-x-4" data-projects-container="1">
-            {_projects.map((project) => {
-                return (
-                        <ProjectCard project={project} title={project.title}
-                                     href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/funding-and-projects/${idToSlug(project.id)}`}>
-                            {project.summary}
-                        </ProjectCard>
-                );
-            })}
-        </ol>
-    </section>
+    <!-- Two-column layout: sidebar filters + card grid -->
+    <div class="mt-14 flex flex-col lg:flex-row gap-8 lg:gap-10">
 
-</ComplexLayout>
+        <!-- Filter sidebar -->
+        <aside class="lg:w-60 shrink-0">
+            <div class="lg:sticky lg:top-28">
+                <!-- Search -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-grey/40 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                        <input
+                            type="text"
+                            id="project-search"
+                            placeholder="Search projects..."
+                            class="w-full rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-brand-primary dark:text-white placeholder:text-brand-grey/40 dark:placeholder:text-gray-500 outline-none transition-colors focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary"
+                        />
+                    </div>
+                </div>
+                <ProjectFilters client:load groups={filterGroups} />
+            </div>
+        </aside>
 
+        <!-- Main content -->
+        <div class="flex-1 min-w-0">
+            <!-- Results count -->
+            <p class="text-sm text-brand-grey/60 dark:text-gray-500 mb-4" id="results-count">
+                {projects.length} projects
+            </p>
+
+            <!-- Project grid -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-5" id="projects-grid">
+                {projects.map((project) => {
+                    const slug = idToSlug(project.id);
+                    const status = project.data.status ?? 'unknown';
+                    const category = project.data.category ?? 'unknown';
+                    const keywords = project.data.keywords ?? [];
+                    const sc = statusColors[status] ?? statusColors.completed;
+                    const cc = categoryColors[category] ?? 'bg-gray-100 dark:bg-gray-800/40 text-gray-600 dark:text-gray-400';
+
+                    return (
+                        <a
+                            href={`${BASE}/funding-and-projects/${slug}`}
+                            class="project-card group flex flex-col rounded-xl border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-5 transition-[border-color,box-shadow] duration-200 hover:border-brand-secondary/40 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                            data-status={status}
+                            data-category={category}
+                            data-keywords={keywords.join(',')}
+                            data-title={project.data.title.toLowerCase()}
+                            data-summary={(project.data.summary ?? '').toLowerCase()}
+                        >
+                            {/* Top row: badges */}
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${sc.bg} ${sc.text}`}>
+                                    <span class={`h-1.5 w-1.5 rounded-full ${sc.dot}`} />
+                                    {slugToTitleCase(status)}
+                                </span>
+                                {category !== 'unknown' && (
+                                    <span class={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${cc}`}>
+                                        {slugToTitleCase(category)}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Title */}
+                            <h2 class="mt-3 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors leading-snug">
+                                {project.data.title}
+                            </h2>
+
+                            {/* Summary */}
+                            {project.data.summary && (
+                                <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-400 line-clamp-2 flex-1">
+                                    {project.data.summary}
+                                </p>
+                            )}
+
+                            {/* Metadata row */}
+                            <div class="mt-4 flex items-center gap-4 text-xs text-brand-grey/50 dark:text-gray-500">
+                                {project.data.period && (
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                        </svg>
+                                        {project.data.period}
+                                    </span>
+                                )}
+                                {project.data.funder?.name && (
+                                    <span class="inline-flex items-center gap-1">
+                                        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" />
+                                        </svg>
+                                        {project.data.funder.name}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* Keywords */}
+                            {keywords.length > 0 && (
+                                <div class="mt-3 flex flex-wrap gap-1.5">
+                                    {keywords.map((kw: string) => (
+                                        <span class="rounded-full bg-gray-100 dark:bg-white/5 px-2 py-0.5 text-[10px] font-medium text-brand-grey/70 dark:text-gray-500">
+                                            {slugToTitleCase(kw)}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Arrow */}
+                            <div class="mt-4 flex items-center gap-1 text-xs font-medium text-brand-grey/40 dark:text-gray-600 group-hover:text-brand-secondary transition-colors">
+                                View project
+                                <svg class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                </svg>
+                            </div>
+                        </a>
+                    );
+                })}
+            </div>
+
+            <!-- No results -->
+            <div id="no-results" class="hidden text-center py-16">
+                <svg class="mx-auto h-12 w-12 text-brand-grey/20" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                <p class="mt-4 text-brand-grey dark:text-gray-400">No projects match the selected filters.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtering script: search + facet filters combined -->
+    <script is:inline>
+        var _currentFilters = null;
+        var _currentQuery = '';
+
+        function applyAll() {
+            var cards = document.querySelectorAll('.project-card');
+            var noResults = document.getElementById('no-results');
+            var countEl = document.getElementById('results-count');
+            var visibleCount = 0;
+            var query = _currentQuery.toLowerCase().trim();
+
+            var activeGroups = [];
+            if (_currentFilters) {
+                Object.keys(_currentFilters).forEach(function(key) {
+                    var set = _currentFilters[key];
+                    if (set && set.size > 0) {
+                        activeGroups.push({ key: key, values: Array.from(set) });
+                    }
+                });
+            }
+
+            var hasConstraints = activeGroups.length > 0 || query.length > 0;
+
+            cards.forEach(function(card) {
+                var show = true;
+
+                // Text search: match against title and summary
+                if (query) {
+                    var title = card.getAttribute('data-title') || '';
+                    var summary = card.getAttribute('data-summary') || '';
+                    if (title.indexOf(query) === -1 && summary.indexOf(query) === -1) {
+                        show = false;
+                    }
+                }
+
+                // Facet filters: AND between groups, OR within each group
+                if (show) {
+                    for (var i = 0; i < activeGroups.length; i++) {
+                        var group = activeGroups[i];
+                        var attr = card.getAttribute('data-' + group.key) || '';
+                        var cardValues = group.key === 'keywords'
+                            ? (attr ? attr.split(',') : [])
+                            : [attr];
+
+                        var matchesGroup = false;
+                        for (var j = 0; j < group.values.length; j++) {
+                            if (cardValues.indexOf(group.values[j]) !== -1) {
+                                matchesGroup = true;
+                                break;
+                            }
+                        }
+                        if (!matchesGroup) { show = false; break; }
+                    }
+                }
+
+                card.style.display = show ? '' : 'none';
+                if (show) visibleCount++;
+            });
+
+            if (noResults) {
+                noResults.style.display = visibleCount === 0 && hasConstraints ? 'block' : 'none';
+            }
+            if (countEl) {
+                var total = cards.length;
+                countEl.textContent = hasConstraints
+                    ? visibleCount + ' of ' + total + ' projects'
+                    : total + ' projects';
+            }
+        }
+
+        // Listen for filter changes from React component
+        window.addEventListener('filters-changed', function(e) {
+            _currentFilters = e.detail;
+            applyAll();
+        });
+
+        // Search input
+        document.addEventListener('DOMContentLoaded', function() {
+            var input = document.getElementById('project-search');
+            if (input) {
+                input.addEventListener('input', function() {
+                    _currentQuery = input.value;
+                    applyAll();
+                });
+            }
+
+            // Handle initial URL params
+            var params = new URLSearchParams(window.location.search);
+            var hasFilters = false;
+            var filters = {};
+            ['status', 'category', 'keywords'].forEach(function(key) {
+                var vals = params.getAll(key);
+                if (vals.length) {
+                    filters[key] = new Set(vals);
+                    hasFilters = true;
+                }
+            });
+            if (hasFilters) {
+                _currentFilters = filters;
+                applyAll();
+            }
+        });
+    </script>
+
+</Page>

@@ -1,77 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from 'react';
 
 export type Tag = {
-    id: string | number;
-    value: string;
+    id: string;
     label: string;
+    count: number;
 };
 
-export default function TagsFilter({ name, tags = [] }: { name: string; tags: Tag[] }) {
-
-    const [selectedTags, setSelectedTags] = useState<(number | string)[]>([]);
+export default function TagsFilter({ tags = [] }: { tags: Tag[] }) {
+    const [selected, setSelected] = useState<Set<string>>(new Set());
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
-        const selectedFromUrl = params.getAll('tags').map(String);
-        setSelectedTags(selectedFromUrl);
+        const fromUrl = params.getAll('tags');
+        if (fromUrl.length) setSelected(new Set(fromUrl));
     }, []);
 
-    const updateUrl = (newSelectedTags: (number | string)[]) => {
+    const notify = useCallback((next: Set<string>) => {
         const params = new URLSearchParams();
-        newSelectedTags.forEach(tagId => params.append('tags', tagId.toString()));
-        window.history.replaceState(
-            null,
-            '',
-            `${window.location.pathname}?${params.toString()}`
-        );
-        // Dispatch a custom event to notify anyone about the URL change
-        window.dispatchEvent(new Event('url-change'));
-    };
+        next.forEach(t => params.append('tags', t));
+        const qs = params.toString();
+        window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+        window.dispatchEvent(new CustomEvent('tags-changed', { detail: [...next] }));
+    }, []);
 
-    const toggleTag = (id: number | string) => {
-        console.assert(!!id, "TagsFilter: {id} cannot be null|undefined")
-        setSelectedTags((prevSelectedTags) => {
-            const newSelectedTags = prevSelectedTags.includes(id)
-                ? prevSelectedTags.filter((tagId) => tagId !== id)
-                : [...prevSelectedTags, id];
-            // Update URL with new selected tags
-            updateUrl(newSelectedTags);
-            return newSelectedTags;
+    const handleToggle = useCallback((id: string) => {
+        setSelected(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id);
+            else next.add(id);
+            notify(next);
+            return next;
         });
-    };
+    }, [notify]);
+
+    const handleClear = useCallback(() => {
+        setSelected(new Set());
+        notify(new Set());
+    }, [notify]);
+
+    const isAllSelected = selected.size === 0;
 
     return (
-        <form className="mt-6 flex flex-wrap gap-y-2 gap-x-1">
-            {tags.map(({ id, label, value }) => {
-                const isSelected = selectedTags.includes(id);
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by tag">
+            <button
+                onClick={handleClear}
+                className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                    isAllSelected
+                        ? 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white'
+                        : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                }`}
+                aria-pressed={isAllSelected}
+            >
+                All
+            </button>
+            {tags.map(tag => {
+                const isActive = selected.has(tag.id);
                 return (
-                    <div key={`${id}`}>
-                        <label
-                            onClick={() => toggleTag(id)}
-                            className={`items-center py-1 px-3 inline-flex flex-shrink-0 rounded-full cursor-pointer text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-500 dark:text-gray-300 border border-gray-300 dark:border-gray-700 has-[:checked]:border-brand-primary bg-slate-50 dark:bg-dark-surface has-[:checked]:dark:bg-brand-primary/50`}>
-                            {label}
-                            {isSelected && (
-                                <span
-                                    className="ml-2 hover:scale-105 hover:font-bold"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        toggleTag(id);
-                                    }}>✕
-                                </span>
-                            )}
-                            <input
-                                id={`tags-filter-${id}`}
-                                name={name}
-                                value={value}
-                                type="checkbox"
-                                checked={isSelected}
-                                onChange={() => toggleTag(id)}
-                                className="hidden"
-                            />
-                        </label>
-                    </div>
+                    <button
+                        key={tag.id}
+                        onClick={() => handleToggle(tag.id)}
+                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                            isActive
+                                ? 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white'
+                                : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
+                        }`}
+                        aria-pressed={isActive}
+                    >
+                        {tag.label}
+                        <span className={`ml-1.5 text-xs ${isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600'}`}>
+                            {tag.count}
+                        </span>
+                    </button>
                 );
             })}
-        </form>
+        </div>
     );
 }

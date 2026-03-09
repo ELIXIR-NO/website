@@ -1,65 +1,64 @@
-import { CheckIcon } from '@heroicons/react/20/solid';
-import { classNames } from "../lib/utils.ts";
-
 export default function Pricing({ tiers }) {
     return (
-        <div className="mt-12 isolate mx-auto grid max-w-md grid-cols-1 gap-y-8 g:mx-0 lg:max-w-none lg:grid-cols-3">
-            {tiers.map((tier, tierIdx) => (
+        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {tiers.map((tier) => (
                 <div
                     key={tier.id}
-                    className={classNames(
-                        tier.mostPopular ? 'lg:z-10 lg:rounded-b-none' : 'lg:mt-8',
-                        tierIdx === 0 ? 'lg:rounded-r-none' : '',
-                        tierIdx === tiers.length - 1 ? 'lg:rounded-l-none' : '',
-                        'flex flex-col justify-between rounded-lg bg-slate-50 dark:bg-dark-surface ring-1 ring-gray-200 dark:ring-gray-700 p-8 lg:p-6',
-                    )}
+                    className={`relative flex flex-col rounded-xl border p-6 transition-all duration-200 ${
+                        tier.mostPopular
+                            ? 'border-brand-secondary/40 bg-brand-secondary/[0.03] dark:bg-brand-secondary/[0.05] shadow-sm shadow-brand-secondary/10'
+                            : 'border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] hover:border-gray-300 dark:hover:border-gray-600'
+                    }`}
                 >
-                    <div>
-                        <div className="flex items-center justify-between gap-x-2">
-                            <h3
-                                id={tier.id}
-                                className={classNames(
-                                    tier.mostPopular ? 'text-brand-primary' : 'text-gray-900',
-                                    'text-lg font-semibold leading-8',
-                                )}
-                            >
-                                {tier.name}
-                            </h3>
-                            {tier.mostPopular ? (
-                                <p className="rounded-full bg-brand-primary/10 px-2.5 py-0.5 text-xs font-semibold leading-5 text-brand-primary">
-                                    Most popular
-                                </p>
-                            ) : null}
-                        </div>
-                        <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
-                        <p className="mt-6 flex items-baseline gap-x-1">
-                            <span className="text-2xl font-bold tracking-tight text-gray-900">{tier.price}</span>
-                            {tier.period &&
-                                <span className="text-sm font-semibold leading-6 text-gray-600">/{tier.period}</span>}
-                        </p>
-                        <ul role="list" className="mt-6 space-y-2 text-sm leading-6 text-gray-600">
-                            {tier.features.map((feature) => (
-                                <li key={feature} className="flex gap-x-3">
-                                    <CheckIcon aria-hidden="true" className="h-6 w-5 flex-none text-brand-primary"/>
-                                    {feature}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <a
-                        href={tier.href}
-                        aria-describedby={tier.id}
-                        className={classNames(
-                            tier.mostPopular
-                                ? 'bg-brand-primary text-white shadow-sm hover:bg-brand-primary/75 hover:text-white'
-                                : 'text-brand-primary ring-1 ring-inset ring-orange-200 hover:ring-orange-300',
-                            'hover:text-brand-primary mt-8 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600',
+                    <div className="flex items-center justify-between gap-2">
+                        <h3 className="text-base font-semibold text-brand-primary dark:text-white">
+                            {tier.name}
+                        </h3>
+                        {tier.mostPopular && (
+                            <span className="rounded-full bg-brand-secondary/10 px-2.5 py-0.5 text-[11px] font-semibold text-brand-secondary">
+                                Popular
+                            </span>
                         )}
+                    </div>
+
+                    <p className="mt-2 text-xs leading-relaxed text-brand-grey dark:text-gray-400">
+                        {tier.description}
+                    </p>
+
+                    <p className="mt-4 flex items-baseline gap-x-1">
+                        <span className="text-2xl font-bold tracking-tight text-brand-primary dark:text-white">
+                            {tier.price}
+                        </span>
+                        {tier.period && (
+                            <span className="text-sm text-brand-grey dark:text-gray-400">
+                                /{tier.period}
+                            </span>
+                        )}
+                    </p>
+
+                    <ul role="list" className="mt-5 flex-1 space-y-2.5">
+                        {tier.features.map((feature) => (
+                            <li key={feature} className="flex items-start gap-2.5 text-sm text-brand-grey dark:text-gray-300">
+                                <svg className="h-4 w-4 shrink-0 mt-0.5 text-brand-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                                {feature}
+                            </li>
+                        ))}
+                    </ul>
+
+                    <a
+                        href="mailto:support@elixir.no"
+                        className={`mt-6 block rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                            tier.mostPopular
+                                ? 'bg-brand-secondary text-white hover:bg-brand-secondary/90'
+                                : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-primary dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'
+                        }`}
                     >
-                        Contact
+                        Contact us
                     </a>
                 </div>
             ))}
         </div>
-    )
+    );
 }
