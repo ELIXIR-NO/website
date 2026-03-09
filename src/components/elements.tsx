@@ -25,8 +25,8 @@ export const LI: React.FC<React.LiHTMLAttributes<HTMLLIElement>> = (props) => (
     <li {...props} className="mb-1 pl-12 -indent-6"/>
 );
 
-export const H1: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = (props) => (
-    <h1 {...props} className="text-4xl font-bold mt-8 mb-4 scroll-mt-12"/>
+export const H1: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({ className, ...props }) => (
+    <h1 {...props} className={className || "text-4xl font-bold mt-8 mb-4 scroll-mt-12"}/>
 );
 
 export const H2: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = (props) => (
@@ -106,7 +106,7 @@ export const Td: React.FC<React.TdHTMLAttributes<HTMLTableDataCellElement>> = (p
 );
 
 export const Em: React.FC<any> = (props) => (
-    <em {...props} className="font-emphasized font-normal text-brand-primary"/>
+    <em {...props} className="font-bold not-italic text-brand-primary"/>
 );
 
 export const Strong: React.FC<any> = (props) => (

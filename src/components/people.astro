@@ -1,6 +1,5 @@
 ---
 import people from "../data/people.json";
-import { A } from "./elements";
 
 type Org = {
     name: string;
@@ -14,6 +13,8 @@ type Person = {
     "affiliations": Array<{ name: string; role: string }>
     "elixir-groups": Array<{ name: string; role: string }>
 }
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const {
     elixirGroup,
@@ -60,61 +61,67 @@ const filteredPeople = peopleWithMeta
     .filter(o => !org ? true : o["org-key"] === org)
     .filter(o => !elixirGroup ? true : o["elixir-groups"]?.find(sub));
 
-const resolveLayoutClass = () => {
+const gridClass = (() => {
     switch (layout) {
-        case "three-col":
-            return "grid-cols-3";
-        case "two-col":
-            return "grid-cols-2";
-        default:
-            return "grid-cols-1";
+        case "three-col": return "sm:grid-cols-2 lg:grid-cols-3";
+        case "two-col": return "sm:grid-cols-2";
+        default: return "";
     }
-}
+})();
 ---
 
 <Fragment>
     {isSummary ? (
-            <div class="text-center">
-                <A href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/about/everyone`}>70 amazing souls collaborate at Elixir Norway. See them all here.</A>.
-            </div>
+        <div class="text-center py-10 mt-6">
+            <p class="text-2xl sm:text-3xl font-bold text-brand-primary dark:text-white tracking-tight">
+                70+ people powering ELIXIR Norway
+            </p>
+            <a
+                href={`${BASE}/about/everyone`}
+                class="mt-4 inline-flex items-center gap-2 text-base font-semibold text-brand-secondary hover:underline underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+            >
+                See everyone
+                <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+            </a>
+        </div>
     ) : (
-            <ul class={`grid gap-y-4 gap-x-4 place-content-center ${resolveLayoutClass()}`}>
-                {filteredPeople.map((person) => {
-                    return (
-                            <li class="col-span-full md:col-span-1 w-full">
-                                <a href={person["profile-url"]}
-                                   target="_blank"
-                                   rel="noopener noreferrer"
-                                   class={`w-full h-full flex items-start justify-start gap-x-2`}
-                                >
-                                    {!hidePicture && (
-                                            <div class="mt-1 mr-2 flex-shrink-0 w-14 h-14 rounded-full overflow-hidden">
-                                                <img alt={person.name}
-                                                     src={`${import.meta.env.BASE_URL.replace(/\/$/, '')}${person.photo}`}
-                                                     class="object-cover aspect-square"/>
-                                            </div>
-                                    )}
-                                    <div class="flex-1">
-                                        <div class="text-base font-semibold">
-                                            {person.name}
-                                        </div>
-                                        <div class="flex flex-col gap-y-1 text-slate-700 dark:text-slate-200">
-                                            <div class="text-xs flex-1 max-w-72">{person["full-title"]}</div>
-                                            {
-                                                !hideOrg && (
-                                                            <div class="text-xs text-slate-600 dark:text-slate-300">
-                                                                {person["org-name"]}
-                                                            </div>
-                                                )
-                                            }
-                                        </div>
-                                    </div>
-                                </a>
-
-                            </li>
-                    )
-                })}
-            </ul>
+        <ul class={`grid gap-3 ${gridClass}`} role="list">
+            {filteredPeople.map((person) => (
+                <li>
+                    <a
+                        href={person["profile-url"]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="group grid grid-cols-[auto_1fr] items-center gap-3 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-3 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03] transition-all duration-200 hover:border-brand-secondary/30 hover:shadow-md hover:shadow-brand-secondary/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                    >
+                        {!hidePicture && (
+                            <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-gray-200/60 dark:border-gray-700/40 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                <img
+                                    alt={person.name}
+                                    src={`${BASE}${person.photo}`}
+                                    class="h-full w-full object-cover"
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
+                        <div class="min-w-0">
+                            <div class="truncate text-sm font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors">
+                                {person.name}
+                            </div>
+                            <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">
+                                {person["full-title"]}
+                            </div>
+                            {!hideOrg && (
+                                <div class="truncate text-[11px] text-brand-grey/50 dark:text-gray-500 mt-0.5">
+                                    {person["org-name"]}
+                                </div>
+                            )}
+                        </div>
+                    </a>
+                </li>
+            ))}
+        </ul>
     )}
 </Fragment>
-

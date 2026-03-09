@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Sriracha&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "animate.css";
 
 @tailwind base;
@@ -7,8 +7,17 @@
 
 @layer base {
 
-  html, body {
+  html {
+    font-size: 16px;
     scroll-behavior: smooth;
+
+    @media (min-width: 1536px) { font-size: 17px; }
+    @media (min-width: 1800px) { font-size: 19px; }
+    @media (min-width: 2560px) { font-size: 21px; }
+    @media (min-width: 3840px) { font-size: 24px; }
+  }
+
+  html, body {
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -26,8 +35,8 @@
     @apply text-light-on-background dark:text-dark-on-background;
   }
 
-  .link, a {
-    @apply text-blue-600 dark:text-blue-300 hover:text-blue-300 dark:hover:text-blue-500;
+  .content a, .link {
+    @apply text-brand-secondary dark:text-brand-secondary hover:text-brand-secondary/70 dark:hover:text-brand-secondary/70 underline underline-offset-2 decoration-brand-secondary/30 hover:decoration-brand-secondary/60 transition-colors;
   }
 
   em, strong {

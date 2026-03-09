@@ -5,15 +5,19 @@ const { title, centered = true, marginTop } = Astro.props;
 const headingSlug = slugify(title.toLowerCase());
 ---
 
-<section class={`${marginTop ? "mt-28" : ""}`}>
-    <div class={`mx-auto ${centered ? "max-w-3xl text-center" : ""} [&_p:first-child]:mt-6 [&_p]:text-base`}>
-        <h1 class="text-3xl font-bold tracking-tight lg:text-6xl scroll-mt-20"
-            id={headingSlug}>
+<section class={`${marginTop ? "mt-20 lg:mt-28" : ""}`}>
+    <div class={`mx-auto ${centered ? "max-w-3xl text-center" : ""}`}>
+        <h2
+            class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-brand-primary dark:text-white scroll-mt-20"
+            id={headingSlug}
+        >
             {title}
-        </h1>
-        <slot name="description"/>
+        </h2>
+        <div class="mt-4 text-base sm:text-lg text-brand-grey dark:text-gray-300 leading-relaxed [&_p:first-child]:mt-0">
+            <slot name="description" />
+        </div>
     </div>
-    <div class="mt-24">
-        <slot/>
+    <div class="mt-14 lg:mt-20">
+        <slot />
     </div>
 </section>

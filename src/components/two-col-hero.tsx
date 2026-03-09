@@ -9,35 +9,37 @@ type LandingComponent = FunctionComponent<PropsWithChildren> & {
 
 const TwoColHero: LandingComponent = ({ children }) => {
     return (
-        <div
-            className="mx-auto min-h-full grid lg:grid-cols-2 lg:gap-x-16 lg:gap-y-6 xl:grid-cols-1 xl:grid-rows-1 xl:gap-x-8">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {children}
         </div>
     );
 };
 
-const Header = ({ children }) => (
-    <h1 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-6xl lg:col-span-2 xl:col-auto [&_a]:text-brand-primary [&_a]:no-underline [&_a]:hover:saturate-150 animate__animated animate__fadeIn">
+const Header = ({ children }: PropsWithChildren) => (
+    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15] text-balance [&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
         {children}
     </h1>
 );
 TwoColHero.Header = Header;
 
-const Description = ({ children }) => (
-    <div className="mt-6 max-w-xl lg:mt-0 xl:col-end-1 xl:row-start-1 animate__animated animate__fadeIn">
-        <p className="text-lg leading-8 [&_a]:no-underline">
+const Description = ({ children }: PropsWithChildren) => (
+    <div className="mt-6 lg:mt-0 lg:col-start-1 lg:row-start-2">
+        <p className="text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 [&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
             {children}
         </p>
     </div>
 );
 TwoColHero.Description = Description;
 
-const Figure = ({ src, alt }) => (
-    <img
-        alt={alt}
-        src={src}
-        className="mt-10 lg:mt-0 w-full max-w-xl rounded-2xl sm:mt-16 lg:max-w-none xl:row-span-2 xl:row-end-2 self-center justify-self-center animate__animated animate__fadeIn"
-    />
+const Figure = ({ src, alt }: { src: string; alt: string }) => (
+    <div className="lg:row-span-2">
+        <img
+            alt={alt}
+            src={src}
+            className="w-full max-w-lg mx-auto lg:max-w-none rounded-2xl lg:rounded-3xl shadow-lg shadow-black/[0.08] dark:shadow-black/30"
+            loading="lazy"
+        />
+    </div>
 );
 TwoColHero.Figure = Figure;
 

@@ -1,23 +1,18 @@
-import { Dialog, DialogPanel } from '@headlessui/react'
-import { Bars3Icon } from '@heroicons/react/24/outline'
-import React, { Fragment, useEffect, useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import CommandPalette from "./command-palette.tsx";
 import ThemeToggle from "./theme-toggle.tsx";
+
+const SearchIcon = ({ className }: { className?: string }) => (
+    <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+    </svg>
+);
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const navigation = [
-    {
-        href: `${BASE}/about`,
-        name: "About",
-        sections: [
-            { id: "organization", name: "Organization" },
-            { id: "funding-and-projects", name: "Funding & Projects" },
-            { id: "impact", name: "Impact" },
-            { id: "international-collaboration", name: "International Collaboration\n" },
-        ]
-    },
+    { href: `${BASE}/about`, name: "About" },
     { href: `${BASE}/research-support`, name: "Research Support" },
     { href: `${BASE}/services`, name: "Services" },
     { href: `${BASE}/events`, name: "Events" },
@@ -26,154 +21,228 @@ const navigation = [
     { href: `${BASE}/news`, name: "News" },
 ];
 
-export const Navigation = ({ pathname }) => {
+const useScrolled = (threshold = 20) => {
+    const [scrolled, setScrolled] = useState(false);
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > threshold);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, [threshold]);
+    return scrolled;
+};
 
+export const Navigation = ({ pathname }: { pathname: string }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const scrolled = useScrolled();
+    const shouldReduceMotion = useReducedMotion();
 
-    // If context menu is needed.
-    // const [sections, setSections] = useState([]);
-    // <ContextualHeader sections={sections}/>
-    // useEffect(() => {
-    //     const ref = navigation.find(x => x.href === pathname);
-    //     if (ref && ref.sections) {
-    //         setSections(ref.sections)
-    //     }
-    // }, [pathname]);
+    const closeMobile = useCallback(() => setMobileMenuOpen(false), []);
 
     useEffect(() => {
-        console.log(pathname);
-    }, [ pathname])
+        document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
+        return () => { document.body.style.overflow = ''; };
+    }, [mobileMenuOpen]);
 
-    const onSearchClick = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && mobileMenuOpen) closeMobile();
+        };
+        document.addEventListener('keydown', onKey);
+        return () => document.removeEventListener('keydown', onKey);
+    }, [mobileMenuOpen, closeMobile]);
 
     return (
         <Fragment>
-            <header className="relative inset-x-0 top-0 z-50 ">
-                <nav aria-label="Global"
-                     className="sticky max-w-full 2xl:max-w-[90%] top-0 z-50 flex items-center justify-between pb-6 px-6 pt-6 lg:pb-0 lg:px- mx-auto">
-                    <CommandPalette {...{ open, setOpen }} />
-                    <div className="flex lg:flex-1">
-                        <a href={`${BASE}/`} className="-m-1.5 p-1.5">
-                            <span className="sr-only">ELIXIR Norway</span>
-                            <img
-                                alt="ELIXIR Norway logo"
-                                src={`${BASE}/assets/logos/elixir-no-light.svg`}
-                                className="hidden dark:block h-20 w-auto"
-                                width="auto"
-                                height="80"
-                            />
-                            <img
-                                alt="ELIXIR Norway logo"
-                                src={`${BASE}/assets/logos/elixir-no-dark.svg`}
-                                className="block dark:hidden h-20 w-auto"
-                                width="auto"
-                                height="80"
-                            />
-                        </a>
-                    </div>
-                    <div className="flex lg:hidden">
-                        <button
-                            type="button"
-                            onClick={() => setMobileMenuOpen(true)}
-                            aria-label="Open main menu"
-                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                        >
-                            <span className="sr-only">Open main menu</span>
-                            <Bars3Icon aria-hidden="true" className="h-6 w-6"/>
-                        </button>
-                    </div>
-                    <div className="hidden lg:flex lg:gap-x-12">
-                        {navigation.map((item) => (
-                            <a
-                                key={item.name}
-                                href={item.href}
-                                className={`hover:text-brand-primary/75 text-lg font-semibold leading-6 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 rounded ${pathname === item.href ? 'text-brand-primary' : 'text-gray-900 dark:text-white'}`}
-                                aria-current={pathname === item.href ? 'page' : undefined}
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                    </div>
-                    <div className="hidden lg:flex gap-x-2 lg:flex-1 lg:justify-end">
-                        <ThemeToggle/>
-                        <button onClick={onSearchClick} aria-label="Search">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                 stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round"
-                                      d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </nav>
-                <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden" >
-                    <div className="fixed inset-0 z-50"/>
-                    <DialogPanel
-                        className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-                        <div className="flex items-center justify-between">
-                            <a href={`${BASE}/`} className="-m-1.5 p-1.5">
+            <CommandPalette open={searchOpen} setOpen={setSearchOpen} />
+            <header className="fixed top-3 inset-x-3 sm:inset-x-5 lg:inset-x-8 z-50">
+                <div
+                    className={`rounded-2xl transition-all duration-300 ${
+                        scrolled
+                            ? 'bg-white/80 dark:bg-dark-background/80 backdrop-blur-xl shadow-lg shadow-black/[0.08] dark:shadow-black/30 border border-gray-200/60 dark:border-gray-700/60'
+                            : 'bg-white/40 dark:bg-dark-background/40 backdrop-blur-md border border-white/40 dark:border-white/10'
+                    }`}
+                >
+                    <nav
+                        aria-label="Main navigation"
+                        className="flex items-center justify-between px-5 py-3 lg:px-6"
+                    >
+
+                        {/* Logo */}
+                        <div className="flex shrink-0">
+                            <a href={`${BASE}/`} className="p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary rounded-lg">
                                 <span className="sr-only">ELIXIR Norway</span>
                                 <img
                                     alt="ELIXIR Norway logo"
                                     src={`${BASE}/assets/logos/elixir-no-light.svg`}
-                                    className="hidden dark:block h-16 w-auto"
-                                    width="auto"
-                                    height="80"
+                                    className="hidden dark:block h-14 w-auto"
+                                    width="120"
+                                    height="48"
                                 />
                                 <img
                                     alt="ELIXIR Norway logo"
                                     src={`${BASE}/assets/logos/elixir-no-dark.svg`}
-                                    className="block dark:hidden h-16 w-auto"
-                                    width="auto"
-                                    height="80"
+                                    className="block dark:hidden h-14 w-auto"
+                                    width="120"
+                                    height="48"
                                 />
                             </a>
+                        </div>
+
+                        {/* Desktop nav links */}
+                        <div className="hidden lg:flex lg:items-center lg:gap-x-1">
+                            {navigation.map((item) => {
+                                const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                                return (
+                                    <a
+                                        key={item.name}
+                                        href={item.href}
+                                        className={`relative px-3 py-2 text-sm font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                                            isActive
+                                                ? 'text-brand-primary dark:text-brand-secondary bg-brand-secondary/10 dark:bg-brand-secondary/10'
+                                                : 'text-brand-grey dark:text-gray-300 hover:text-brand-primary dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
+                                        }`}
+                                        aria-current={isActive ? 'page' : undefined}
+                                    >
+                                        {item.name}
+                                    </a>
+                                );
+                            })}
+                        </div>
+
+                        {/* Desktop right actions */}
+                        <div className="hidden lg:flex lg:items-center lg:gap-x-1">
+                            <ThemeToggle />
+                            <button
+                                onClick={() => setSearchOpen(true)}
+                                className="h-9 w-9 flex items-center justify-center rounded-xl text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                aria-label="Search (Ctrl+K)"
+                            >
+                                <SearchIcon className="h-5 w-5" />
+                            </button>
+                        </div>
+
+                        {/* Mobile menu button */}
+                        <div className="flex lg:hidden items-center gap-x-1">
+                            <ThemeToggle />
                             <button
                                 type="button"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center justify-center"
-                                aria-label="Close menu"
+                                onClick={() => setMobileMenuOpen(true)}
+                                className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                aria-label="Open menu"
+                                aria-expanded={mobileMenuOpen}
                             >
-                                <span className="sr-only">Close menu</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                     strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/>
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                                 </svg>
                             </button>
                         </div>
-                        <div className="mt-6 flow-root">
-                            <div className="-my-6 divide-y divide-gray-500/10">
-                                <div className="space-y-2 py-6">
-                                    {navigation.map((item) => (
-                                        <a
-                                            key={item.name}
-                                            href={item.href}
-                                            className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                                        >
-                                            {item.name}
-                                        </a>
-                                    ))}
-                                </div>
-                                <div className="py-6">
+                    </nav>
+                </div>
+            </header>
+
+            {/* Spacer for fixed header */}
+            <div className="h-[84px]" aria-hidden="true" />
+
+            {/* Mobile menu overlay */}
+            <AnimatePresence>
+                {mobileMenuOpen && (
+                    <>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm lg:hidden"
+                            onClick={closeMobile}
+                            aria-hidden="true"
+                        />
+
+                        <motion.div
+                            initial={{ x: '100%' }}
+                            animate={{ x: 0 }}
+                            exit={{ x: '100%' }}
+                            transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+                            className="fixed inset-y-0 right-0 z-50 w-full sm:max-w-sm bg-white dark:bg-dark-background shadow-2xl lg:hidden"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-label="Mobile navigation"
+                        >
+                            <div className="flex items-center justify-between px-6 py-4">
+                                <a href={`${BASE}/`} className="p-1" onClick={closeMobile}>
+                                    <span className="sr-only">ELIXIR Norway</span>
+                                    <img
+                                        alt="ELIXIR Norway logo"
+                                        src={`${BASE}/assets/logos/elixir-no-light.svg`}
+                                        className="hidden dark:block h-10 w-auto"
+                                        width="100"
+                                        height="40"
+                                    />
+                                    <img
+                                        alt="ELIXIR Norway logo"
+                                        src={`${BASE}/assets/logos/elixir-no-dark.svg`}
+                                        className="block dark:hidden h-10 w-auto"
+                                        width="100"
+                                        height="40"
+                                    />
+                                </a>
+                                <button
+                                    type="button"
+                                    onClick={closeMobile}
+                                    className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                    aria-label="Close menu"
+                                >
+                                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div className="px-6 py-4">
+                                <nav aria-label="Mobile navigation">
+                                    <ul className="space-y-1">
+                                        {navigation.map((item, i) => {
+                                            const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+                                            return (
+                                                <motion.li
+                                                    key={item.name}
+                                                    initial={{ opacity: 0, x: 20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: 0.05 * i }}
+                                                >
+                                                    <a
+                                                        href={item.href}
+                                                        onClick={closeMobile}
+                                                        className={`block rounded-lg px-4 py-3 text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                                                            isActive
+                                                                ? 'text-brand-primary dark:text-brand-secondary bg-brand-secondary/10 dark:bg-brand-secondary/10'
+                                                                : 'text-brand-grey dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
+                                                        }`}
+                                                        aria-current={isActive ? 'page' : undefined}
+                                                    >
+                                                        {item.name}
+                                                    </a>
+                                                </motion.li>
+                                            );
+                                        })}
+                                    </ul>
+                                </nav>
+                                <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                                     <button
-                                        onClick={onSearchClick}
-                                        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-primary focus:ring-offset-2 transition-colors"
-                                        aria-label="Open search"
+                                        onClick={() => { closeMobile(); setSearchOpen(true); }}
+                                        className="flex items-center gap-3 w-full rounded-lg px-4 py-3 text-base font-semibold text-brand-grey dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
                                     >
-                                        <IoSearch className="h-6 w-6" aria-hidden="true" />
+                                        <SearchIcon className="h-5 w-5" />
+                                        Search
                                     </button>
                                 </div>
                             </div>
-                        </div>
-                    </DialogPanel>
-                </Dialog>
-            </header>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
         </Fragment>
     );
-
 };
 
 export default Navigation;
