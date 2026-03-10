@@ -134,7 +134,7 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
                         >
                             {/* Input */}
                             <div className="flex items-center gap-3 px-4 border-b border-gray-200/60 dark:border-gray-700/40">
-                                <svg className="h-5 w-5 shrink-0 text-brand-grey/50 dark:text-gray-500" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                                <svg className="h-5 w-5 shrink-0 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
                                 <input
@@ -144,13 +144,13 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
                                     onChange={onInputChange}
                                     onKeyDown={onKeyDown}
                                     placeholder="Search pages, services, people..."
-                                    className="flex-1 h-12 bg-transparent border-0 text-sm text-brand-primary dark:text-white placeholder:text-brand-grey/40 dark:placeholder:text-gray-500 outline-none ring-0 focus:ring-0 focus:outline-none"
+                                    className="flex-1 h-12 bg-transparent border-0 text-sm text-brand-primary dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 outline-none ring-0 focus:ring-0 focus:outline-none"
                                     aria-label="Search"
                                     aria-autocomplete="list"
                                     aria-controls="search-results"
                                     aria-activedescendant={results[activeIndex] ? `search-result-${activeIndex}` : undefined}
                                 />
-                                <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-gray-200/60 dark:border-gray-700/40 bg-gray-50 dark:bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-brand-grey/50 dark:text-gray-500">
+                                <kbd className="hidden sm:inline-flex items-center gap-1 rounded-md border border-gray-200/60 dark:border-gray-700/40 bg-gray-50 dark:bg-white/5 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400">
                                     ESC
                                 </kbd>
                             </div>
@@ -197,14 +197,14 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
                             {hasQuery && results.length === 0 && (
                                 <div className="px-4 py-12 text-center">
                                     <p className="text-sm font-medium text-brand-grey dark:text-gray-400">No results found</p>
-                                    <p className="text-xs text-brand-grey/50 dark:text-gray-500 mt-1">Try a different search term</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Try a different search term</p>
                                 </div>
                             )}
 
                             {/* Hint when empty */}
                             {!hasQuery && (
                                 <div className="px-4 py-8 text-center">
-                                    <p className="text-xs text-brand-grey/40 dark:text-gray-600">Start typing to search across all pages</p>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">Start typing to search across all pages</p>
                                 </div>
                             )}
                         </motion.div>

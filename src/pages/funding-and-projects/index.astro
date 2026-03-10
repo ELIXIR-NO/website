@@ -58,7 +58,7 @@ const statusColors: Record<string, { bg: string; text: string; dot: string }> = 
 
 const categoryColors: Record<string, string> = {
     european: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
-    elixir: 'bg-brand-secondary/10 text-brand-secondary',
+    elixir: 'bg-brand-secondary/10 text-brand-secondary-text dark:text-brand-secondary',
     norwegian: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400',
     global: 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400',
 };
@@ -68,7 +68,7 @@ const categoryColors: Record<string, string> = {
 
     <!-- Hero -->
     <div class="max-w-3xl">
-        <p class="text-sm font-semibold text-brand-secondary tracking-wide uppercase">Funding & Projects</p>
+        <p class="text-sm font-semibold text-brand-secondary-text dark:text-brand-secondary tracking-wide uppercase">Funding & Projects</p>
         <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15]">
             Research projects and&nbsp;funding initiatives
         </h1>
@@ -87,14 +87,14 @@ const categoryColors: Record<string, string> = {
                 <!-- Search -->
                 <div class="mb-6">
                     <div class="relative">
-                        <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-grey/40 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <svg class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
                         <input
                             type="text"
                             id="project-search"
                             placeholder="Search projects..."
-                            class="w-full rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-brand-primary dark:text-white placeholder:text-brand-grey/40 dark:placeholder:text-gray-500 outline-none transition-colors focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary"
+                            class="w-full rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] py-2 pl-9 pr-3 text-sm text-brand-primary dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 outline-none transition-colors focus:border-brand-secondary focus:ring-1 focus:ring-brand-secondary"
                         />
                     </div>
                 </div>
@@ -131,31 +131,31 @@ const categoryColors: Record<string, string> = {
                         >
                             {/* Top row: badges */}
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${sc.bg} ${sc.text}`}>
+                                <span class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${sc.bg} ${sc.text}`}>
                                     <span class={`h-1.5 w-1.5 rounded-full ${sc.dot}`} />
                                     {slugToTitleCase(status)}
                                 </span>
                                 {category !== 'unknown' && (
-                                    <span class={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${cc}`}>
+                                    <span class={`rounded-full px-3 py-1 text-xs font-semibold ${cc}`}>
                                         {slugToTitleCase(category)}
                                     </span>
                                 )}
                             </div>
 
                             {/* Title */}
-                            <h2 class="mt-3 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors leading-snug">
+                            <h2 class="mt-3 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors leading-snug">
                                 {project.data.title}
                             </h2>
 
                             {/* Summary */}
                             {project.data.summary && (
-                                <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-400 line-clamp-2 flex-1">
+                                <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-300 line-clamp-2 flex-1">
                                     {project.data.summary}
                                 </p>
                             )}
 
                             {/* Metadata row */}
-                            <div class="mt-4 flex items-center gap-4 text-xs text-brand-grey/50 dark:text-gray-500">
+                            <div class="mt-4 flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
                                 {project.data.period && (
                                     <span class="inline-flex items-center gap-1">
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -174,19 +174,8 @@ const categoryColors: Record<string, string> = {
                                 )}
                             </div>
 
-                            {/* Keywords */}
-                            {keywords.length > 0 && (
-                                <div class="mt-3 flex flex-wrap gap-1.5">
-                                    {keywords.map((kw: string) => (
-                                        <span class="rounded-full bg-gray-100 dark:bg-white/5 px-2 py-0.5 text-[10px] font-medium text-brand-grey/70 dark:text-gray-500">
-                                            {slugToTitleCase(kw)}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-
                             {/* Arrow */}
-                            <div class="mt-4 flex items-center gap-1 text-xs font-medium text-brand-grey/40 dark:text-gray-600 group-hover:text-brand-secondary transition-colors">
+                            <div class="mt-4 flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors">
                                 View project
                                 <svg class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

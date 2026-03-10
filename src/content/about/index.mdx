@@ -14,8 +14,8 @@ export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
     <div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15] mt-0">Collaborative <span className="text-brand-secondary">Life Science</span> Hub Linking Five Organisations to <a href="https://www.elixir-europe.org" className="text-brand-secondary no-underline hover:underline underline-offset-4">ELIXIR Europe</a></h1>
-        <p className="mt-8 sm:mt-10 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300">Coordinated from the <a href="https://www.uib.no/" className="text-brand-secondary no-underline hover:underline underline-offset-2">University of Bergen</a>, ELIXIR Norway connects the <a href="https://www.uio.no/" className="text-brand-secondary no-underline hover:underline underline-offset-2">University of Oslo</a>, <a href="https://uit.no/" className="text-brand-secondary no-underline hover:underline underline-offset-2">UiT Tromsø</a>, <a href="https://www.ntnu.no/" className="text-brand-secondary no-underline hover:underline underline-offset-2">NTNU</a>, and <a href="https://www.nmbu.no/" className="text-brand-secondary no-underline hover:underline underline-offset-2">NMBU</a> into a national network — part of <a href="https://www.elixir-europe.org" className="text-brand-secondary no-underline hover:underline underline-offset-2">ELIXIR Europe</a>'s infrastructure for life science data.</p>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15] mt-0">Collaborative <span className="text-brand-secondary-text dark:text-brand-secondary">Life Science</span> Hub Linking Five Organisations to <a href="https://www.elixir-europe.org" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-4">ELIXIR Europe</a></h1>
+        <p className="mt-8 sm:mt-10 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300">Coordinated from the <a href="https://www.uib.no/" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">University of Bergen</a>, ELIXIR Norway connects the <a href="https://www.uio.no/" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">University of Oslo</a>, <a href="https://uit.no/" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">UiT Tromsø</a>, <a href="https://www.ntnu.no/" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">NTNU</a>, and <a href="https://www.nmbu.no/" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">NMBU</a> into a national network — part of <a href="https://www.elixir-europe.org" className="text-brand-secondary-text dark:text-brand-secondary no-underline hover:underline underline-offset-2">ELIXIR Europe</a>'s infrastructure for life science data.</p>
     </div>
     <div className="hidden lg:block">
         <AboutHeroVisual client:visible />
@@ -64,13 +64,13 @@ export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <BaseContentSection title="Impact" marginTop>
     <Fragment slot="description">We categorise the impact of ELIXIR-funded work into distinct areas. Every activity maps to one or more of the categories shown below.</Fragment>
-    <figure className="text-center max-w-3xl mx-auto">
-        <img src={`${BASE}/assets/figures/impact.svg`}
+    <figure className="text-center max-w-4xl mx-auto">
+        <img src={`${BASE}/assets/figures/impact.png`}
              alt="ELIXIR impact areas diagram"
-             className="w-full max-h-[480px] mx-auto object-contain"
+             className="w-full mx-auto object-contain"
              loading="lazy" />
-        <figcaption className="mt-6 text-xs sm:text-sm text-brand-grey/70 dark:text-gray-500 leading-relaxed">
-            Adapted from Martin et al. (2021) <a href="https://doi.org/10.1111/apce.12328" target="_blank" rel="noopener noreferrer" className="text-brand-secondary hover:underline underline-offset-2">DOI: 10.1111/apce.12328</a>
+        <figcaption className="mt-6 text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
+            Adapted from Martin et al. (2021) <a href="https://doi.org/10.1111/apce.12328" target="_blank" rel="noopener noreferrer" className="text-brand-secondary-text dark:text-brand-secondary hover:underline underline-offset-2">DOI: 10.1111/apce.12328</a>
         </figcaption>
     </figure>
 </BaseContentSection>
@@ -78,29 +78,22 @@ export const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 <BaseContentSection title="International Collaboration" marginTop>
 
     <DetailedFeature figSrc={`${BASE}/assets/figures/nodes-map.svg`}
-                     figCaption="Map of member states within ELIXIR. Each member state establishes a 'Node' in its country, which is a network of institutes that carry out the scientific and technical work of ELIXIR within that country. Orange = member states; pale orange = observers. Observers are countries working towards full membership.">
+                     figCaption="ELIXIR member states (orange) and observers (pale orange) working towards full membership.">
 
-        We are a European intergovernmental organisation composed of life scientists, computer scientists, and support
-        staff. Our mission is to enable researchers to harness the vast amounts of data produced in life sciences,
-        providing new insights into how living organisms function in health and disease.
+        ELIXIR is a European intergovernmental organisation that helps researchers harness life science data — spanning genomics, proteomics, and beyond. The network operates through a "Hub and Nodes" model across 25 member countries:
 
-        ELIXIR Norway is part of the broader ELIXIR network, which includes 25 member countries working
-        together through a "Hub and Nodes" model:
-
-        - **ELIXIR Hub:** The ELIXIR Hub acts as the central headquarters, coordinating activities across the
-        entire network. It is based at the Wellcome Genome Campus, near Cambridge, UK.
-        - **ELIXIR Nodes:** Each ELIXIR member country establishes a ‘Node’—a network of organisations within
-        that country. In Norway, ELIXIR Norway serves as the Node, coordinating local activities and
-        collaborating with national and international partners to advance life science research.
+        - **ELIXIR Hub:** Central coordination based at the Wellcome Genome Campus near Cambridge, UK.
+        - **ELIXIR Nodes:** Each member country runs a Node — a national network of organisations. ELIXIR Norway is Norway’s Node, connecting local expertise to international partners.
 
     </DetailedFeature>
 
-<div className="mt-8" />
+<div className="mt-12 lg:mt-16" />
 
 <DetailedFeature figSrc={`${BASE}/assets/logos/orgs/gbc-main.svg`}
-                     figCaption="Global Biodata Coalition logo">
+                     figCaption="Global Biodata Coalition logo"
+                     imageLeft>
 
-        ELIXIR Norway is closely coordinating with the Norwegian representatives to the [Global Biodata Coalition](https://globalbiodata.org/). The Global Biodata Coalition convenes the world’s research funders to exchange knowledge and share strategies for supporting biodata resources, and provides a discussion forum for the managers of data resources, with the aim of developing principles and models for the coordinated funding of global core biodata.
+        ELIXIR Norway coordinates with Norwegian representatives to the [Global Biodata Coalition](https://globalbiodata.org/) — a forum that brings together research funders and data resource managers to develop shared strategies and funding models for sustaining global biodata infrastructure.
 
     </DetailedFeature>
 

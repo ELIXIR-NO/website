@@ -58,20 +58,20 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
     const hasAnyFilter = activeCount > 0;
 
     const filterContent = (
-        <div className="space-y-6">
+        <div className="space-y-5">
             {groups.map(group => (
                 <div key={group.key}>
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-brand-grey/60 dark:text-gray-500 mb-2.5">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-brand-grey/60 dark:text-gray-500 mb-2">
                         {group.label}
                     </h3>
-                    <div className="flex flex-col gap-1" role="group" aria-label={`Filter by ${group.label}`}>
+                    <div className="flex flex-col gap-0.5" role="group" aria-label={`Filter by ${group.label}`}>
                         {group.options.map(opt => {
                             const isActive = selected[group.key]?.has(opt.id) || false;
                             return (
                                 <button
                                     key={opt.id}
                                     onClick={() => toggle(group.key, opt.id)}
-                                    className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary text-left ${
+                                    className={`flex items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary text-left ${
                                         isActive
                                             ? 'bg-brand-primary/10 dark:bg-brand-secondary/10 text-brand-primary dark:text-brand-secondary font-medium'
                                             : 'text-brand-grey dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.03]'
@@ -92,7 +92,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                                         </span>
                                         {opt.label}
                                     </span>
-                                    <span className={`text-xs tabular-nums ${isActive ? 'text-brand-primary/50 dark:text-brand-secondary/50' : 'text-brand-grey/30 dark:text-gray-600'}`}>
+                                    <span className={`text-xs tabular-nums ${isActive ? 'text-brand-primary/50 dark:text-brand-secondary/50' : 'text-gray-500 dark:text-gray-400'}`}>
                                         {opt.count}
                                     </span>
                                 </button>
@@ -128,7 +128,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                 </svg>
                 Filters
                 {hasAnyFilter && (
-                    <span className="rounded-full bg-brand-primary dark:bg-brand-secondary text-white text-xs px-1.5 py-0.5 leading-none">
+                    <span className="rounded-full bg-brand-primary text-white dark:bg-brand-secondary dark:text-brand-primary text-xs px-1.5 py-0.5 leading-none">
                         {activeCount}
                     </span>
                 )}

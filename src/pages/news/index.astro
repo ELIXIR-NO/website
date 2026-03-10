@@ -47,7 +47,7 @@ const INITIAL_COUNT = 18;
 
     <!-- Hero -->
     <div class="max-w-3xl">
-        <p class="text-sm font-semibold text-brand-secondary tracking-wide uppercase">News</p>
+        <p class="text-sm font-semibold text-brand-secondary-text dark:text-brand-secondary tracking-wide uppercase">News</p>
         <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15]">
             Latest from ELIXIR&nbsp;Norway
         </h1>
@@ -72,7 +72,7 @@ const INITIAL_COUNT = 18;
                 data-year={year}
             >
                 {year}
-                <span class="ml-1.5 text-xs text-brand-grey/40 dark:text-gray-600">{count}</span>
+                <span class="ml-1.5 text-xs text-gray-500 dark:text-gray-400">{count}</span>
             </button>
         ))}
     </div>
@@ -86,7 +86,7 @@ const INITIAL_COUNT = 18;
                     data-tag={tag}
                 >
                     {slugToTitleCase(tag)}
-                    <span class="ml-1 text-[10px] text-brand-grey/40 dark:text-gray-600">{count}</span>
+                    <span class="ml-1 text-[10px] text-gray-500 dark:text-gray-400">{count}</span>
                 </button>
             ))}
         </div>
@@ -129,7 +129,7 @@ const INITIAL_COUNT = 18;
                         <time class="text-xs font-medium text-brand-grey/60 dark:text-gray-500">
                             {formatDate(entry.data.date)}
                         </time>
-                        <h2 class="mt-2 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors line-clamp-2">
+                        <h2 class="mt-2 text-base font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors line-clamp-2">
                             {entry.data.title}
                         </h2>
                         <p class="mt-2 text-sm leading-relaxed text-brand-grey dark:text-gray-400 line-clamp-2 flex-1">
@@ -144,7 +144,7 @@ const INITIAL_COUNT = 18;
                                 ))}
                             </div>
                         )}
-                        <div class="mt-4 flex items-center gap-1 text-xs font-medium text-brand-grey/40 dark:text-gray-600 group-hover:text-brand-secondary transition-colors">
+                        <div class="mt-4 flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors">
                             Read more
                             <svg class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -164,7 +164,7 @@ const INITIAL_COUNT = 18;
                 class="inline-flex items-center gap-2 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] px-6 py-3 text-sm font-semibold text-brand-primary dark:text-white transition-[border-color,box-shadow] duration-200 hover:border-brand-secondary/40 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
             >
                 Show older articles
-                <span class="text-brand-grey/40 dark:text-gray-600" id="remaining-count">
+                <span class="text-gray-500 dark:text-gray-400" id="remaining-count">
                     ({news.length - INITIAL_COUNT} more)
                 </span>
             </button>
@@ -235,7 +235,7 @@ const INITIAL_COUNT = 18;
                     var isActive = b.getAttribute('data-year') === activeYear;
                     b.className = 'year-btn rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ' + (isActive ? yearActiveCls : yearInactiveCls);
                     var span = b.querySelector('span');
-                    if (span) span.className = 'ml-1.5 text-xs ' + (isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600');
+                    if (span) span.className = 'ml-1.5 text-xs ' + (isActive ? 'text-white/70' : 'text-gray-500 dark:text-gray-400');
                 });
             }
 
@@ -245,7 +245,7 @@ const INITIAL_COUNT = 18;
                     var isActive = activeTags.has(tag);
                     b.className = 'tag-btn rounded-full px-3 py-1 text-xs font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ' + (isActive ? tagActiveCls : tagInactiveCls);
                     var span = b.querySelector('span');
-                    if (span) span.className = 'ml-1 text-[10px] ' + (isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600');
+                    if (span) span.className = 'ml-1 text-[10px] ' + (isActive ? 'text-white/70' : 'text-gray-500 dark:text-gray-400');
                 });
             }
 

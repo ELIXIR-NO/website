@@ -14,6 +14,7 @@ export default {
                 brand: {
                     "primary": "#023452",
                     "secondary": "#f47d20",
+                    "secondary-text": "#d97016",
                     "grey": "#4d4848",
                     "green": "#bebf32",
                 },

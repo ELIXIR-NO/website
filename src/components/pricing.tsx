@@ -15,7 +15,7 @@ export default function Pricing({ tiers }) {
                             {tier.name}
                         </h3>
                         {tier.mostPopular && (
-                            <span className="rounded-full bg-brand-secondary/10 px-2.5 py-0.5 text-[11px] font-semibold text-brand-secondary">
+                            <span className="rounded-full bg-brand-secondary/10 px-2.5 py-0.5 text-[11px] font-semibold text-brand-secondary-text dark:text-brand-secondary">
                                 Popular
                             </span>
                         )}
@@ -39,7 +39,7 @@ export default function Pricing({ tiers }) {
                     <ul role="list" className="mt-5 flex-1 space-y-2.5">
                         {tier.features.map((feature) => (
                             <li key={feature} className="flex items-start gap-2.5 text-sm text-brand-grey dark:text-gray-300">
-                                <svg className="h-4 w-4 shrink-0 mt-0.5 text-brand-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                                <svg className="h-4 w-4 shrink-0 mt-0.5 text-brand-secondary-text dark:text-brand-secondary" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                                 </svg>
                                 {feature}
@@ -51,7 +51,7 @@ export default function Pricing({ tiers }) {
                         href="mailto:support@elixir.no"
                         className={`mt-6 block rounded-lg px-4 py-2.5 text-center text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
                             tier.mostPopular
-                                ? 'bg-brand-secondary text-white hover:bg-brand-secondary/90'
+                                ? 'bg-brand-primary text-white hover:bg-brand-primary/90'
                                 : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-primary dark:text-white hover:bg-gray-50 dark:hover:bg-white/5'
                         }`}
                     >

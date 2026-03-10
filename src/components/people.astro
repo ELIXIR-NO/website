@@ -78,7 +78,7 @@ const gridClass = (() => {
             </p>
             <a
                 href={`${BASE}/about/everyone`}
-                class="mt-4 inline-flex items-center gap-2 text-base font-semibold text-brand-secondary hover:underline underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                class="mt-4 inline-flex items-center gap-2 text-base font-semibold text-brand-secondary-text dark:text-brand-secondary hover:underline underline-offset-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
             >
                 See everyone
                 <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -107,14 +107,14 @@ const gridClass = (() => {
                             </div>
                         )}
                         <div class="min-w-0">
-                            <div class="truncate text-sm font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary transition-colors">
+                            <div class="truncate text-sm font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors">
                                 {person.name}
                             </div>
                             <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">
                                 {person["full-title"]}
                             </div>
                             {!hideOrg && (
-                                <div class="truncate text-[11px] text-brand-grey/50 dark:text-gray-500 mt-0.5">
+                                <div class="truncate text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
                                     {person["org-name"]}
                                 </div>
                             )}

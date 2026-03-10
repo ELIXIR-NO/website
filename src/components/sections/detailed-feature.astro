@@ -1,24 +1,38 @@
 ---
-const { figSrc, figCaption } = Astro.props;
+interface Props {
+    figSrc: string;
+    figCaption?: string;
+    imageLeft?: boolean;
+}
+
+const { figSrc, figCaption, imageLeft = false } = Astro.props;
 ---
 
-<div class="rounded-2xl lg:rounded-3xl bg-light-surface dark:bg-dark-surface border border-gray-200/60 dark:border-gray-700/40 overflow-hidden">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-6 sm:p-8 lg:p-10 items-center">
-        <div class="content text-sm sm:text-base leading-relaxed text-brand-grey dark:text-gray-300 [&_strong]:text-brand-primary [&_strong]:dark:text-white [&_ul]:mt-4 [&_ul]:space-y-2 [&_li]:pl-1">
-            <slot />
-        </div>
-        <figure class="order-first lg:order-last">
-            <img
-                alt={figCaption || "Feature illustration"}
-                src={figSrc}
-                class="w-full rounded-xl lg:rounded-2xl"
-                loading="lazy"
-            />
-            {figCaption && (
-                <figcaption class="mt-3 text-xs sm:text-sm text-brand-grey/70 dark:text-gray-500 text-center leading-relaxed">
-                    {figCaption}
-                </figcaption>
-            )}
-        </figure>
+<div class="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-14 items-center">
+    <div class:list={[
+        "lg:col-span-3 content text-sm leading-relaxed text-brand-grey dark:text-gray-300",
+        "[&_strong]:text-brand-primary [&_strong]:dark:text-white",
+        "[&_ul]:mt-5 [&_ul]:space-y-3 [&_li]:pl-1",
+        "[&_a]:text-brand-secondary-text [&_a]:dark:text-brand-secondary [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-brand-primary [&_a]:dark:hover:text-white",
+        imageLeft ? "lg:order-last" : "",
+    ]}>
+        <slot />
     </div>
+
+    <figure class:list={[
+        "lg:col-span-2",
+        imageLeft ? "lg:order-first" : "",
+    ]}>
+        <img
+            alt={figCaption || "Feature illustration"}
+            src={figSrc}
+            class="w-full rounded-2xl"
+            loading="lazy"
+        />
+        {figCaption && (
+            <figcaption class="mt-4 text-xs text-gray-500 dark:text-gray-400 leading-relaxed px-2">
+                {figCaption}
+            </figcaption>
+        )}
+    </figure>
 </div>

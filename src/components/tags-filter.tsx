@@ -67,7 +67,7 @@ export default function TagsFilter({ tags = [] }: { tags: Tag[] }) {
                         aria-pressed={isActive}
                     >
                         {tag.label}
-                        <span className={`ml-1.5 text-xs ${isActive ? 'text-white/70' : 'text-brand-grey/40 dark:text-gray-600'}`}>
+                        <span className={`ml-1.5 text-xs ${isActive ? 'text-white/70' : 'text-gray-500 dark:text-gray-400'}`}>
                             {tag.count}
                         </span>
                     </button>

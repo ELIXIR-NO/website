@@ -36,7 +36,7 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
     const word = ROTATING_WORDS[index];
 
     if (shouldReduceMotion) {
-        return <span className="text-brand-secondary">{word}</span>;
+        return <span className="text-brand-secondary-text dark:text-brand-secondary">{word}</span>;
     }
 
     return (
@@ -44,7 +44,7 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
             <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                     key={word}
-                    className="inline-block text-brand-secondary"
+                    className="inline-block text-brand-secondary-text dark:text-brand-secondary"
                     initial={{ y: '100%', opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: '-100%', opacity: 0 }}
@@ -75,7 +75,7 @@ export function Hero() {
                 initial={shouldReduceMotion ? {} : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.2 }}
-                className="hidden lg:block absolute inset-y-0 right-0 w-[60%]"
+                className="hidden lg:block absolute inset-y-0 right-0 w-[55%] xl:w-[60%]"
             >
                 <Suspense fallback={<SceneFallback />}>
                     <HeroScene />
@@ -86,19 +86,26 @@ export function Hero() {
                 <div className="w-full px-6 sm:px-8 lg:max-w-7xl lg:mx-auto lg:px-12 pointer-events-auto">
                     <div className="max-w-xl text-balance">
                         <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }}>
-                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-brand-secondary/10 text-brand-secondary dark:bg-brand-secondary/20">
+                            <a
+                                href="https://elixir-europe.org"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-brand-secondary/10 text-brand-secondary-text dark:bg-brand-secondary/20 hover:bg-brand-secondary/20 dark:hover:bg-brand-secondary/30 transition-colors"
+                            >
                                 Part of the European ELIXIR infrastructure
-                            </span>
+                                <svg className="ml-1.5 h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                </svg>
+                            </a>
                         </motion.div>
 
                         <motion.h1
                             {...fadeUp}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="mt-6 sm:mt-8 text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.1]"
+                            className="mt-3 sm:mt-4 text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.1]"
                         >
-                            Data infrastructure for{' '}
-                            <RotatingWord shouldReduceMotion={shouldReduceMotion} />{' '}
-                            research
+                            Research infrastructure for{' '}
+                            <RotatingWord shouldReduceMotion={shouldReduceMotion} />
                         </motion.h1>
 
                         <motion.p

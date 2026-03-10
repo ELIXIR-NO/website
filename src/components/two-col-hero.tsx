@@ -16,7 +16,7 @@ const TwoColHero: LandingComponent = ({ children }) => {
 };
 
 const Header = ({ children }: PropsWithChildren) => (
-    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15] text-balance [&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
+    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-brand-primary dark:text-white leading-[1.15] text-balance [&_a]:text-brand-secondary-text dark:[&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
         {children}
     </h1>
 );
@@ -24,7 +24,7 @@ TwoColHero.Header = Header;
 
 const Description = ({ children }: PropsWithChildren) => (
     <div className="mt-6 lg:mt-0 lg:col-start-1 lg:row-start-2">
-        <p className="text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 [&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
+        <p className="text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 [&_a]:text-brand-secondary-text dark:[&_a]:text-brand-secondary [&_a]:no-underline [&_a]:hover:underline [&_a]:underline-offset-4">
             {children}
         </p>
     </div>

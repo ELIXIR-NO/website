@@ -61,7 +61,7 @@ const Footer = () => {
                                 height="96"
                             />
                         </a>
-                        <p className="text-sm text-brand-grey dark:text-gray-400 text-center lg:text-left leading-relaxed max-w-xs">
+                        <p className="text-balance text-sm text-brand-grey dark:text-gray-400 text-center lg:text-left leading-relaxed max-w-xs">
                             ELIXIR Norway is the Norwegian Node of{' '}
                             <a
                                 href="https://elixir-europe.org"
@@ -71,7 +71,7 @@ const Footer = () => {
                             >
                                 ELIXIR
                             </a>
-                            {' '}&ndash; the European infrastructure for life science data.
+                            {' '} the European infrastructure for life science data.
                         </p>
                         <div className="flex gap-3">
                             {socials.map(({ name, href, icon: Icon }) => (
