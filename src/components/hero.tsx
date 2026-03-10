@@ -1,23 +1,9 @@
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import React, { Component, Suspense, lazy, useState, useEffect, useCallback } from 'react';
-import type { ReactNode } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useCallback } from 'react';
 
-const DNAScene = lazy(() => import('./dna-scene'));
+const HeroScene = lazy(() => import('./hero-scene'));
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-class SceneErrorBoundary extends Component<
-    { fallback: ReactNode; children: ReactNode },
-    { hasError: boolean }
-> {
-    state = { hasError: false };
-    static getDerivedStateFromError() { return { hasError: true }; }
-    componentDidCatch(error: Error) { console.warn('3D scene failed:', error.message); }
-    render() {
-        if (this.state.hasError) return this.props.fallback;
-        return this.props.children;
-    }
-}
 
 function SceneFallback() {
     return (
@@ -80,30 +66,24 @@ export function Hero() {
 
     return (
         <section className="relative -mt-[84px] overflow-hidden lg:min-h-screen">
-            {/* Background gradient */}
             <div
                 className="absolute inset-0 bg-gradient-to-br from-brand-primary/[0.03] via-transparent to-brand-secondary/[0.03] dark:from-brand-primary/20 dark:via-dark-background dark:to-brand-secondary/10"
                 aria-hidden="true"
             />
 
-            {/* 3D scene — hidden on mobile, absolute right on desktop */}
             <motion.div
                 initial={shouldReduceMotion ? {} : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.2, delay: 0.2 }}
                 className="hidden lg:block absolute inset-y-0 right-0 w-[60%]"
-                aria-hidden="true"
             >
-                <SceneErrorBoundary fallback={<SceneFallback />}>
-                    <Suspense fallback={<SceneFallback />}>
-                        <DNAScene />
-                    </Suspense>
-                </SceneErrorBoundary>
+                <Suspense fallback={<SceneFallback />}>
+                    <HeroScene />
+                </Suspense>
             </motion.div>
 
-            {/* Text content — full width on mobile, left side on desktop */}
-            <div className="relative min-h-screen flex items-center pt-[84px] pb-12 sm:pb-16 lg:pb-16 z-10">
-                <div className="w-full px-6 sm:px-8 lg:max-w-7xl lg:mx-auto lg:px-12">
+            <div className="relative min-h-screen flex items-center pt-[84px] pb-12 sm:pb-16 lg:pb-16 z-10 pointer-events-none">
+                <div className="w-full px-6 sm:px-8 lg:max-w-7xl lg:mx-auto lg:px-12 pointer-events-auto">
                     <div className="max-w-xl text-balance">
                         <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }}>
                             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-brand-secondary/10 text-brand-secondary dark:bg-brand-secondary/20">
