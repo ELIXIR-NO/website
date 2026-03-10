@@ -3,33 +3,39 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const ORANGE = '#f47d20';
-const NAVY = '#023452';
 
-// Strand backbone colors — vivid
-const STRAND_1_COLOR = '#5bb5f5'; // bright sky blue backbone
-const STRAND_2_COLOR = '#ff8c42'; // vivid orange backbone
+// Sugar-phosphate backbone — neutral gray (standard structural biology convention)
+const STRAND_1_COLOR = '#8b95a3';
+const STRAND_2_COLOR = '#6b7280';
 
-// Nucleotide base pair colors
-const BASE_COLORS = [
-    '#ef4444', // Adenine  — red
-    '#22c55e', // Thymine  — green
-    '#3b82f6', // Guanine  — blue
-    '#22c55e', // Cytosine — green
-];
+// Base pair hydrogen bond colors (CPK-inspired, most common convention)
+// A-T pairs form 2 hydrogen bonds, G-C pairs form 3
+const AT_COLOR = '#e05577'; // Adenine–Thymine — red/magenta
+const GC_COLOR = '#3ba4c8'; // Guanine–Cytosine — cyan/blue
 
 const NUM_POINTS = 100;
 const RADIUS = 1.8;
 const HEIGHT = 12;
 const TURNS = 3;
 const RUNG_INTERVAL = 6;
+const BOND_SPACING = 0.14; // vertical gap between parallel hydrogen bonds
+
+interface Bond {
+    pos: THREE.Vector3;
+    quat: THREE.Quaternion;
+    len: number;
+    isGC: boolean;
+}
 
 function computeHelixData() {
     const strand1: THREE.Vector3[] = [];
     const strand2: THREE.Vector3[] = [];
-    const rungs: { mid: THREE.Vector3; quat: THREE.Quaternion; len: number }[] = [];
-    const accentIndices: number[] = [];
+    const nucleosides1: THREE.Vector3[] = [];
+    const nucleosides2: THREE.Vector3[] = [];
+    const bonds: Bond[] = [];
 
     const yAxis = new THREE.Vector3(0, 1, 0);
+    let rungIndex = 0;
 
     for (let i = 0; i <= NUM_POINTS; i++) {
         const t = i / NUM_POINTS;
@@ -45,7 +51,6 @@ function computeHelixData() {
         strand2.push(new THREE.Vector3(x2, y, z2));
 
         if (i % RUNG_INTERVAL === 0 && i > 0 && i < NUM_POINTS) {
-            accentIndices.push(i);
             const a = new THREE.Vector3(x1, y, z1);
             const b = new THREE.Vector3(x2, y, z2);
             const dir = new THREE.Vector3().subVectors(b, a);
@@ -53,78 +58,86 @@ function computeHelixData() {
             dir.normalize();
             const quat = new THREE.Quaternion().setFromUnitVectors(yAxis, dir);
             const mid = new THREE.Vector3().addVectors(a, b).multiplyScalar(0.5);
-            rungs.push({ mid, quat, len });
+
+            nucleosides1.push(a.clone());
+            nucleosides2.push(b.clone());
+
+            // Alternate A-T (2 bonds) and G-C (3 bonds) pairs
+            const isGC = rungIndex % 2 === 0;
+            const bondCount = isGC ? 3 : 2;
+
+            // Each bond is a thin cylinder offset along Y (perpendicular to the
+            // rung direction, which lies in the XZ plane at each helix step)
+            for (let j = 0; j < bondCount; j++) {
+                const offset = (j - (bondCount - 1) / 2) * BOND_SPACING;
+                bonds.push({
+                    pos: mid.clone().add(new THREE.Vector3(0, offset, 0)),
+                    quat: quat.clone(),
+                    len,
+                    isGC,
+                });
+            }
+
+            rungIndex++;
         }
     }
 
-    return { strand1, strand2, rungs, accentIndices };
+    return { strand1, strand2, nucleosides1, nucleosides2, bonds };
 }
 
 function DNAHelix() {
     const groupRef = useRef<THREE.Group>(null!);
-    const strandRef1 = useRef<THREE.InstancedMesh>(null!);
-    const strandRef2 = useRef<THREE.InstancedMesh>(null!);
-    const accent1Ref = useRef<THREE.InstancedMesh>(null!);
-    const accent2Ref = useRef<THREE.InstancedMesh>(null!);
-    const rungsRef = useRef<THREE.InstancedMesh>(null!);
+    const nucleoside1Ref = useRef<THREE.InstancedMesh>(null!);
+    const nucleoside2Ref = useRef<THREE.InstancedMesh>(null!);
+    const bondsRef = useRef<THREE.InstancedMesh>(null!);
 
     const data = useMemo(() => computeHelixData(), []);
-    const strandCount = data.strand1.length;
-    const rungCount = data.rungs.length;
-    const accentCount = data.accentIndices.length;
+    const bondCount = data.bonds.length;
+    const nucleosideCount = data.nucleosides1.length;
+
+    // Smooth tube curves for sugar-phosphate backbone
+    const curve1 = useMemo(() => new THREE.CatmullRomCurve3(data.strand1), [data.strand1]);
+    const curve2 = useMemo(() => new THREE.CatmullRomCurve3(data.strand2), [data.strand2]);
 
     const initialized = useRef(false);
     useFrame((_, delta) => {
         if (!initialized.current) {
             const dummy = new THREE.Object3D();
 
-            for (let i = 0; i < strandCount; i++) {
-                dummy.position.copy(data.strand1[i]);
+            // Nucleoside nodes at each base pair position
+            for (let i = 0; i < nucleosideCount; i++) {
+                dummy.position.copy(data.nucleosides1[i]);
                 dummy.scale.setScalar(1);
                 dummy.updateMatrix();
-                strandRef1.current.setMatrixAt(i, dummy.matrix);
+                nucleoside1Ref.current.setMatrixAt(i, dummy.matrix);
 
-                dummy.position.copy(data.strand2[i]);
+                dummy.position.copy(data.nucleosides2[i]);
                 dummy.updateMatrix();
-                strandRef2.current.setMatrixAt(i, dummy.matrix);
+                nucleoside2Ref.current.setMatrixAt(i, dummy.matrix);
             }
-            strandRef1.current.instanceMatrix.needsUpdate = true;
-            strandRef2.current.instanceMatrix.needsUpdate = true;
+            nucleoside1Ref.current.instanceMatrix.needsUpdate = true;
+            nucleoside2Ref.current.instanceMatrix.needsUpdate = true;
 
-            for (let i = 0; i < accentCount; i++) {
-                const idx = data.accentIndices[i];
-                dummy.position.copy(data.strand1[idx]);
-                dummy.scale.setScalar(1);
+            // Hydrogen bonds with per-instance color (A-T green, G-C blue)
+            const colorArr = new Float32Array(bondCount * 3);
+            const atColor = new THREE.Color(AT_COLOR);
+            const gcColor = new THREE.Color(GC_COLOR);
+
+            for (let i = 0; i < bondCount; i++) {
+                const bond = data.bonds[i];
+                dummy.position.copy(bond.pos);
+                dummy.quaternion.copy(bond.quat);
+                dummy.scale.set(1, bond.len, 1);
                 dummy.updateMatrix();
-                accent1Ref.current.setMatrixAt(i, dummy.matrix);
+                bondsRef.current.setMatrixAt(i, dummy.matrix);
 
-                dummy.position.copy(data.strand2[idx]);
-                dummy.updateMatrix();
-                accent2Ref.current.setMatrixAt(i, dummy.matrix);
+                const c = bond.isGC ? gcColor : atColor;
+                colorArr[i * 3] = c.r;
+                colorArr[i * 3 + 1] = c.g;
+                colorArr[i * 3 + 2] = c.b;
             }
-            accent1Ref.current.instanceMatrix.needsUpdate = true;
-            accent2Ref.current.instanceMatrix.needsUpdate = true;
-
-            for (let i = 0; i < rungCount; i++) {
-                const r = data.rungs[i];
-                dummy.position.copy(r.mid);
-                dummy.quaternion.copy(r.quat);
-                dummy.scale.set(1, r.len, 1);
-                dummy.updateMatrix();
-                rungsRef.current.setMatrixAt(i, dummy.matrix);
-            }
-            rungsRef.current.instanceMatrix.needsUpdate = true;
-
-            // Per-instance colors for rungs
-            const rungColorArr = new Float32Array(rungCount * 3);
-            const baseColors = BASE_COLORS.map(c => new THREE.Color(c));
-            for (let i = 0; i < rungCount; i++) {
-                const c = baseColors[i % baseColors.length];
-                rungColorArr[i * 3] = c.r;
-                rungColorArr[i * 3 + 1] = c.g;
-                rungColorArr[i * 3 + 2] = c.b;
-            }
-            rungsRef.current.instanceColor = new THREE.InstancedBufferAttribute(rungColorArr, 3);
+            bondsRef.current.instanceMatrix.needsUpdate = true;
+            bondsRef.current.instanceColor = new THREE.InstancedBufferAttribute(colorArr, 3);
 
             initialized.current = true;
         }
@@ -136,21 +149,33 @@ function DNAHelix() {
 
     return (
         <group ref={groupRef} rotation={[0.3, 0, 0.15]}>
-            {/* Strand 1 — blue backbone */}
-            <instancedMesh ref={strandRef1} args={[undefined, undefined, strandCount]}>
-                <sphereGeometry args={[0.1, 8, 8]} />
-                <meshStandardMaterial color={STRAND_1_COLOR} emissive={STRAND_1_COLOR} emissiveIntensity={0.25} roughness={0.2} metalness={0.4} />
-            </instancedMesh>
+            {/* Sugar-phosphate backbone strand 1 — continuous tube */}
+            <mesh>
+                <tubeGeometry args={[curve1, 100, 0.07, 8, false]} />
+                <meshStandardMaterial
+                    color={STRAND_1_COLOR}
+                    emissive={STRAND_1_COLOR}
+                    emissiveIntensity={0.25}
+                    roughness={0.2}
+                    metalness={0.4}
+                />
+            </mesh>
 
-            {/* Strand 2 — orange backbone */}
-            <instancedMesh ref={strandRef2} args={[undefined, undefined, strandCount]}>
-                <sphereGeometry args={[0.1, 8, 8]} />
-                <meshStandardMaterial color={STRAND_2_COLOR} emissive={STRAND_2_COLOR} emissiveIntensity={0.25} roughness={0.2} metalness={0.4} />
-            </instancedMesh>
+            {/* Sugar-phosphate backbone strand 2 — continuous tube */}
+            <mesh>
+                <tubeGeometry args={[curve2, 100, 0.07, 8, false]} />
+                <meshStandardMaterial
+                    color={STRAND_2_COLOR}
+                    emissive={STRAND_2_COLOR}
+                    emissiveIntensity={0.25}
+                    roughness={0.2}
+                    metalness={0.4}
+                />
+            </mesh>
 
-            {/* Accent nodes strand 1 */}
-            <instancedMesh ref={accent1Ref} args={[undefined, undefined, accentCount]}>
-                <sphereGeometry args={[0.18, 10, 10]} />
+            {/* Nucleoside nodes on strand 1 (where bases attach) */}
+            <instancedMesh ref={nucleoside1Ref} args={[undefined, undefined, nucleosideCount]}>
+                <sphereGeometry args={[0.16, 10, 10]} />
                 <meshStandardMaterial
                     color={STRAND_1_COLOR}
                     emissive={STRAND_1_COLOR}
@@ -160,9 +185,9 @@ function DNAHelix() {
                 />
             </instancedMesh>
 
-            {/* Accent nodes strand 2 */}
-            <instancedMesh ref={accent2Ref} args={[undefined, undefined, accentCount]}>
-                <sphereGeometry args={[0.18, 10, 10]} />
+            {/* Nucleoside nodes on strand 2 */}
+            <instancedMesh ref={nucleoside2Ref} args={[undefined, undefined, nucleosideCount]}>
+                <sphereGeometry args={[0.16, 10, 10]} />
                 <meshStandardMaterial
                     color={STRAND_2_COLOR}
                     emissive={STRAND_2_COLOR}
@@ -172,9 +197,9 @@ function DNAHelix() {
                 />
             </instancedMesh>
 
-            {/* Rungs — per-instance nucleotide colors */}
-            <instancedMesh ref={rungsRef} args={[undefined, undefined, rungCount]}>
-                <cylinderGeometry args={[0.04, 0.04, 1, 6]} />
+            {/* Hydrogen bonds — 2 per A-T pair (green), 3 per G-C pair (blue) */}
+            <instancedMesh ref={bondsRef} args={[undefined, undefined, bondCount]}>
+                <cylinderGeometry args={[0.03, 0.03, 1, 6]} />
                 <meshStandardMaterial
                     roughness={0.2}
                     metalness={0.2}
