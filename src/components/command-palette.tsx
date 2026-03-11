@@ -24,16 +24,11 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
     const debounceRef = useRef<ReturnType<typeof setTimeout>>();
     const shouldReduceMotion = useReducedMotion();
 
-    // Lock body scroll without jitter — compensate for scrollbar width
+    // Lock body scroll when palette is open
     useEffect(() => {
         if (!open) return;
-        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         document.body.style.overflow = 'hidden';
-        document.body.style.paddingRight = `${scrollbarWidth}px`;
-        return () => {
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
-        };
+        return () => { document.body.style.overflow = ''; };
     }, [open]);
 
     // Focus input on open

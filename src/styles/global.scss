@@ -21,7 +21,22 @@
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-y: overlay;                /* Scrollbar overlays content — no layout shift */
+    scrollbar-width: thin;              /* Firefox: thin track */
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
   }
+
+  html::-webkit-scrollbar { width: 6px; }
+  html::-webkit-scrollbar-track { background: transparent; }
+  html::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+  }
+  html::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.35); }
+
+  html.dark::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+  html.dark::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.35); }
+  html.dark { scrollbar-color: rgba(255,255,255,0.2) transparent; }
 
   h1, h2, h3, h4, h5, h6, dt {
     @apply tracking-tight text-pretty text-slate-950 dark:text-slate-50;
