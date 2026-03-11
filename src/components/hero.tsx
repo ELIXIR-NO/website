@@ -40,7 +40,7 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
     }
 
     return (
-        <span className="inline-block relative overflow-clip leading-[inherit]" style={{ height: '1lh' }}>
+        <span className="inline-block relative overflow-clip leading-[inherit]" style={{ height: 'calc(1lh + 0.15em)' }}>
             <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                     key={word}
@@ -54,6 +54,48 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
                 </motion.span>
             </AnimatePresence>
         </span>
+    );
+}
+
+function ScrollCue({ shouldReduceMotion }: { shouldReduceMotion: boolean | null }) {
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+        const onScroll = () => setVisible(window.scrollY < 100);
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const handleClick = () => {
+        const hero = document.querySelector('section');
+        if (hero?.nextElementSibling) {
+            hero.nextElementSibling.scrollIntoView({ behavior: shouldReduceMotion ? 'auto' : 'smooth' });
+        }
+    };
+
+    return (
+        <motion.button
+            onClick={handleClick}
+            aria-label="Scroll to content"
+            initial={shouldReduceMotion ? {} : { opacity: 0 }}
+            animate={{ opacity: visible ? 1 : 0 }}
+            transition={{ duration: 0.4, delay: shouldReduceMotion ? 0 : 1 }}
+            className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 text-brand-grey/60 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2 rounded-full"
+        >
+            <motion.svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-6 w-6"
+                aria-hidden="true"
+                animate={shouldReduceMotion ? {} : { y: [0, 6, 0] }}
+                transition={shouldReduceMotion ? {} : { duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </motion.svg>
+        </motion.button>
     );
 }
 
@@ -126,10 +168,10 @@ export function Hero() {
                         >
                             <a
                                 href={`${BASE}/services`}
-                                className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-brand-primary text-white font-bold text-sm hover:bg-brand-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                                className="group inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-brand-primary text-white font-bold text-sm hover:bg-brand-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
                             >
                                 Explore services
-                                <svg className="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
+                                <svg className="ml-2 h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                 </svg>
                             </a>
@@ -143,6 +185,8 @@ export function Hero() {
                     </div>
                 </div>
             </div>
+
+            <ScrollCue shouldReduceMotion={shouldReduceMotion} />
         </section>
     );
 }
