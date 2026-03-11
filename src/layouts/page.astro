@@ -1,6 +1,11 @@
 ---
 import BaseLayout from "./base.astro";
 import Breadcrumbs from "../components/breadcrumbs.astro";
+import { slugToTitleCase } from "../lib/utils";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 type Variant = "article" | "wide" | "full" | "sidebar";
 
@@ -37,13 +42,29 @@ const finalDate = frontmatter?.date || date;
 const rawCover = frontmatter?.cover || cover;
 const finalSeo = frontmatter?.seo || seo;
 
+// Content-type-specific metadata from frontmatter
+const tags: string[] = frontmatter?.tags ?? [];
+const summary: string | undefined = frontmatter?.summary;
+const status: string | undefined = frontmatter?.status;
+const category: string | undefined = frontmatter?.category;
+const period: string | undefined = frontmatter?.period;
+const funder: { name?: string | null; link?: string | null } | undefined = frontmatter?.funder;
+const externalLink: string | undefined = frontmatter?.external_link;
+const keywords: string[] = frontmatter?.keywords ?? [];
+
+// Detect content type from URL
+const pathname = Astro.url.pathname;
+const contentType = pathname.startsWith('/news/') ? 'news'
+    : pathname.startsWith('/events/') ? 'events'
+    : pathname.startsWith('/funding-and-projects/') ? 'projects'
+    : null;
+
 // Resolve relative asset paths (./file.png) to their public URL using the page pathname
 function resolvePageAsset(src: string): string {
     if (!src?.startsWith('./')) return src;
     const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-    const pathname = Astro.url.pathname.replace(/\/$/, '');
-    // Strip base prefix so the content path doesn't include it
-    const contentPath = base && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;
+    const cleanPathname = Astro.url.pathname.replace(/\/$/, '');
+    const contentPath = base && cleanPathname.startsWith(base) ? cleanPathname.slice(base.length) : cleanPathname;
     return `${base}/content${contentPath}/${src.slice(2)}`;
 }
 const finalCover = rawCover
@@ -57,6 +78,46 @@ const dateObj = finalDate
         : finalDate
     : null;
 
+const formattedDate = dateObj
+    ? dateObj.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    : null;
+
+const relativeDate = dateObj ? dayjs(dateObj).fromNow() : null;
+
+// Period relative label for projects
+function periodToRelative(p: string): string {
+    const matches = p.match(/(\d{4}-\d{2})/g);
+    if (!matches || matches.length < 2) return p;
+    const end = dayjs(matches[matches.length - 1]);
+    if (!end.isValid()) return p;
+    const now = dayjs();
+    if (end.isAfter(now)) return end.fromNow(true) + ' to deadline';
+    return 'Completed ' + end.fromNow();
+}
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Status badge colors (reused from listing page)
+const statusColors: Record<string, { bg: string; text: string; dot: string }> = {
+    ongoing: {
+        bg: 'bg-green-100 dark:bg-green-900/20',
+        text: 'text-green-700 dark:text-green-400',
+        dot: 'bg-green-500 dark:bg-green-400',
+    },
+    completed: {
+        bg: 'bg-gray-100 dark:bg-gray-800/40',
+        text: 'text-gray-600 dark:text-gray-400',
+        dot: 'bg-gray-400 dark:bg-gray-500',
+    },
+};
+
+const categoryColors: Record<string, string> = {
+    european: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
+    elixir: 'bg-brand-secondary/10 text-brand-secondary-text dark:text-brand-secondary',
+    norwegian: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400',
+    global: 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400',
+};
+
 // Max width classes based on variant
 const containerClasses = {
     article: "max-w-3xl",
@@ -69,35 +130,133 @@ const hasSidebar = finalVariant === "sidebar";
 ---
 
 <BaseLayout seo={finalSeo}>
-    <div class="isolate px-6 sm:px-8 pb-12 pt-16 flex-1">
+    <div class="isolate px-6 sm:px-8 pb-12 pt-24 sm:pt-28 flex-1">
         <div class={`mx-auto ${containerClasses[finalVariant]}`}>
             <!-- Breadcrumbs -->
             {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
             <!-- Page Header -->
             {
                 (finalTitle || finalCover) && (
-                    <header class="mb-12">
+                    <header class="mb-10 sm:mb-14">
+                        {/* Back link */}
+                        {contentType && (
+                            <a
+                                href={`${BASE}/${contentType === 'projects' ? 'funding-and-projects' : contentType}`}
+                                class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors mb-6"
+                            >
+                                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                                </svg>
+                                {contentType === 'news' ? 'All news' : contentType === 'events' ? 'All events' : 'All projects'}
+                            </a>
+                        )}
+
+                        {/* Badges row — news tags, project status/category */}
+                        {contentType === 'news' && tags.length > 0 && (
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                {tags.map((tag: string) => (
+                                    <span class="rounded-full px-3 py-1 text-xs font-semibold bg-brand-secondary/10 text-brand-secondary-text dark:text-brand-secondary">
+                                        {slugToTitleCase(tag)}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
+                        {contentType === 'projects' && (status || category) && (
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                {status && status !== 'unknown' && (() => {
+                                    const sc = statusColors[status] ?? statusColors.completed;
+                                    return (
+                                        <span class={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${sc.bg} ${sc.text}`}>
+                                            <span class={`h-1.5 w-1.5 rounded-full ${sc.dot}`} />
+                                            {slugToTitleCase(status)}
+                                        </span>
+                                    );
+                                })()}
+                                {category && category !== 'unknown' && (
+                                    <span class={`rounded-full px-3 py-1 text-xs font-semibold ${categoryColors[category] ?? 'bg-gray-100 dark:bg-gray-800/40 text-gray-600 dark:text-gray-400'}`}>
+                                        {slugToTitleCase(category)}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+
                         {finalTitle && (
-                            <h1 class="text-3xl font-bold tracking-tight sm:text-5xl mb-4 text-gray-900 dark:text-white">
+                            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-brand-primary dark:text-white text-balance leading-[1.15]">
                                 {finalTitle}
                             </h1>
                         )}
 
+                        {/* Date row */}
                         {dateObj && (
-                            <time
-                                datetime={dateObj.toISOString()}
-                                class="text-sm text-gray-600 dark:text-gray-400 block mb-4"
-                            >
-                                {dateObj.toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })}
-                            </time>
+                            <div class="mt-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                                </svg>
+                                <time datetime={dateObj.toISOString()}>
+                                    {formattedDate}
+                                </time>
+                                <span class="text-gray-300 dark:text-gray-600">&middot;</span>
+                                <span>{relativeDate}</span>
+                            </div>
                         )}
 
+                        {/* Project metadata row */}
+                        {contentType === 'projects' && (period || funder?.name) && (
+                            <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+                                {period && (
+                                    <span class="inline-flex items-center gap-1.5" title={period}>
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                        {periodToRelative(period)}
+                                    </span>
+                                )}
+                                {funder?.name && (
+                                    <span class="inline-flex items-center gap-1.5">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21" />
+                                        </svg>
+                                        {funder.link
+                                            ? <a href={funder.link} target="_blank" rel="noopener noreferrer" class="hover:text-brand-primary dark:hover:text-white transition-colors">{funder.name}</a>
+                                            : funder.name
+                                        }
+                                    </span>
+                                )}
+                                {externalLink && (
+                                    <a href={externalLink} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-brand-primary dark:hover:text-white transition-colors">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                                        </svg>
+                                        Project website
+                                    </a>
+                                )}
+                            </div>
+                        )}
+
+                        {/* Summary / lead paragraph */}
+                        {summary && contentType && (
+                            <p class="mt-5 text-base sm:text-lg leading-relaxed text-brand-grey dark:text-gray-300 text-balance">
+                                {summary}
+                            </p>
+                        )}
+
+                        {/* Project keywords */}
+                        {contentType === 'projects' && keywords.length > 0 && (
+                            <div class="mt-5 flex flex-wrap gap-2">
+                                {keywords.map((kw: string) => (
+                                    <span class="rounded-full px-2.5 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-800/40 text-gray-600 dark:text-gray-400">
+                                        {slugToTitleCase(kw)}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Divider before cover or content */}
+                        {!finalCover && <div class="mt-8 border-t border-gray-200/60 dark:border-gray-700/30" />}
+
                         {finalCover && (
-                            <figure class="mb-12">
+                            <figure class="mt-8">
                                 <img
                                     src={finalCover.source}
                                     alt={
@@ -105,11 +264,11 @@ const hasSidebar = finalVariant === "sidebar";
                                         finalTitle ||
                                         "Cover image"
                                     }
-                                    class="w-full rounded-lg"
+                                    class="w-full rounded-xl"
                                     loading="lazy"
                                 />
                                 {finalCover.caption && (
-                                    <figcaption class="text-sm text-gray-600 dark:text-gray-400 mt-2 text-center">
+                                    <figcaption class="text-sm text-gray-500 dark:text-gray-400 mt-3 text-center">
                                         {finalCover.caption}
                                     </figcaption>
                                 )}

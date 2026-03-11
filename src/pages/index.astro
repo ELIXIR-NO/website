@@ -10,7 +10,9 @@ import slides from "../data/slides.json";
 
 <BaseLayout>
     <main id="main-content">
-        <Hero client:only="react" />
+        <div class="min-h-[calc(100vh-84px)]">
+            <Hero client:only="react" />
+        </div>
 
         <section class="py-20 lg:py-28 bg-light-surface dark:bg-dark-surface">
             <div class="max-w-[1400px] mx-auto px-4 sm:px-6">

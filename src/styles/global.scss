@@ -17,13 +17,17 @@
     @media (min-width: 3840px) { font-size: 24px; }
   }
 
+  html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;           /* Reserves scrollbar space — no layout shift */
+    scrollbar-width: thin;              /* Firefox: thin track */
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+  }
+
   html, body {
     text-rendering: geometricPrecision;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-y: overlay;                /* Scrollbar overlays content — no layout shift */
-    scrollbar-width: thin;              /* Firefox: thin track */
-    scrollbar-color: rgba(0,0,0,0.2) transparent;
   }
 
   html::-webkit-scrollbar { width: 6px; }

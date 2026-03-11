@@ -3,6 +3,10 @@ import { getCollection } from "astro:content";
 import Page from "../../layouts/page.astro";
 import ProjectFilters from "../../components/project-filters";
 import { slugToTitleCase, idToSlug } from "../../lib/utils";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -42,6 +46,18 @@ const filterGroups = [
     { key: 'category', label: 'Category', options: buildOptions('category') },
     { key: 'keywords', label: 'Topics', options: buildKeywordOptions() },
 ];
+
+/** Parse "YYYY-MM YYYY-MM" or "YYYY-MM - YYYY-MM" period into a relative timeline label */
+function periodToRelative(period: string): string {
+    // Match the last YYYY-MM in the string (the end date)
+    const matches = period.match(/(\d{4}-\d{2})/g);
+    if (!matches || matches.length < 2) return period;
+    const end = dayjs(matches[matches.length - 1]);
+    if (!end.isValid()) return period;
+    const now = dayjs();
+    if (end.isAfter(now)) return end.fromNow(true) + ' to deadline';
+    return 'Completed ' + end.fromNow();
+}
 
 const statusColors: Record<string, { bg: string; text: string; dot: string }> = {
     ongoing: {
@@ -157,11 +173,11 @@ const categoryColors: Record<string, string> = {
                             {/* Metadata row */}
                             <div class="mt-4 flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
                                 {project.data.period && (
-                                    <span class="inline-flex items-center gap-1">
+                                    <span class="inline-flex items-center gap-1" title={project.data.period}>
                                         <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
                                         </svg>
-                                        {project.data.period}
+                                        {periodToRelative(project.data.period)}
                                     </span>
                                 )}
                                 {project.data.funder?.name && (
