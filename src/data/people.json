@@ -26,6 +26,7 @@
       "name": "University of Bergen",
       "people": [
         {
+          "username": "sushma-grellscheid",
           "name": "Sushma Grellscheid",
           "title": "Professor",
           "photo": "/data/people/sushma.png",
@@ -39,6 +40,7 @@
           ]
         },
         {
+          "username": "kjell-petersen",
           "name": "Kjell Petersen",
           "title": "Group Leader at CBU",
           "photo": "/data/people/kjell-petersen.png",
@@ -52,6 +54,7 @@
           ]
         },
         {
+          "username": "korbinian-bosl",
           "name": "Korbinian Bösl",
           "title": "Senior Engineer",
           "photo": "/data/people/korbinian.png",
@@ -65,6 +68,7 @@
           ]
         },
         {
+          "username": "ingeborg-winge",
           "name": "Ingeborg Winge",
           "title": "Senior Advisor",
           "photo": "/data/people/ingeborg-winge.png",
@@ -78,6 +82,7 @@
           ]
         },
         {
+          "username": "inge-jonassen",
           "name": "Inge Jonassen",
           "title": "Head—Department of Informatics",
           "photo": "/data/people/inge-jonassen.png",
@@ -91,6 +96,7 @@
           ]
         },
         {
+          "username": "kidane-tekle",
           "name": "Kidane Tekle",
           "title": "Senior Engineer",
           "photo": "/data/people/kidane.png",
@@ -99,6 +105,7 @@
           "elixir-groups": []
         },
         {
+          "username": "david-dolan",
           "name": "David Dolan",
           "title": "Researcher",
           "photo": "/data/people/david-dolan.png",
@@ -107,6 +114,7 @@
           "elixir-groups": []
         },
         {
+          "username": "siri-kallhovd",
           "name": "Siri Kallhovd",
           "title": "Senior Engineer",
           "photo": "/data/people/siri-kallhovd.png",
@@ -115,6 +123,7 @@
           "elixir-groups": []
         },
         {
+          "username": "parisa-geravand",
           "name": "Parisa Geravand",
           "title": "Senior Engineer",
           "photo": "/data/people/parisa-tejari.png",
@@ -123,6 +132,7 @@
           "elixir-groups": []
         },
         {
+          "username": "matus-kalas",
           "name": "Matúš Kalaš",
           "title": "Senior Engineer",
           "photo": "/data/people/matus-kalas.png",
@@ -131,6 +141,7 @@
           "elixir-groups": []
         },
         {
+          "username": "christoph-bottin",
           "name": "Christoph Bottin",
           "title": "Head Engineer",
           "photo": "/data/people/christoph-bottin.png",
@@ -139,6 +150,7 @@
           "elixir-groups": []
         },
         {
+          "username": "carlos-marcos",
           "name": "Carlos Marcos",
           "title": "Chief Engineer",
           "photo": "/data/people/carlos.png",
@@ -147,6 +159,7 @@
           "elixir-groups": []
         },
         {
+          "username": "sondre-batalden",
           "name": "Sondre Batalden",
           "title": "Research Technician",
           "photo": "/data/people/sondre-batalden.png",
@@ -155,6 +168,7 @@
           "elixir-groups": []
         },
         {
+          "username": "pedram-keyvani",
           "name": "Pedram Keyvani",
           "title": "Head Engineer",
           "photo": "/data/people/pedram-keyvani.png",
@@ -163,6 +177,7 @@
           "elixir-groups": []
         },
         {
+          "username": "yasin-miran",
           "name": "Yasin Miran",
           "title": "Senior Engineer",
           "photo": "/data/people/yasin.png",
@@ -171,29 +186,30 @@
           "elixir-groups": []
         },
         {
+          "username": "michael-dondrup",
           "name": "Michael Dondrup",
           "title": "Researcher",
           "photo": "/data/people/michael-dondrup.png",
           "profile-url": "https://www4.uib.no/en/find-employees/Michael.Dondrup",
           "affiliations": [],
-          "elixir-groups": [
-          ]
+          "elixir-groups": []
         },
-	    {
+        {
+          "username": "mahima-gomladu",
           "name": "Mahima Gomladu",
           "title": "Senior Engineer",
           "photo": "/data/people/mahima-gomladu.jpeg",
           "profile-url": "https://www4.uib.no/en/find-employees/Mahima.Sanjay.Gomladu",
           "affiliations": [],
-          "elixir-groups": [
-          ]
+          "elixir-groups": []
         }
       ]
     },
     "uio": {
-	"name": "University of Oslo",
-	"people": [
-	{
+      "name": "University of Oslo",
+      "people": [
+        {
+          "username": "rein-aasland",
           "name": "Rein Aasland",
           "title": "Professor, Head of Node",
           "photo": "/data/people/rein-aasland.png",
@@ -207,6 +223,7 @@
           ]
         },
         {
+          "username": "eivind-hovig",
           "name": "Eivind Hovig",
           "title": "Professor Emeritus",
           "photo": "/data/people/eivind-hovig.png",
@@ -220,6 +237,7 @@
           ]
         },
         {
+          "username": "roger-simm",
           "name": "Roger Simm",
           "title": "Head of the Department of Biosciences, ELIXIR Norway steering board member",
           "photo": "/data/people/rogersimm.jpg",
@@ -233,6 +251,7 @@
           ]
         },
         {
+          "username": "martina-visnovska",
           "name": "Martina Visnovska",
           "title": "Researcher, PhD",
           "photo": "/data/people/martina-visnovska.png",
@@ -241,6 +260,7 @@
           "elixir-groups": []
         },
         {
+          "username": "sveinung-gundersen",
           "name": "Sveinung Gundersen",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/sveinung-gundersen.png",
@@ -249,6 +269,7 @@
           "elixir-groups": []
         },
         {
+          "username": "federico-bianchini",
           "name": "Federico Bianchini",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/federico-bianchini.png",
@@ -257,6 +278,7 @@
           "elixir-groups": []
         },
         {
+          "username": "victor-kalbskopf",
           "name": "Victor Kalbskopf",
           "title": "Senior engineer, PhD",
           "photo": "/data/people/victor-kalbskopf.png",
@@ -265,6 +287,7 @@
           "elixir-groups": []
         },
         {
+          "username": "pavel-vazquez",
           "name": "Pável Vázquez",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/pavel-vazquez-faci.png",
@@ -273,6 +296,7 @@
           "elixir-groups": []
         },
         {
+          "username": "morten-johansen",
           "name": "Morten Johansen",
           "title": "Senior Engineer",
           "photo": "/data/people/morten-johansen.jpg",
@@ -280,7 +304,8 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	    {
+        {
+          "username": "ole-torresen",
           "name": "Ole Kristian Tørresen",
           "title": "Researcher, PhD",
           "photo": "/data/people/ole-christian-toerresen.png",
@@ -288,7 +313,8 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	    {
+        {
+          "username": "yehia-farag",
           "name": "Yehia Farag",
           "title": "Senior Engineer, PhD",
           "photo": "/data/people/yehia-f.jpg",
@@ -296,7 +322,8 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	    {
+        {
+          "username": "ralph-niederlohner",
           "name": "Ralph Niederlöhner",
           "title": "Senior Engineer",
           "photo": "/data/people/ralph-n.jpg",
@@ -304,20 +331,22 @@
           "affiliations": [],
           "elixir-groups": []
         },
-	    {
+        {
+          "username": "tharvesh-liyakat",
           "name": "Tharvesh Liyakat",
           "title": "Special Engineer, Phd",
           "photo": "/data/people/tharvesh.jpg",
           "profile-url": "https://ous-research.no/home/bioinformatics/Group+members/22362",
           "affiliations": [],
           "elixir-groups": []
-        }    
+        }
       ]
     },
     "uit": {
       "name": "The Arctic University of Norway",
       "people": [
         {
+          "username": "erik-hjerde",
           "name": "Erik Hjerde",
           "title": "Researcher, Head of Node",
           "photo": "/data/people/erik-hjerde.png",
@@ -331,6 +360,7 @@
           ]
         },
         {
+          "username": "erin-calhoun",
           "name": "Erin Calhoun",
           "title": "Researcher",
           "photo": "/data/people/erin-calhoun.png",
@@ -344,6 +374,7 @@
           ]
         },
         {
+          "username": "espen-aberg",
           "name": "Espen Åberg",
           "title": "Researcher",
           "photo": "/data/people/espen-aaberg.png",
@@ -357,6 +388,7 @@
           ]
         },
         {
+          "username": "peik-haugen",
           "name": "Peik Haugen",
           "title": "Professor, Head—Department of Chemistry",
           "photo": "/data/people/peik-haugen.jpeg",
@@ -370,6 +402,7 @@
           ]
         },
         {
+          "username": "danilo-martins",
           "name": "Danilo Martins",
           "title": "Divisional Engineer",
           "photo": "/data/people/danilo-martins.png",
@@ -378,6 +411,7 @@
           "affiliations": []
         },
         {
+          "username": "joshua-baskaran",
           "name": "Joshua Baskaran",
           "title": "Senior Engineer",
           "photo": "/data/people/joshua-baskaran.png",
@@ -386,6 +420,7 @@
           "affiliations": []
         },
         {
+          "username": "sebastian-petters",
           "name": "Sebastian Petters",
           "title": "Senior Engineer",
           "photo": "/data/people/sebastian-petters.png",
@@ -394,6 +429,7 @@
           "affiliations": []
         },
         {
+          "username": "hans-bernstein",
           "name": "Hans Christopher Bernstein",
           "title": "Professor",
           "photo": "/data/people/hans-christopher-bernstein.png",
@@ -402,6 +438,7 @@
           "affiliations": []
         },
         {
+          "username": "nazeefa-fatima",
           "name": "Nazeefa Fatima",
           "title": "Senior Engineer",
           "photo": "/data/people/nazeefa-fatima.png",
@@ -415,6 +452,7 @@
       "name": "Norwegian University of Science and Technology",
       "people": [
         {
+          "username": "pal-saetrom",
           "name": "Pål Sætrom",
           "title": "Professor, Head of Node",
           "photo": "/data/people/paal-saetrom.png",
@@ -428,6 +466,7 @@
           ]
         },
         {
+          "username": "magnus-steigedal",
           "name": "Magnus Steigedal",
           "title": "Head Department of Clinical and Molecular Medicine",
           "photo": "/data/people/magnus-steigedal.png",
@@ -441,6 +480,7 @@
           ]
         },
         {
+          "username": "trygve-brautaset",
           "name": "Trygve Brautaset",
           "title": "Professor",
           "photo": "/data/people/trygve-brautaset.png",
@@ -454,6 +494,7 @@
           ]
         },
         {
+          "username": "morten-rye",
           "name": "Morten Beck Rye",
           "title": "Associate Professor",
           "photo": "/data/people/morten-beck-rye.png",
@@ -462,6 +503,7 @@
           "affiliations": []
         },
         {
+          "username": "eivind-almaas",
           "name": "Eivind Almaas",
           "title": "Professor",
           "photo": "/data/people/eivind-almaas.png",
@@ -470,6 +512,7 @@
           "affiliations": []
         },
         {
+          "username": "kjetil-klepper",
           "name": "Kjetil Klepper",
           "title": "Chief Engineer",
           "photo": "/data/people/kjetil-klepper.png",
@@ -478,6 +521,7 @@
           "affiliations": []
         },
         {
+          "username": "emil-karlsen",
           "name": "Emil Karlsen",
           "title": "Researcher",
           "photo": "/data/people/emil-karlsen.png",
@@ -486,6 +530,7 @@
           "affiliations": []
         },
         {
+          "username": "konika-chawla",
           "name": "Konika Chawla",
           "title": "Managing Director, BioCore",
           "photo": "/data/people/konika-chawla.png",
@@ -494,6 +539,7 @@
           "affiliations": []
         },
         {
+          "username": "lene-olsen",
           "name": "Lene Christin Olsen",
           "title": "Researcher",
           "photo": "/data/people/lene-christin-olsen.png",
@@ -502,6 +548,7 @@
           "affiliations": []
         },
         {
+          "username": "vladimir-mironov",
           "name": "Vladimir Mironov",
           "title": "Chief Engineer",
           "photo": "/data/people/vladimir-mironov.png",
@@ -510,6 +557,7 @@
           "affiliations": []
         },
         {
+          "username": "maximillian-wess",
           "name": "Maximillian Wess",
           "title": "PhD Candidate",
           "photo": "/data/people/maximillian-wess.png",
@@ -523,6 +571,7 @@
       "name": "Norwegian University of Life Sciences",
       "people": [
         {
+          "username": "simen-sandve",
           "name": "Simen Rød Sandve",
           "title": "Professor",
           "photo": "/data/people/simen-sandve.png",
@@ -536,6 +585,7 @@
           ]
         },
         {
+          "username": "gro-steine",
           "name": "Gro Steine",
           "title": "Dean—Faculty of Biosciences",
           "photo": "/data/people/gro-steine.webp",
@@ -549,6 +599,7 @@
           ]
         },
         {
+          "username": "helle-baalsrud",
           "name": "Helle Tessand Baalsrud",
           "title": "Postdoctoral Fellow",
           "photo": "/data/people/helle-tessand-baalsrud.png",
@@ -557,6 +608,7 @@
           "affiliations": []
         },
         {
+          "username": "thu-hien-to",
           "name": "Thu-Hien To",
           "title": "Researcher",
           "photo": "/data/people/thu-hien-to.png",
@@ -565,6 +617,7 @@
           "affiliations": []
         },
         {
+          "username": "lars-gronvold",
           "name": "Lars Grønvold",
           "title": "Researcher",
           "photo": "/data/people/lars-gronvold.png",
@@ -573,6 +626,7 @@
           "affiliations": []
         },
         {
+          "username": "gareth-gillard",
           "name": "Gareth Gillard",
           "title": "Researcher",
           "photo": "/data/people/gareth-benjamin-gillard.png",
@@ -581,6 +635,7 @@
           "affiliations": []
         },
         {
+          "username": "arturo-de-leon",
           "name": "Arturo De Leon",
           "title": "Senior Engineer",
           "photo": "/data/people/arturo-vera-ponce-de-leon.png",
@@ -589,6 +644,7 @@
           "affiliations": []
         },
         {
+          "username": "marius-strand",
           "name": "Marius Strand",
           "title": "Researcher",
           "photo": "/data/people/marius-andre-strand.png",
@@ -602,6 +658,7 @@
       "name": "Spanish National Cancer Research Centre",
       "people": [
         {
+          "username": "fatima-al-shahrour",
           "name": "Fátima Al-Shahrour",
           "title": "Head—Department of Bioinformatics",
           "photo": "/data/people/fatima-al-shahrour.png",
@@ -620,6 +677,7 @@
       "name": "University of Marseille",
       "people": [
         {
+          "username": "jacques-van-helden",
           "name": "Jacques van Helden",
           "title": "Professor, Co-Head of Node ELIXIR France",
           "photo": "/data/people/jacques-van-helden.png",
@@ -638,6 +696,7 @@
       "name": "Vrije Universiteit Amsterdam",
       "people": [
         {
+          "username": "jaap-heringa",
           "name": "Jaap Heringa",
           "title": "Professor, Head of Node ELIXIR Netherlands, Head—Department of Computer Science VU",
           "photo": "/data/people/jaap-heringa.png",
@@ -656,6 +715,7 @@
       "name": "The European Molecular Biology Laboratory",
       "people": [
         {
+          "username": "anna-kreshuk",
           "name": "Anna Kreshuk",
           "title": "Group Leader",
           "photo": "/data/people/anna-kreshuk.png",
@@ -674,6 +734,7 @@
       "name": "Oslo University Hospital",
       "people": [
         {
+          "username": "robert-lyle",
           "name": "Robert Lyle",
           "title": "Group Leader",
           "photo": "/data/people/robert-lyle.png",
@@ -692,6 +753,7 @@
       "name": "Institute of Marine Research",
       "people": [
         {
+          "username": "rolf-edvardsen",
           "name": "Rolf Edvardsen",
           "title": "Researcher",
           "photo": "/data/people/rolf-brudvik-edvardsen.png",

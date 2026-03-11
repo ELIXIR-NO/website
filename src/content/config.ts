@@ -87,6 +87,7 @@ const news = defineCollection({
         }).optional(),
         summary: z.string(),
         tags: z.array(z.string()).optional(),
+        authors: z.array(z.string()).optional(),
     }),
 });
 

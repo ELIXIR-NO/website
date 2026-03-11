@@ -8,7 +8,26 @@ import OrganisationMarquee from "../components/organisation-marquee.tsx";
 import slides from "../data/slides.json";
 ---
 
-<BaseLayout>
+<BaseLayout seo={{
+    title: "ELIXIR Norway - Life Science Data Infrastructure",
+    description: "Norwegian node of ELIXIR, the European infrastructure for life science data. Bioinformatics services, data management tools, training, and secure e-infrastructure for researchers.",
+}}>
+    <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: 'ELIXIR Norway',
+        url: 'https://elixir.no',
+        logo: 'https://elixir.no/assets/logos/elixir-no-dark.svg',
+        description: 'Norwegian node of ELIXIR, the European infrastructure for life science data.',
+        parentOrganization: {
+            '@type': 'Organization',
+            name: 'ELIXIR',
+            url: 'https://elixir-europe.org',
+        },
+        sameAs: [
+            'https://www.linkedin.com/company/elixir-norway',
+        ],
+    })} />
     <main id="main-content">
         <div class="min-h-[calc(100vh-84px)]">
             <Hero client:only="react" />

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://elixir.no/sitemap-index.xml

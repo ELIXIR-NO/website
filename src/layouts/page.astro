@@ -4,8 +4,18 @@ import Breadcrumbs from "../components/breadcrumbs.astro";
 import { slugToTitleCase } from "../lib/utils";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import peopleData from "../data/people.json";
 
 dayjs.extend(relativeTime);
+
+// Build a username→person lookup from people.json (flattened across all orgs)
+type Person = { username: string; name: string; photo?: string; title?: string; 'profile-url'?: string };
+const peopleLookup = new Map<string, Person>();
+for (const org of Object.values(peopleData.orgs) as any[]) {
+    for (const person of org.people) {
+        if (person.username) peopleLookup.set(person.username, person);
+    }
+}
 
 type Variant = "article" | "wide" | "full" | "sidebar";
 
@@ -51,6 +61,27 @@ const period: string | undefined = frontmatter?.period;
 const funder: { name?: string | null; link?: string | null } | undefined = frontmatter?.funder;
 const externalLink: string | undefined = frontmatter?.external_link;
 const keywords: string[] = frontmatter?.keywords ?? [];
+
+// Resolve authors for news articles
+const authorNames: string[] = frontmatter?.authors ?? [];
+type ResolvedAuthor = { name: string; photo: string; url?: string };
+const defaultAuthor: ResolvedAuthor = {
+    name: 'ELIXIR Norway',
+    photo: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/assets/logos/elixir-no-avatar.png`,
+};
+const namedAuthors: ResolvedAuthor[] = authorNames.map(username => {
+    const person = peopleLookup.get(username);
+    if (person) {
+        return {
+            name: person.name,
+            photo: person.photo ?? defaultAuthor.photo,
+            url: person['profile-url'] ?? undefined,
+        };
+    }
+    return { name: username, photo: defaultAuthor.photo };
+});
+// ELIXIR Norway is always an author — named authors come first
+const resolvedAuthors: ResolvedAuthor[] = [...namedAuthors, defaultAuthor];
 
 // Detect content type from URL
 const pathname = Astro.url.pathname;
@@ -127,9 +158,69 @@ const containerClasses = {
 };
 
 const hasSidebar = finalVariant === "sidebar";
+
+// Merge SEO data — enrich with content-type-specific metadata
+const siteUrl = 'https://elixir.no';
+const coverImageUrl = finalCover ? `${siteUrl}${finalCover.source}` : undefined;
+const mergedSeo = {
+    ...finalSeo,
+    title: finalSeo?.title || finalTitle,
+    description: finalSeo?.description || summary,
+    ...(coverImageUrl && { image: coverImageUrl }),
+    ...(contentType === 'news' && {
+        article: true,
+        author: resolvedAuthors.map(a => a.name).join(', '),
+        publishedTime: dateObj?.toISOString(),
+        tags,
+    }),
+    ...(contentType === 'events' && {
+        article: true,
+        publishedTime: dateObj?.toISOString(),
+    }),
+};
+
+// JSON-LD structured data
+const publisherLd = {
+    '@type': 'Organization' as const,
+    name: 'ELIXIR Norway',
+    url: siteUrl,
+    logo: { '@type': 'ImageObject' as const, url: `${siteUrl}/assets/logos/elixir-no-dark.svg` },
+};
+
+const jsonLd = contentType === 'news' ? JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: finalTitle,
+    description: summary,
+    datePublished: dateObj?.toISOString(),
+    image: coverImageUrl,
+    author: resolvedAuthors.map(a => ({
+        '@type': a.name === 'ELIXIR Norway' ? 'Organization' : 'Person',
+        name: a.name,
+        ...(a.url ? { url: a.url } : {}),
+    })),
+    publisher: publisherLd,
+}) : contentType === 'events' ? JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: finalTitle,
+    description: summary,
+    startDate: dateObj?.toISOString(),
+    image: coverImageUrl,
+    organizer: publisherLd,
+}) : contentType === 'projects' ? JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ResearchProject',
+    name: finalTitle,
+    description: summary,
+    ...(funder?.name && { funder: { '@type': 'Organization', name: funder.name, ...(funder.link ? { url: funder.link } : {}) } }),
+    ...(externalLink && { url: externalLink }),
+    ...(keywords.length > 0 && { keywords: keywords.join(', ') }),
+}) : null;
 ---
 
-<BaseLayout seo={finalSeo}>
+<BaseLayout seo={mergedSeo}>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <div class="isolate px-6 sm:px-8 pb-12 pt-24 sm:pt-28 flex-1">
         <div class={`mx-auto ${containerClasses[finalVariant]}`}>
             <!-- Breadcrumbs -->
@@ -187,8 +278,45 @@ const hasSidebar = finalVariant === "sidebar";
                             </h1>
                         )}
 
-                        {/* Date row */}
-                        {dateObj && (
+                        {/* Author byline + date for news */}
+                        {contentType === 'news' && (
+                            <div class="mt-5 flex items-center gap-3">
+                                {/* Stacked avatars */}
+                                <div class="flex -space-x-2" aria-hidden="true">
+                                    {resolvedAuthors.map((author) => (
+                                        <img
+                                            src={author.photo}
+                                            alt=""
+                                            class="h-9 w-9 rounded-full ring-2 ring-white dark:ring-dark-background object-cover"
+                                            loading="lazy"
+                                        />
+                                    ))}
+                                </div>
+                                <div class="text-sm">
+                                    <p class="font-medium text-brand-primary dark:text-white">
+                                        {resolvedAuthors.map((author, i) => (
+                                            <>
+                                                {i > 0 && <span class="text-gray-400 dark:text-gray-500">, </span>}
+                                                {author.url
+                                                    ? <a href={author.url} target="_blank" rel="noopener noreferrer" class="hover:text-brand-secondary-text dark:hover:text-brand-secondary transition-colors">{author.name}</a>
+                                                    : <span>{author.name}</span>
+                                                }
+                                            </>
+                                        ))}
+                                    </p>
+                                    {dateObj && (
+                                        <p class="text-gray-500 dark:text-gray-400">
+                                            <time datetime={dateObj.toISOString()}>{formattedDate}</time>
+                                            <span class="mx-1">&middot;</span>
+                                            <span>{relativeDate}</span>
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Date row for non-news */}
+                        {contentType !== 'news' && dateObj && (
                             <div class="mt-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />

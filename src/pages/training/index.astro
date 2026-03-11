@@ -4,7 +4,10 @@ import Page from "../../layouts/page.astro";
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Page variant="wide">
+<Page variant="wide" seo={{
+    title: "Training",
+    description: "Open-access bioinformatics training from ELIXIR Norway — introductory workshops to advanced courses in genomics, data management, and computational biology.",
+}}>
 
     <!-- TeSS widget CSS -->
     <link rel="stylesheet" href="https://elixirtess.github.io/TeSS_widgets/css/tess-widget.css" slot="head" />
