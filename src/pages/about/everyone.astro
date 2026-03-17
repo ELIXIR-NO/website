@@ -1,6 +1,346 @@
 ---
-import Content from "../../content/about/everyone/index.mdx";
-import { components } from "../../components/elements";
+import BaseLayout from "../../layouts/base.astro";
+import people from "../../data/people.json";
+import { organizations } from "../../data/organizations";
+
+export const prerender = true;
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+type Person = {
+    username: string;
+    name: string;
+    title: string;
+    photo: string;
+    "profile-url": string | null;
+    affiliations: Array<{ name: string; role: string }>;
+    "elixir-groups": Array<{ name: string; role: string | null }>;
+};
+
+type OrgEntry = {
+    name: string;
+    people: Person[];
+};
+
+function composeTitle(person: Person): string {
+    return [
+        person.title,
+        ...person["elixir-groups"].map((g) => g.role).filter(Boolean),
+        ...person.affiliations.map((a) =>
+            a ? `${a.role ? a.role + "—" : ""}${a.name}` : ""
+        ),
+    ]
+        .filter(Boolean)
+        .join(", ");
+}
+
+// Main Norwegian orgs (ordered)
+const mainOrgKeys = ["uib", "uio", "uit", "ntnu", "nmbu"];
+const externalOrgKeys = Object.keys(people.orgs).filter(
+    (k) => !mainOrgKeys.includes(k)
+);
+
+const orgsRecord = people.orgs as Record<string, OrgEntry>;
+
+const totalPeople = Object.values(orgsRecord).reduce(
+    (sum, org) => sum + org.people.length,
+    0
+);
+
+// Pre-compute org data for template
+const mainOrgs = mainOrgKeys
+    .map((key) => ({
+        key,
+        data: orgsRecord[key],
+        meta: organizations[key],
+    }))
+    .filter((o) => o.data);
+
+type ExternalPerson = Person & { orgName: string };
+const externalPeople: ExternalPerson[] = externalOrgKeys.flatMap((key) => {
+    const orgData = orgsRecord[key];
+    if (!orgData) return [];
+    return orgData.people.map((p) => ({
+        ...(p as Person),
+        orgName: orgData.name,
+    }));
+});
 ---
 
-<Content components={components} />
+<BaseLayout
+    seo={{
+        title: "Our People — ELIXIR Norway",
+        description: `Meet the ${totalPeople}+ researchers, engineers, and scientists powering Norway's bioinformatics infrastructure across five universities.`,
+    }}
+>
+    <div class="h-[84px]" aria-hidden="true" />
+
+    <!-- Hero -->
+    <section class="relative bg-brand-primary overflow-hidden -mt-[84px]">
+        <div
+            class="absolute inset-0 opacity-[0.03]"
+            style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"
+            aria-hidden="true"
+        />
+
+        <div class="relative pt-[calc(84px+3rem)] pb-12 sm:pb-16">
+            <div class="mx-auto max-w-7xl px-6 sm:px-8">
+                <a
+                    href={`${BASE}/about`}
+                    class="everyone-fade inline-flex items-center gap-1.5 text-sm font-medium text-white/60 hover:text-white transition-colors mb-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded"
+                >
+                    <svg
+                        class="h-3.5 w-3.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                        />
+                    </svg>
+                    About ELIXIR Norway
+                </a>
+
+                <h1
+                    class="everyone-fade text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight"
+                    style="animation-delay: 0.1s"
+                >
+                    Our People
+                </h1>
+
+                <p
+                    class="everyone-fade mt-3 text-base sm:text-lg text-white/70 max-w-2xl"
+                    style="animation-delay: 0.2s"
+                >
+                    Researchers, engineers, and scientists across five Norwegian
+                    universities powering the national bioinformatics
+                    infrastructure.
+                </p>
+
+                <!-- Stats -->
+                <div
+                    class="everyone-fade mt-8 flex flex-wrap gap-x-10 gap-y-4"
+                    style="animation-delay: 0.3s"
+                >
+                    <div>
+                        <span
+                            class="text-2xl sm:text-3xl font-bold text-white"
+                        >
+                            {totalPeople}+
+                        </span>
+                        <span class="ml-2 text-sm text-white/60">Members</span>
+                    </div>
+                    <div>
+                        <span
+                            class="text-2xl sm:text-3xl font-bold text-white"
+                        >
+                            {mainOrgKeys.length}
+                        </span>
+                        <span class="ml-2 text-sm text-white/60"
+                            >Universities</span
+                        >
+                    </div>
+                    <div>
+                        <span
+                            class="text-2xl sm:text-3xl font-bold text-white"
+                        >
+                            {people.groups.length}
+                        </span>
+                        <span class="ml-2 text-sm text-white/60"
+                            >Governance Groups</span
+                        >
+                    </div>
+                </div>
+
+                <!-- Quick nav -->
+                <nav
+                    class="everyone-fade mt-8 flex flex-wrap gap-2"
+                    style="animation-delay: 0.4s"
+                    aria-label="Jump to organization"
+                >
+                    {
+                        mainOrgKeys.map((key) => {
+                            const org = organizations[key];
+                            return (
+                                <a
+                                    href={`#org-${key}`}
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-white/80 bg-white/10 hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                                >
+                                    {org?.universityShort || key.toUpperCase()}
+                                </a>
+                            );
+                        })
+                    }
+                    <a
+                        href="#org-external"
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-white/80 bg-white/10 hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                    >
+                        Advisory & External
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <div id="main-content" class="mx-auto max-w-7xl px-6 sm:px-8 py-12 sm:py-16 flex-1">
+        <!-- Main university sections -->
+        {
+            mainOrgs.map(({ key, data: orgData, meta: orgMeta }) => (
+                <section
+                    id={`org-${key}`}
+                    class="mb-16 last:mb-0 scroll-mt-24"
+                >
+                    <div class="flex items-center gap-4 mb-8">
+                        {orgMeta && (
+                            <div class="shrink-0 h-12 w-12 rounded-xl flex items-center justify-center border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.04] shadow-sm">
+                                <img
+                                    src={`${BASE}${orgMeta.logo}`}
+                                    alt=""
+                                    aria-hidden="true"
+                                    class="h-8 w-8 object-contain dark:invert-[0.85]"
+                                    loading="lazy"
+                                />
+                            </div>
+                        )}
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-brand-primary dark:text-white tracking-tight">
+                                {orgData.name}
+                            </h2>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                {orgData.people.length} members
+                                {orgMeta ? ` — ${orgMeta.nodeName}` : ""}
+                            </p>
+                        </div>
+                        {orgMeta && (
+                            <a
+                                href={`${BASE}/about/${orgMeta.slug}`}
+                                class="ml-auto hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary rounded"
+                            >
+                                View node
+                                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                </svg>
+                            </a>
+                        )}
+                    </div>
+
+                    <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                        {orgData.people.map((person) => (
+                            <li>
+                                {person["profile-url"] ? (
+                                    <a
+                                        href={person["profile-url"]}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="group grid grid-cols-[auto_1fr] items-center gap-3 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-3 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03] transition-all duration-200 hover:border-brand-secondary/30 hover:shadow-md hover:shadow-brand-secondary/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                    >
+                                        <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-gray-200/60 dark:border-gray-700/40 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                            <img alt={person.name} src={`${BASE}${person.photo}`} class="h-full w-full object-cover" loading="lazy" />
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="truncate text-sm font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors">{person.name}</div>
+                                            <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">{composeTitle(person)}</div>
+                                        </div>
+                                    </a>
+                                ) : (
+                                    <div class="grid grid-cols-[auto_1fr] items-center gap-3 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-3 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03]">
+                                        <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-gray-200/60 dark:border-gray-700/40 shadow-sm">
+                                            <img alt={person.name} src={`${BASE}${person.photo}`} class="h-full w-full object-cover" loading="lazy" />
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="truncate text-sm font-semibold text-brand-primary dark:text-white">{person.name}</div>
+                                            <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">{composeTitle(person)}</div>
+                                        </div>
+                                    </div>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            ))
+        }
+
+        <!-- Advisory & External Collaborators -->
+        {externalPeople.length > 0 && (
+            <section
+                id="org-external"
+                class="mt-16 pt-16 border-t border-gray-200/60 dark:border-gray-700/30 scroll-mt-24"
+            >
+                <div class="mb-8">
+                    <h2 class="text-xl sm:text-2xl font-bold text-brand-primary dark:text-white tracking-tight">
+                        Advisory & External Collaborators
+                    </h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                        International experts serving on our Scientific Advisory Committee and Stakeholder Panel.
+                    </p>
+                </div>
+
+                <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3" role="list">
+                    {externalPeople.map((person) => (
+                        <li>
+                            {person["profile-url"] ? (
+                                <a
+                                    href={person["profile-url"]}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="group grid grid-cols-[auto_1fr] items-center gap-3 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-3 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03] transition-all duration-200 hover:border-brand-secondary/30 hover:shadow-md hover:shadow-brand-secondary/[0.06] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                >
+                                    <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-gray-200/60 dark:border-gray-700/40 shadow-sm transition-transform duration-200 group-hover:scale-105">
+                                        <img alt={person.name} src={`${BASE}${person.photo}`} class="h-full w-full object-cover" loading="lazy" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="truncate text-sm font-semibold text-brand-primary dark:text-white group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors">{person.name}</div>
+                                        <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">{composeTitle(person)}</div>
+                                        <div class="truncate text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{person.orgName}</div>
+                                    </div>
+                                </a>
+                            ) : (
+                                <div class="grid grid-cols-[auto_1fr] items-center gap-3 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] p-3 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03]">
+                                    <div class="h-11 w-11 shrink-0 overflow-hidden rounded-full border border-gray-200/60 dark:border-gray-700/40 shadow-sm">
+                                        <img alt={person.name} src={`${BASE}${person.photo}`} class="h-full w-full object-cover" loading="lazy" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="truncate text-sm font-semibold text-brand-primary dark:text-white">{person.name}</div>
+                                        <div class="truncate text-xs text-brand-grey dark:text-gray-400 mt-0.5">{composeTitle(person)}</div>
+                                        <div class="truncate text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">{person.orgName}</div>
+                                    </div>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </section>
+        )}
+    </div>
+</BaseLayout>
+
+<style>
+    @keyframes everyoneFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .everyone-fade {
+        opacity: 0;
+        animation: everyoneFadeIn 0.6s ease-out forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .everyone-fade {
+            opacity: 1;
+            animation: none;
+        }
+    }
+</style>
