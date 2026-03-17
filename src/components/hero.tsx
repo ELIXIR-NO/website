@@ -1,21 +1,9 @@
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import React, { Suspense, lazy, useState, useEffect, useCallback } from 'react';
 
-const HeroScene = lazy(() => import('./hero-scene'));
+const ParticleField = lazy(() => import('./particle-field'));
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-function SceneFallback() {
-    return (
-        <div className="w-full h-full flex items-center justify-center">
-            <img
-                src={`${BASE}/assets/logos/elixir-no-dark.svg`}
-                alt="ELIXIR Norway"
-                className="h-32 w-auto opacity-20 dark:invert-85"
-            />
-        </div>
-    );
-}
 
 const ROTATING_WORDS = ['life science', 'genomics', 'bioinformatics', 'biomedical', 'proteomics'];
 const ROTATE_INTERVAL = 3000;
@@ -113,19 +101,14 @@ export function Hero() {
                 aria-hidden="true"
             />
 
-            <motion.div
-                initial={shouldReduceMotion ? {} : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1.2, delay: 0.2 }}
-                className="hidden lg:block absolute inset-y-0 right-0 w-[55%] xl:w-[60%]"
-            >
-                <Suspense fallback={<SceneFallback />}>
-                    <HeroScene />
+            {!shouldReduceMotion && (
+                <Suspense fallback={null}>
+                    <ParticleField playing={true} />
                 </Suspense>
-            </motion.div>
+            )}
 
-            <div className="relative min-h-screen flex items-center pt-[84px] pb-12 sm:pb-16 lg:pb-16 z-10 pointer-events-none">
-                <div className="w-full px-6 sm:px-8 lg:max-w-7xl lg:mx-auto lg:px-12 pointer-events-auto">
+            <div className="relative min-h-screen flex items-center pt-[84px] pb-12 sm:pb-16 lg:pb-16 z-10">
+                <div className="w-full px-6 sm:px-8 lg:max-w-7xl lg:mx-auto lg:px-12">
                     <div className="max-w-xl text-balance">
                         <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.1 }}>
                             <a
