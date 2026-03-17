@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/base.astro";
+import OrgHero from "../../components/sections/org-hero.astro";
+import OrgContact from "../../components/sections/org-contact.astro";
+import { components } from "../../components/elements";
+import { idToSlug } from "../../lib/utils";
+import { organizations, ORG_SLUGS } from "../../data/organizations";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+    const aboutEntries = await getCollection("about");
+    return aboutEntries
+        .filter((entry) => ORG_SLUGS.has(idToSlug(entry.id)))
+        .map((entry) => ({
+            params: { org: idToSlug(entry.id) },
+            props: { entry },
+        }));
+}
+
+const { entry } = Astro.props;
+const slug = idToSlug(entry.id);
+const org = organizations[slug];
+const { Content } = await render(entry);
+
+const siteUrl = 'https://elixir.no';
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+const coverUrl = `${siteUrl}${BASE}${org.coverImage}`;
+---
+
+<BaseLayout seo={{
+    title: `${org.nodeName} — ELIXIR Norway`,
+    description: org.subtitle,
+    image: coverUrl,
+}}>
+    <div class="h-[84px]" aria-hidden="true" />
+
+    <OrgHero
+        nodeName={org.nodeName}
+        university={org.university}
+        logo={org.logo}
+        coverImage={org.coverImage}
+        subtitle={org.subtitle}
+        color={org.color}
+    />
+
+    <div class="px-6 sm:px-8 py-16 sm:py-20 flex-1">
+        <div class="mx-auto max-w-4xl">
+            <article id="main-content" class="content">
+                <Content components={components} />
+            </article>
+        </div>
+    </div>
+
+    <OrgContact
+        contacts={org.contacts}
+        links={org.links}
+        callout={org.callout}
+        lat={org.coordinates.lat}
+        lng={org.coordinates.lng}
+        address={org.address}
+        color={org.color}
+    />
+</BaseLayout>

@@ -2,21 +2,18 @@
 import { getCollection, render } from "astro:content";
 import { components } from "../../components/elements";
 import { idToSlug } from "../../lib/utils";
+import { ORG_SLUGS } from "../../data/organizations";
 
 export const prerender = true;
 
 export async function getStaticPaths() {
-    const organizations = await getCollection("about");
-    return organizations.map((entry) => {
-        return ({
-            params: {
-                organization: idToSlug(entry.id),
-            },
-            props: {
-                entry,
-            },
-        })
-    });
+    const allAbout = await getCollection("about");
+    return allAbout
+        .filter((entry) => !ORG_SLUGS.has(idToSlug(entry.id)))
+        .map((entry) => ({
+            params: { organization: idToSlug(entry.id) },
+            props: { entry },
+        }));
 }
 const { entry } = Astro.props;
 const { Content } = await render(entry);

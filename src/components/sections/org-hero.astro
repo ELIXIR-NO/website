@@ -1,0 +1,93 @@
+---
+interface Props {
+    nodeName: string;
+    university: string;
+    logo: string;
+    coverImage: string;
+    subtitle: string;
+    color: string;
+}
+
+const { nodeName, university, logo, coverImage, subtitle, color } = Astro.props;
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<section class="org-hero relative min-h-[50vh] flex items-end overflow-hidden -mt-[84px]">
+    <img
+        src={`${BASE}${coverImage}`}
+        alt=""
+        aria-hidden="true"
+        class="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+    />
+
+    <div class="absolute inset-0 bg-gradient-to-t from-[#023452] via-[#023452]/70 to-[#023452]/30" aria-hidden="true" />
+
+    <div
+        class="absolute inset-0 opacity-[0.03]"
+        style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 24px 24px;"
+        aria-hidden="true"
+    />
+
+    <div class="relative w-full pt-[calc(84px+3rem)] pb-10 sm:pb-14">
+        <div class="mx-auto max-w-7xl px-6 sm:px-8">
+            <a
+                href={`${BASE}/about`}
+                class="org-hero-fade inline-flex items-center gap-1.5 text-sm font-medium text-white/60 hover:text-white transition-colors mb-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded"
+            >
+                <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                </svg>
+                About ELIXIR Norway
+            </a>
+
+            <div class="org-hero-fade" style="animation-delay: 0.1s">
+                <img
+                    src={`${BASE}${logo}`}
+                    alt={`${university} logo`}
+                    class="h-14 sm:h-16 w-auto brightness-0 invert opacity-80"
+                    loading="eager"
+                />
+            </div>
+
+            <h1 class="org-hero-fade mt-5 text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight" style="animation-delay: 0.2s">
+                {nodeName}
+            </h1>
+
+            <p class="org-hero-fade mt-3 text-base sm:text-lg text-white/70 max-w-2xl" style="animation-delay: 0.3s">
+                {subtitle}
+            </p>
+
+            <div
+                class="org-hero-fade mt-6 h-1 w-16 rounded-full"
+                style={`background-color: ${color}; animation-delay: 0.4s`}
+                aria-hidden="true"
+            />
+        </div>
+    </div>
+</section>
+
+<style>
+    @keyframes orgHeroFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .org-hero-fade {
+        opacity: 0;
+        animation: orgHeroFadeIn 0.6s ease-out forwards;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .org-hero-fade {
+            opacity: 1;
+            animation: none;
+        }
+    }
+</style>
