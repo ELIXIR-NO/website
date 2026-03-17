@@ -13,7 +13,7 @@ const { figSrc, figCaption, imageLeft = false } = Astro.props;
         "lg:col-span-3 content text-sm leading-relaxed text-brand-grey dark:text-gray-300",
         "[&_strong]:text-brand-primary [&_strong]:dark:text-white",
         "[&_ul]:mt-5 [&_ul]:space-y-3 [&_li]:pl-1",
-        "[&_a]:text-brand-secondary-text [&_a]:dark:text-brand-secondary [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-brand-primary [&_a]:dark:hover:text-white",
+        "[&_a]:text-accent [&_a]:underline [&_a]:underline-offset-2 [&_a]:hover:text-accent/70",
         imageLeft ? "lg:order-last" : "",
     ]}>
         <slot />

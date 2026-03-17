@@ -43,7 +43,7 @@ const featuredCover = featured?.data.cover?.source
             </div>
             <a
                 href={`${BASE}/news`}
-                class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-brand-primary dark:text-brand-secondary hover:bg-brand-primary/5 dark:hover:bg-brand-secondary/10 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-accent hover:bg-accent/5 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
             >
                 View all news
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
@@ -57,13 +57,14 @@ const featuredCover = featured?.data.cover?.source
             {featured && (
                 <a
                     href={articleUrl(featured.id)}
-                    class="group relative flex flex-col justify-end min-h-[360px] lg:min-h-[420px] rounded-2xl lg:rounded-3xl overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                    class="group relative flex flex-col justify-end min-h-[360px] lg:min-h-[420px] rounded-2xl lg:rounded-3xl overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                 >
                     {/* Background */}
                     {featuredCover ? (
                         <img
                             src={featuredCover}
                             alt=""
+                            aria-hidden="true"
                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             loading="lazy"
                         />
@@ -104,7 +105,7 @@ const featuredCover = featured?.data.cover?.source
                     return (
                         <a
                             href={articleUrl(article.id)}
-                            class="group flex gap-5 items-start py-6 border-b border-gray-200/80 dark:border-gray-700/40 last:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2 rounded-lg"
+                            class="group flex gap-5 items-start py-6 border-b border-gray-200/80 dark:border-gray-700/40 last:border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-lg"
                         >
                             {/* Thumbnail */}
                             {hasCover && (
@@ -112,6 +113,7 @@ const featuredCover = featured?.data.cover?.source
                                     <img
                                         src={coverUrl}
                                         alt=""
+                                        aria-hidden="true"
                                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                         loading="lazy"
                                     />
@@ -119,10 +121,10 @@ const featuredCover = featured?.data.cover?.source
                             )}
 
                             <div class="flex-1 min-w-0">
-                                <time class="text-xs font-semibold text-brand-secondary-text dark:text-brand-secondary mb-1.5 block">
+                                <time class="text-xs font-semibold text-accent mb-1.5 block">
                                     {formatDate(article.data.date)}
                                 </time>
-                                <h3 class="text-base font-bold text-brand-primary dark:text-white leading-snug group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors line-clamp-2">
+                                <h3 class="text-base font-bold text-brand-primary dark:text-white leading-snug group-hover:text-accent transition-colors line-clamp-2">
                                     {article.data.title}
                                 </h3>
                                 <p class="mt-1.5 text-sm text-brand-grey dark:text-gray-400 leading-relaxed line-clamp-2">
@@ -130,7 +132,7 @@ const featuredCover = featured?.data.cover?.source
                                 </p>
                             </div>
 
-                            <svg class="flex-shrink-0 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-all group-hover:translate-x-1 mt-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <svg class="flex-shrink-0 h-5 w-5 text-gray-500 dark:text-gray-400 group-hover:text-accent transition-all group-hover:translate-x-1 mt-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
                         </a>
@@ -143,7 +145,7 @@ const featuredCover = featured?.data.cover?.source
         <div class="mt-8 text-center sm:hidden">
             <a
                 href={`${BASE}/news`}
-                class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-brand-primary dark:text-brand-secondary hover:bg-brand-primary/5 dark:hover:bg-brand-secondary/10 rounded-lg transition-colors"
+                class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-accent hover:bg-accent/5 rounded-lg transition-colors"
             >
                 View all news
                 <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">

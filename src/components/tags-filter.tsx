@@ -44,9 +44,9 @@ export default function TagsFilter({ tags = [] }: { tags: Tag[] }) {
         <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by tag">
             <button
                 onClick={handleClear}
-                className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                     isAllSelected
-                        ? 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white'
+                        ? 'bg-accent text-white'
                         : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
                 aria-pressed={isAllSelected}
@@ -59,9 +59,9 @@ export default function TagsFilter({ tags = [] }: { tags: Tag[] }) {
                     <button
                         key={tag.id}
                         onClick={() => handleToggle(tag.id)}
-                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                        className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                             isActive
-                                ? 'bg-brand-primary text-white dark:bg-brand-secondary dark:text-white'
+                                ? 'bg-accent text-white'
                                 : 'border border-gray-200/60 dark:border-gray-700/30 text-brand-grey dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                         aria-pressed={isActive}

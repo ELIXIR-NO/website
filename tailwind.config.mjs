@@ -11,6 +11,7 @@ export default {
                 sans: ['Space Grotesk', ...defaultTheme.fontFamily.sans],
             },
             colors: {
+                accent: 'rgb(var(--color-accent) / <alpha-value>)',
                 brand: {
                     "primary": "#023452",
                     "secondary": "#f47d20",

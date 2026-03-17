@@ -61,7 +61,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
         <div className="space-y-5">
             {groups.map(group => (
                 <div key={group.key}>
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-brand-grey/60 dark:text-gray-500 mb-2">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
                         {group.label}
                     </h3>
                     <div className="flex flex-col gap-0.5" role="group" aria-label={`Filter by ${group.label}`}>
@@ -71,9 +71,9 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                                 <button
                                     key={opt.id}
                                     onClick={() => toggle(group.key, opt.id)}
-                                    className={`flex items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary text-left ${
+                                    className={`flex items-center justify-between rounded-md px-2.5 py-1.5 text-sm transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent text-left ${
                                         isActive
-                                            ? 'bg-brand-primary/10 dark:bg-brand-secondary/10 text-brand-primary dark:text-brand-secondary font-medium'
+                                            ? 'bg-accent/10 text-accent font-medium'
                                             : 'text-brand-grey dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/[0.03]'
                                     }`}
                                     aria-pressed={isActive}
@@ -81,7 +81,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                                     <span className="flex items-center gap-2">
                                         <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border transition-colors ${
                                             isActive
-                                                ? 'border-brand-primary dark:border-brand-secondary bg-brand-primary dark:bg-brand-secondary'
+                                                ? 'border-accent bg-accent'
                                                 : 'border-gray-300 dark:border-gray-600'
                                         }`}>
                                             {isActive && (
@@ -92,7 +92,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                                         </span>
                                         {opt.label}
                                     </span>
-                                    <span className={`text-xs tabular-nums ${isActive ? 'text-brand-primary/50 dark:text-brand-secondary/50' : 'text-gray-500 dark:text-gray-400'}`}>
+                                    <span className={`text-xs tabular-nums ${isActive ? 'text-accent/70' : 'text-gray-500 dark:text-gray-400'}`}>
                                         {opt.count}
                                     </span>
                                 </button>
@@ -104,7 +104,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
             {hasAnyFilter && (
                 <button
                     onClick={clearAll}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-grey/60 dark:text-gray-500 hover:text-brand-primary dark:hover:text-white transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors"
                 >
                     <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -120,7 +120,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
             {/* Mobile toggle button */}
             <button
                 onClick={() => setMobileOpen(prev => !prev)}
-                className="lg:hidden flex items-center gap-2 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-brand-primary dark:text-white transition-colors hover:border-brand-secondary/30 w-full justify-center"
+                className="lg:hidden flex items-center gap-2 rounded-lg border border-gray-200/60 dark:border-gray-700/30 bg-white dark:bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-brand-primary dark:text-white transition-colors hover:border-accent/30 w-full justify-center"
                 aria-expanded={mobileOpen}
             >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
@@ -128,7 +128,7 @@ export default function ProjectFilters({ groups = [] }: { groups: FilterGroup[] 
                 </svg>
                 Filters
                 {hasAnyFilter && (
-                    <span className="rounded-full bg-brand-primary text-white dark:bg-brand-secondary dark:text-brand-primary text-xs px-1.5 py-0.5 leading-none">
+                    <span className="rounded-full bg-accent text-white text-xs px-1.5 py-0.5 leading-none">
                         {activeCount}
                     </span>
                 )}

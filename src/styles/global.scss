@@ -7,9 +7,15 @@
 
 @layer base {
 
+  :root { --color-accent: 2 52 82; }
+  .dark { --color-accent: 244 125 32; }
+
   html {
     font-size: 16px;
-    scroll-behavior: smooth;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
 
     @media (min-width: 1536px) { font-size: 17px; }
     @media (min-width: 1800px) { font-size: 19px; }
@@ -55,7 +61,13 @@
   }
 
   .content a, .link {
-    @apply text-brand-secondary dark:text-brand-secondary hover:text-brand-secondary/70 dark:hover:text-brand-secondary/70 underline underline-offset-2 decoration-brand-secondary/30 hover:decoration-brand-secondary/60 transition-colors;
+    @apply text-accent hover:text-accent/70 underline underline-offset-2 decoration-accent/30 hover:decoration-accent/60 transition-colors;
+  }
+
+  /* Screen-reader hint for links that open in a new window */
+  a[target="_blank"]:not([aria-label])::after {
+    content: " (opens in new window)";
+    @apply sr-only;
   }
 
   em, strong {

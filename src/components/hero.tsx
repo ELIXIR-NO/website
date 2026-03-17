@@ -36,7 +36,7 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
     const word = ROTATING_WORDS[index];
 
     if (shouldReduceMotion) {
-        return <span className="text-brand-secondary-text dark:text-brand-secondary">{word}</span>;
+        return <span className="text-accent">{word}</span>;
     }
 
     return (
@@ -44,7 +44,7 @@ function RotatingWord({ shouldReduceMotion }: { shouldReduceMotion: boolean | nu
             <AnimatePresence mode="wait" initial={false}>
                 <motion.span
                     key={word}
-                    className="inline-block text-brand-secondary-text dark:text-brand-secondary"
+                    className="inline-block text-accent"
                     initial={{ y: '100%', opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: '-100%', opacity: 0 }}
@@ -80,7 +80,7 @@ function ScrollCue({ shouldReduceMotion }: { shouldReduceMotion: boolean | null 
             initial={shouldReduceMotion ? {} : { opacity: 0 }}
             animate={{ opacity: visible ? 1 : 0 }}
             transition={{ duration: 0.4, delay: shouldReduceMotion ? 0 : 1 }}
-            className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 text-brand-grey/60 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2 rounded-full"
+            className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 text-gray-500 dark:text-gray-400 hover:text-brand-primary dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 rounded-full"
         >
             <motion.svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@ export function Hero() {
                                 href="https://elixir-europe.org"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-brand-secondary/10 text-brand-secondary-text dark:bg-brand-secondary/20 hover:bg-brand-secondary/20 dark:hover:bg-brand-secondary/30 transition-colors"
+                                className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-accent/10 text-accent hover:bg-accent/20 transition-colors"
                             >
                                 Part of the European ELIXIR infrastructure
                                 <svg className="ml-1.5 h-3 w-3 opacity-60" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
@@ -168,7 +168,7 @@ export function Hero() {
                         >
                             <a
                                 href={`${BASE}/services`}
-                                className="group inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-brand-primary text-white font-bold text-sm hover:bg-brand-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                                className="group inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-brand-primary text-white font-bold text-sm hover:bg-brand-primary/90 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                             >
                                 Explore services
                                 <svg className="ml-2 h-4 w-4 transition-transform duration-200 ease-out group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
@@ -177,7 +177,7 @@ export function Hero() {
                             </a>
                             <a
                                 href={`${BASE}/research-support`}
-                                className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-brand-grey dark:text-gray-300 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                                className="inline-flex items-center px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-brand-grey dark:text-gray-300 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                             >
                                 Get support
                             </a>

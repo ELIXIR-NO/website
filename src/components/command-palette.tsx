@@ -168,7 +168,7 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
                                             onMouseEnter={() => setActiveIndex(i)}
                                             className={`flex flex-col gap-1 rounded-lg px-3 py-2.5 cursor-pointer transition-colors ${
                                                 i === activeIndex
-                                                    ? 'bg-brand-secondary/10 dark:bg-brand-secondary/10'
+                                                    ? 'bg-accent/10'
                                                     : 'hover:bg-gray-50 dark:hover:bg-white/5'
                                             }`}
                                         >
@@ -180,7 +180,7 @@ export default function CommandPalette({ open, setOpen }: { open: boolean; setOp
                                                 {item.title}
                                             </span>
                                             <span
-                                                className="text-xs text-brand-grey/60 dark:text-gray-500 line-clamp-2 [&_mark]:bg-brand-secondary/20 [&_mark]:text-brand-primary dark:[&_mark]:text-white [&_mark]:rounded-sm [&_mark]:px-0.5"
+                                                className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 [&_mark]:bg-accent/20 [&_mark]:text-brand-primary dark:[&_mark]:text-white [&_mark]:rounded-sm [&_mark]:px-0.5"
                                                 dangerouslySetInnerHTML={{ __html: DomPurify.sanitize(item.excerpt) }}
                                             />
                                         </div>

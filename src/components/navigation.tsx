@@ -71,7 +71,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
 
                         {/* Logo */}
                         <div className="flex shrink-0">
-                            <a href={`${BASE}/`} className="p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary rounded-lg">
+                            <a href={`${BASE}/`} className="p-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-lg">
                                 <span className="sr-only">ELIXIR Norway</span>
                                 <img
                                     alt="ELIXIR Norway logo"
@@ -98,9 +98,9 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                                     <a
                                         key={item.name}
                                         href={item.href}
-                                        className={`relative px-3 py-2 text-sm 2xl:text-base font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                                        className={`relative px-3 py-2 text-sm 2xl:text-base font-semibold rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                                             isActive
-                                                ? 'text-brand-primary dark:text-brand-secondary bg-brand-secondary/10 dark:bg-brand-secondary/10'
+                                                ? 'text-accent bg-accent/10'
                                                 : 'text-brand-grey dark:text-gray-300 hover:text-brand-primary dark:hover:text-white hover:bg-black/[0.04] dark:hover:bg-white/[0.06]'
                                         }`}
                                         aria-current={isActive ? 'page' : undefined}
@@ -116,7 +116,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                             <ThemeToggle />
                             <button
                                 onClick={() => setSearchOpen(true)}
-                                className="h-9 w-9 flex items-center justify-center rounded-xl text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                className="h-9 w-9 flex items-center justify-center rounded-xl text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                 aria-label="Search (Ctrl+K)"
                             >
                                 <SearchIcon className="h-5 w-5" />
@@ -129,7 +129,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                             <button
                                 type="button"
                                 onClick={() => setMobileMenuOpen(true)}
-                                className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-black/[0.04] dark:hover:bg-white/[0.06] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                 aria-label="Open menu"
                                 aria-expanded={mobileMenuOpen}
                             >
@@ -190,7 +190,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                                 <button
                                     type="button"
                                     onClick={closeMobile}
-                                    className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                    className="p-2 rounded-lg text-brand-grey dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     aria-label="Close menu"
                                 >
                                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" aria-hidden="true">
@@ -213,9 +213,9 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                                                     <a
                                                         href={item.href}
                                                         onClick={closeMobile}
-                                                        className={`block rounded-lg px-4 py-3 text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary ${
+                                                        className={`block rounded-lg px-4 py-3 text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                                                             isActive
-                                                                ? 'text-brand-primary dark:text-brand-secondary bg-brand-secondary/10 dark:bg-brand-secondary/10'
+                                                                ? 'text-accent bg-accent/10'
                                                                 : 'text-brand-grey dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
                                                         }`}
                                                         aria-current={isActive ? 'page' : undefined}
@@ -230,7 +230,7 @@ export const Navigation = ({ pathname }: { pathname: string }) => {
                                 <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
                                     <button
                                         onClick={() => { closeMobile(); setSearchOpen(true); }}
-                                        className="flex items-center gap-3 w-full rounded-lg px-4 py-3 text-base font-semibold text-brand-grey dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                        className="flex items-center gap-3 w-full rounded-lg px-4 py-3 text-base font-semibold text-brand-grey dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     >
                                         <SearchIcon className="h-5 w-5" />
                                         Search

@@ -144,7 +144,7 @@ const statusColors: Record<string, { bg: string; text: string; dot: string }> = 
 
 const categoryColors: Record<string, string> = {
     european: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400',
-    elixir: 'bg-brand-secondary/10 text-brand-secondary-text dark:text-brand-secondary',
+    elixir: 'bg-accent/10 text-accent',
     norwegian: 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400',
     global: 'bg-purple-100 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400',
 };
@@ -246,7 +246,7 @@ const jsonLd = contentType === 'news' ? JSON.stringify({
                         {contentType === 'news' && tags.length > 0 && (
                             <div class="flex flex-wrap gap-2 mb-4">
                                 {tags.map((tag: string) => (
-                                    <span class="rounded-full px-3 py-1 text-xs font-semibold bg-brand-secondary/10 text-brand-secondary-text dark:text-brand-secondary">
+                                    <span class="rounded-full px-3 py-1 text-xs font-semibold bg-accent/10 text-accent">
                                         {slugToTitleCase(tag)}
                                     </span>
                                 ))}
@@ -296,9 +296,9 @@ const jsonLd = contentType === 'news' ? JSON.stringify({
                                     <p class="font-medium text-brand-primary dark:text-white">
                                         {resolvedAuthors.map((author, i) => (
                                             <>
-                                                {i > 0 && <span class="text-gray-400 dark:text-gray-500">, </span>}
+                                                {i > 0 && <span class="text-gray-500 dark:text-gray-400">, </span>}
                                                 {author.url
-                                                    ? <a href={author.url} target="_blank" rel="noopener noreferrer" class="hover:text-brand-secondary-text dark:hover:text-brand-secondary transition-colors">{author.name}</a>
+                                                    ? <a href={author.url} target="_blank" rel="noopener noreferrer" class="hover:text-accent transition-colors">{author.name}</a>
                                                     : <span>{author.name}</span>
                                                 }
                                             </>

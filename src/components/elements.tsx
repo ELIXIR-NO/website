@@ -79,7 +79,8 @@ export const Img: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (props) 
 export const Blockquote: React.FC<React.BlockquoteHTMLAttributes<HTMLQuoteElement>> = ({ children, ...props }) => (
     <blockquote {...props} className="text-lg relative border-l-4 border-gray-300 pl-6 pt-2 my-12">
         <FaQuoteLeft
-            className="absolute top-0 left-0 transform -translate-x-3 -translate-y-1/2 text-5xl text-gray-300"/>
+            className="absolute top-0 left-0 transform -translate-x-3 -translate-y-1/2 text-5xl text-gray-300"
+            aria-hidden="true"/>
         {children}
     </blockquote>
 );
@@ -97,7 +98,7 @@ export const Table: React.FC<React.TableHTMLAttributes<HTMLTableElement>> = ({ c
 );
 
 export const Th: React.FC<React.ThHTMLAttributes<HTMLTableHeaderCellElement>> = (props) => (
-    <th {...props}
+    <th scope="col" {...props}
         className="bg-slate-50 dark:bg-dark-surface border border-gray-300 px-4 py-2 text-left font-semibold"/>
 );
 
@@ -106,7 +107,7 @@ export const Td: React.FC<React.TdHTMLAttributes<HTMLTableDataCellElement>> = (p
 );
 
 export const Em: React.FC<any> = (props) => (
-    <em {...props} className="font-bold not-italic text-brand-primary"/>
+    <em {...props} className="font-bold not-italic text-accent"/>
 );
 
 export const Strong: React.FC<any> = (props) => (

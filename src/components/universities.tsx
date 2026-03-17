@@ -38,7 +38,7 @@ export default function Universities() {
                     href={uni.href}
                     variants={shouldReduceMotion ? undefined : item}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
-                    className="group flex flex-col items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-4 rounded-lg"
+                    className="group flex flex-col items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 rounded-lg"
                 >
                     <img
                         src={uni.logo}
@@ -46,7 +46,7 @@ export default function Universities() {
                         className="h-20 sm:h-24 w-auto object-contain grayscale opacity-50 dark:invert-85 dark:opacity-50 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110"
                         loading="lazy"
                     />
-                    <span className="relative text-sm font-semibold text-brand-grey/60 dark:text-gray-500 transition-colors duration-300 group-hover:text-brand-primary dark:group-hover:text-white pb-1">
+                    <span className="relative text-sm font-semibold text-gray-500 dark:text-gray-400 transition-colors duration-300 group-hover:text-brand-primary dark:group-hover:text-white pb-1">
                         {uni.location}
                         <span
                             className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full scale-x-0 transition-transform duration-300 origin-center group-hover:scale-x-100"

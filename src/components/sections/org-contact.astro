@@ -39,10 +39,10 @@ const hasContactInfo = contacts.length > 0 || links.length > 0 || callout;
                                 {contacts.map((c) => (
                                     <a
                                         href={`mailto:${c.email}`}
-                                        class="group flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-white/[0.04] border border-gray-200/60 dark:border-gray-700/30 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03] hover:border-brand-secondary/30 hover:shadow-md hover:shadow-brand-secondary/[0.06] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                        class="group flex items-start gap-4 p-4 rounded-xl bg-white dark:bg-white/[0.04] border border-gray-200/60 dark:border-gray-700/30 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.03] hover:border-accent/30 hover:shadow-md hover:shadow-accent/[0.06] transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     >
-                                        <div class="shrink-0 mt-0.5 h-9 w-9 rounded-lg flex items-center justify-center bg-brand-primary/5 dark:bg-white/[0.06] group-hover:bg-brand-secondary/10 transition-colors">
-                                            <svg class="h-4 w-4 text-brand-primary dark:text-gray-300 group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <div class="shrink-0 mt-0.5 h-9 w-9 rounded-lg flex items-center justify-center bg-brand-primary/5 dark:bg-white/[0.06] group-hover:bg-accent/10 transition-colors">
+                                            <svg class="h-4 w-4 text-brand-primary dark:text-gray-300 group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
                                             </svg>
                                         </div>
@@ -50,7 +50,7 @@ const hasContactInfo = contacts.length > 0 || links.length > 0 || callout;
                                             <div class="text-sm font-semibold text-brand-primary dark:text-white">
                                                 {c.reason}
                                             </div>
-                                            <div class="text-sm text-brand-secondary-text dark:text-brand-secondary mt-0.5 truncate">
+                                            <div class="text-sm text-accent mt-0.5 truncate">
                                                 {c.label || c.email}
                                             </div>
                                         </div>
@@ -71,9 +71,9 @@ const hasContactInfo = contacts.length > 0 || links.length > 0 || callout;
                                         href={l.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        class="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-white/[0.04] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                        class="group flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white dark:hover:bg-white/[0.04] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     >
-                                        <svg class="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500 group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <svg class="h-4 w-4 shrink-0 text-gray-500 dark:text-gray-400 group-hover:text-accent transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
                                         </svg>
                                         <span class="text-sm font-medium text-brand-grey dark:text-gray-300 group-hover:text-brand-primary dark:group-hover:text-white transition-colors">

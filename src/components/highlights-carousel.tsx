@@ -91,7 +91,7 @@ export default function HighlightsCarousel({ slides }: { slides: Slide[] }) {
                 <div className="absolute inset-0 flex items-center justify-between px-3 sm:px-5 opacity-0 hover:opacity-100 transition-opacity pointer-events-none">
                     <button
                         onClick={prev}
-                        className="pointer-events-auto p-2.5 rounded-full bg-white/90 dark:bg-black/60 text-gray-800 dark:text-white shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-black/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                        className="pointer-events-auto p-2.5 rounded-full bg-white/90 dark:bg-black/60 text-gray-800 dark:text-white shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-black/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         aria-label="Previous slide"
                     >
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" aria-hidden="true">
@@ -100,7 +100,7 @@ export default function HighlightsCarousel({ slides }: { slides: Slide[] }) {
                     </button>
                     <button
                         onClick={next}
-                        className="pointer-events-auto p-2.5 rounded-full bg-white/90 dark:bg-black/60 text-gray-800 dark:text-white shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-black/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                        className="pointer-events-auto p-2.5 rounded-full bg-white/90 dark:bg-black/60 text-gray-800 dark:text-white shadow-lg backdrop-blur-sm hover:bg-white dark:hover:bg-black/80 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         aria-label="Next slide"
                     >
                         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" aria-hidden="true">
@@ -121,11 +121,11 @@ export default function HighlightsCarousel({ slides }: { slides: Slide[] }) {
                             role="tab"
                             aria-selected={i === current}
                             aria-label={`Slide ${i + 1} of ${slides.length}`}
-                            className="relative flex-1 h-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary focus-visible:ring-offset-2"
+                            className="relative flex-1 h-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                         >
                             {i === current && !paused && !shouldReduceMotion ? (
                                 <motion.div
-                                    className="absolute inset-y-0 left-0 bg-brand-secondary rounded-full"
+                                    className="absolute inset-y-0 left-0 bg-accent rounded-full"
                                     initial={{ width: '0%' }}
                                     animate={{ width: '100%' }}
                                     transition={{ duration: INTERVAL / 1000, ease: 'linear' }}
@@ -134,7 +134,7 @@ export default function HighlightsCarousel({ slides }: { slides: Slide[] }) {
                             ) : (
                                 <div
                                     className={`absolute inset-0 rounded-full transition-colors ${
-                                        i === current ? 'bg-brand-secondary' : 'bg-transparent'
+                                        i === current ? 'bg-accent' : 'bg-transparent'
                                     }`}
                                 />
                             )}
@@ -145,7 +145,7 @@ export default function HighlightsCarousel({ slides }: { slides: Slide[] }) {
                 {/* Pause */}
                 <button
                     onClick={() => setPaused(p => !p)}
-                    className="p-1.5 rounded-md text-brand-grey dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                    className="p-1.5 rounded-md text-brand-grey dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                     aria-label={paused ? 'Resume auto-play' : 'Pause auto-play'}
                 >
                     {paused ? (

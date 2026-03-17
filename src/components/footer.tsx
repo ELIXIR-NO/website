@@ -65,7 +65,7 @@ const Footer = () => {
                             ELIXIR Norway is the Norwegian Node of{' '}
                             <a
                                 href="https://elixir-europe.org"
-                                className="font-bold text-brand-primary dark:text-brand-secondary hover:underline"
+                                className="font-bold text-accent hover:underline"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -80,7 +80,7 @@ const Footer = () => {
                                     href={href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="p-2 rounded-lg text-brand-grey dark:text-gray-400 hover:text-brand-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                    className="p-2 rounded-lg text-brand-grey dark:text-gray-400 hover:text-brand-primary dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                                     aria-label={name}
                                 >
                                     <Icon className="h-5 w-5" aria-hidden="true" />
@@ -138,7 +138,7 @@ const Footer = () => {
                                     href={href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary rounded"
+                                    className="opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
                                 >
                                     <img
                                         src={src}
@@ -156,7 +156,7 @@ const Footer = () => {
                                     href={href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary rounded"
+                                    className="opacity-60 dark:opacity-40 hover:opacity-100 transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
                                 >
                                     <img
                                         src={src}

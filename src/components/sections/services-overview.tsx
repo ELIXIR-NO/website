@@ -75,7 +75,7 @@ export default function ServicesOverview() {
                         </p>
                         <a
                             href={`${BASE}/services`}
-                            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-primary dark:text-brand-secondary hover:underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                            className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                         >
                             Explore all services
                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
@@ -98,7 +98,7 @@ export default function ServicesOverview() {
                                 href={svc.href}
                                 variants={shouldReduceMotion ? undefined : item}
                                 transition={{ duration: 0.5, ease: 'easeOut' }}
-                                className="group relative px-5 py-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-transparent transition-[border-color,box-shadow,background-color] duration-200 hover:bg-white hover:border-gray-200/80 dark:hover:bg-dark-surface dark:hover:border-gray-700/50 hover:shadow-[0_0_0_3px_rgba(244,125,32,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary"
+                                className="group relative px-5 py-5 rounded-xl border border-gray-100 dark:border-gray-800 bg-transparent transition-[border-color,box-shadow,background-color] duration-200 hover:bg-white hover:border-gray-200/80 dark:hover:bg-dark-surface dark:hover:border-gray-700/50 hover:shadow-[0_0_0_3px_rgb(var(--color-accent)/0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                             >
                                 <div
                                     className="w-9 h-9 rounded-lg flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
@@ -112,7 +112,7 @@ export default function ServicesOverview() {
                                 <p className="text-sm leading-relaxed text-brand-grey dark:text-gray-400">
                                     {svc.description}
                                 </p>
-                                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors group-hover:text-brand-secondary-text dark:group-hover:text-brand-secondary">
+                                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400 transition-colors group-hover:text-accent">
                                     Learn more
                                     <svg className="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

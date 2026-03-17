@@ -94,14 +94,14 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2"
                     aria-label="Previous slide"
                 >
-                    <IoIosArrowBack className="h-6 w-6"/>
+                    <IoIosArrowBack className="h-6 w-6" aria-hidden="true"/>
                 </button>
                 <button
                     onClick={nextSlide}
                     className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white dark:bg-black bg-opacity-50 group-hover:bg-opacity-75 rounded-full p-2"
                     aria-label="Next slide"
                 >
-                    <IoIosArrowForward className="h-6 w-6"/>
+                    <IoIosArrowForward className="h-6 w-6" aria-hidden="true"/>
                 </button>
             </div>
 
@@ -111,7 +111,9 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-3 h-3 rounded-full focus:outline-none ${
+                        aria-label={`Go to slide ${index + 1} of ${images.length}`}
+                        aria-current={index === currentIndex ? 'true' : undefined}
+                        className={`w-3 h-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
                             index === currentIndex ? 'bg-brand-primary' : 'bg-gray-300'
                         }`}
                     />
@@ -120,7 +122,8 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
 
             <button
                 onClick={() => setIsPaused(!isPaused)}
-                className="absolute top-4 right-4 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full hover:bg-opacity-75"
+                className="absolute top-4 right-4 bg-black bg-opacity-50 text-white text-sm px-3 py-1 rounded-full hover:bg-opacity-75 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+                aria-label={isPaused ? 'Resume auto-play' : 'Pause auto-play'}
             >
                 {isPaused ? '▶ Play' : '⏸ Pause'}
             </button>
@@ -143,7 +146,7 @@ const Carousel = ({ images, autoSlideInterval = 3000 }) => {
                             aria-label="Close fullscreen view"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor">
+                                 stroke="currentColor" aria-hidden="true">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                       d="M6 18L18 6M6 6l12 12"/>
                             </svg>

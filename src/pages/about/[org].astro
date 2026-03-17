@@ -45,13 +45,13 @@ const coverUrl = `${siteUrl}${BASE}${org.coverImage}`;
         color={org.color}
     />
 
-    <div class="px-6 sm:px-8 py-16 sm:py-20 flex-1">
+    <main id="main-content" class="px-6 sm:px-8 py-16 sm:py-20 flex-1">
         <div class="mx-auto max-w-4xl">
-            <article id="main-content" class="content">
+            <article class="content">
                 <Content components={components} />
             </article>
         </div>
-    </div>
+    </main>
 
     <OrgContact
         contacts={org.contacts}
