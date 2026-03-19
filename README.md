@@ -11,6 +11,7 @@ Built with [Astro](https://astro.build) (static output), [React](https://react.d
 - [Prerequisites](#prerequisites)
 - [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
+- [Content Manager (CMS)](#content-manager-cms)
 - [Content Authoring](#content-authoring)
 - [Development Commands](#development-commands)
 - [Deployment](#deployment)
@@ -91,9 +92,41 @@ website/
 
 ---
 
+## Content Manager (CMS)
+
+Non-technical contributors can edit content through a web-based admin interface at **[elixir.no/admin](https://elixir.no/admin)** — no code, terminal, or git knowledge required.
+
+**Requirements:** A GitHub account with write access to this repository.
+
+**What you can edit:**
+
+| Section | What you can do |
+|---------|----------------|
+| **News** | Create, edit articles. Set title, date (date picker), summary, cover image, tags, authors. |
+| **Events** | Create, edit events. Same fields as news. |
+| **Services** | Create, edit service pages. Title, summary, logo, tags. |
+| **Funding & Projects** | Create, edit projects. Full metadata: status, category, funder, period, keywords. |
+| **People** | Add, edit, remove staff members. Upload photos. Assign ELIXIR group roles. |
+| **Slides** | Add, edit, reorder, remove homepage carousel slides. Upload images. |
+| **Banner** | Toggle the site-wide announcement banner on/off. Edit message (supports markdown). |
+
+**How it works:**
+1. Visit `/admin` and sign in with GitHub
+2. Select a section from the sidebar
+3. Browse entries, click to edit, or create new
+4. Click "Save as Pull Request" — review the PR title and description
+5. A pull request is created on GitHub
+6. A developer reviews and merges — the site redeploys automatically
+
+All changes go through pull requests. Nothing is committed directly to main.
+
+For technical details on the CMS architecture, OAuth setup, and troubleshooting, see [docs/cms-setup.md](docs/cms-setup.md).
+
+---
+
 ## Content Authoring
 
-Most day-to-day changes are edits to MDX files inside `src/content/`. For a step-by-step guide on common tasks, see the [project wiki](https://github.com/ELIXIR-NO/website/wiki).
+For developers who prefer editing MDX files directly, most day-to-day changes are edits to files inside `src/content/`. For a step-by-step guide on common tasks, see the [project wiki](https://github.com/ELIXIR-NO/website/wiki).
 
 ### Adding news or events
 
