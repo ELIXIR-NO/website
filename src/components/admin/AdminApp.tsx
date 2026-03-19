@@ -561,6 +561,7 @@ function FieldInput({
                             </div>
                         )}
                     </div>
+                    <p className="text-xs text-gray-500 mt-1">Type and press Enter to add, or select from suggestions.</p>
                 </div>
             );
         }
