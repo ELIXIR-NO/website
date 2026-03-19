@@ -21,6 +21,10 @@ collections:
     label_singular: Article
     folder: src/content/news
     create: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     summary: "{{title}} — {{date}}"
@@ -52,6 +56,10 @@ collections:
     label_singular: Event
     folder: src/content/events
     create: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     summary: "{{title}} — {{date}}"
@@ -81,6 +89,10 @@ collections:
     label_singular: Service
     folder: src/content/services
     create: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     summary: "{{title}}"
@@ -99,6 +111,10 @@ collections:
     label_singular: Project
     folder: src/content/funding-and-projects
     create: true
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     summary: "{{title}} ({{status}})"
@@ -144,6 +160,10 @@ collections:
     label: About
     folder: src/content/about
     create: false
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     fields:
@@ -155,6 +175,10 @@ collections:
     label: Site Banner
     folder: src/content/banner
     create: false
+    nested:
+      depth: 100
+      summary: "{{title}}"
+    meta: { path: { widget: string, label: Path, index_file: index } }
     extension: mdx
     format: frontmatter
     fields:
