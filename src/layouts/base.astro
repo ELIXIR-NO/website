@@ -2,6 +2,7 @@
 import Navigation from "../components/navigation";
 import Footer from "../components/footer";
 import SEOHead from "../components/seo-head.astro";
+import SiteBanner from "../components/site-banner.astro";
 import "../styles/global.scss";
 
 interface Props {
@@ -80,6 +81,8 @@ const { seo } = Astro.props;
         >
             Skip to main content
         </a>
+
+        <SiteBanner />
 
         <Navigation client:load pathname={Astro.url.pathname} />
 
