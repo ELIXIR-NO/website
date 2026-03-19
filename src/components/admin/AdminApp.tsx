@@ -332,12 +332,15 @@ function CollectionView({
 }) {
     const [entries, setEntries] = useState<Entry[]>([]);
     const [loading, setLoading] = useState(true);
+    const [progress, setProgress] = useState({ loaded: 0, total: 0 });
 
     useEffect(() => {
         setLoading(true);
+        setProgress({ loaded: 0, total: 0 });
         (async () => {
             const files = await listFiles(token, collection.folder + '/');
             const indexFiles = files.filter((f) => f.path.endsWith('/index.mdx'));
+            setProgress({ loaded: 0, total: indexFiles.length });
 
             const loaded: Entry[] = [];
             for (const f of indexFiles) {
@@ -349,6 +352,7 @@ function CollectionView({
                         .replace('/index.mdx', '');
                     loaded.push({ path: f.path, slug, data, body });
                 } catch { /* skip unreadable files */ }
+                setProgress(p => ({ ...p, loaded: loaded.length }));
             }
 
             loaded.sort((a, b) => {
@@ -383,10 +387,24 @@ function CollectionView({
             <div className="grid grid-cols-1 xl:grid-cols-[1fr_280px] gap-8">
                 <div>
                     {loading ? (
-                        <div className="animate-pulse space-y-2">
-                            {[...Array(8)].map((_, i) => (
-                                <div key={i} className="h-14 rounded-lg bg-gray-800" />
-                            ))}
+                        <div className="flex flex-col items-center justify-center py-20">
+                            <svg className="h-7 w-7 animate-spin text-accent" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                            </svg>
+                            <span className="text-xs text-gray-500 mt-3">
+                                {progress.total > 0
+                                    ? `Loading ${progress.loaded} of ${progress.total} entries...`
+                                    : 'Fetching file list...'}
+                            </span>
+                            {progress.total > 0 && (
+                                <div className="w-48 h-1 rounded-full bg-gray-700 mt-2 overflow-hidden">
+                                    <div
+                                        className="h-full bg-accent rounded-full transition-all duration-200"
+                                        style={{ width: `${(progress.loaded / progress.total) * 100}%` }}
+                                    />
+                                </div>
+                            )}
                         </div>
                     ) : entries.length === 0 ? (
                         <p className="text-sm text-gray-400">No entries found.</p>
