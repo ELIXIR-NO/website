@@ -1,0 +1,178 @@
+backend:
+  name: github
+  repo: ELIXIR-NO/elixir-no.github.io
+  branch: main
+  base_url: https://sveltia-cms-auth-tau.vercel.app
+
+publish_mode: editorial_workflow
+
+media_folder: public/data/uploads
+public_folder: /data/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  # ─── News ───────────────────────────────────────────────
+  - name: news
+    label: News
+    label_singular: Article
+    folder: src/content/news
+    create: true
+    nested:
+      depth: 2
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    extension: mdx
+    format: frontmatter
+    summary: "{{title}} — {{date}}"
+    sortable_fields:
+      fields: [date, title]
+      default:
+        field: date
+        direction: Descending
+    fields:
+      - { name: layout, widget: hidden, default: "../../../layouts/page.astro" }
+      - { name: variant, widget: hidden, default: "article" }
+      - { name: title, label: Title, widget: string, required: true }
+      - { name: date, label: Date, widget: string, required: true, hint: "Format: Month D, YYYY (e.g., March 15, 2026)" }
+      - { name: summary, label: Summary, widget: text, required: true, hint: "Short description shown on cards and in search results." }
+      - name: cover
+        label: Cover Image
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: source, label: Image, widget: image, required: true }
+      - { name: tags, label: Tags, widget: list, required: false, hint: "Lowercase, hyphens (e.g., training-events, data-management)" }
+      - { name: authors, label: Authors, widget: list, required: false, hint: "Usernames from people.json (e.g., kjell-petersen)" }
+      - { name: body, label: Content, widget: markdown }
+
+  # ─── Events ─────────────────────────────────────────────
+  - name: events
+    label: Events
+    label_singular: Event
+    folder: src/content/events
+    create: true
+    nested:
+      depth: 2
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    extension: mdx
+    format: frontmatter
+    summary: "{{title}} — {{date}}"
+    sortable_fields:
+      fields: [date, title]
+      default:
+        field: date
+        direction: Descending
+    fields:
+      - { name: layout, widget: hidden, default: "../../../layouts/page.astro" }
+      - { name: variant, widget: hidden, default: "article" }
+      - { name: title, label: Title, widget: string, required: true }
+      - { name: date, label: Date, widget: string, required: true, hint: "Format: Month D, YYYY" }
+      - { name: summary, label: Summary, widget: text, required: true }
+      - name: cover
+        label: Cover Image
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: source, label: Image, widget: image, required: true }
+      - { name: body, label: Content, widget: markdown }
+
+  # ─── Services ───────────────────────────────────────────
+  - name: services
+    label: Services
+    label_singular: Service
+    folder: src/content/services
+    create: true
+    nested:
+      depth: 1
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    extension: mdx
+    format: frontmatter
+    summary: "{{title}}"
+    fields:
+      - { name: layout, widget: hidden, default: "../../layouts/page.astro" }
+      - { name: variant, widget: hidden, default: "article" }
+      - { name: title, label: Title, widget: string, required: true }
+      - { name: summary, label: Summary, widget: text, required: true }
+      - { name: logo, label: Logo, widget: image, required: false }
+      - { name: tags, label: Tags, widget: list, required: false, hint: "e.g., e-infrastructure, analysis, data-management" }
+      - { name: body, label: Content, widget: markdown }
+
+  # ─── Funding & Projects ─────────────────────────────────
+  - name: funding-and-projects
+    label: Funding & Projects
+    label_singular: Project
+    folder: src/content/funding-and-projects
+    create: true
+    nested:
+      depth: 1
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    extension: mdx
+    format: frontmatter
+    summary: "{{title}} ({{status}})"
+    fields:
+      - { name: layout, widget: hidden, default: "../../layouts/page.astro" }
+      - { name: variant, widget: hidden, default: "article" }
+      - { name: title, label: Title, widget: string, required: true }
+      - { name: summary, label: Summary, widget: text, required: false }
+      - name: status
+        label: Status
+        widget: select
+        required: false
+        options: [ongoing, completed, unknown]
+      - name: category
+        label: Category
+        widget: select
+        required: false
+        options: [european, elixir, norwegian, global, unknown]
+      - name: funder
+        label: Funder
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: name, label: Name, widget: string, required: false }
+          - { name: link, label: URL, widget: string, required: false }
+      - name: project_number
+        label: Project Number
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: grant_agreement_id, label: Grant Agreement ID, widget: string, required: false }
+          - { name: link, label: URL, widget: string, required: false }
+      - { name: period, label: Period, widget: string, required: false, hint: "Format: YYYY-MM YYYY-MM" }
+      - { name: external_link, label: External Link, widget: string, required: false }
+      - { name: keywords, label: Keywords, widget: list, required: false }
+      - { name: draft, label: Draft, widget: boolean, required: false, default: false }
+      - { name: body, label: Content, widget: markdown }
+
+  # ─── About Pages ────────────────────────────────────────
+  - name: about
+    label: About
+    folder: src/content/about
+    create: false
+    nested:
+      depth: 2
+    meta: { path: { widget: string, label: Path, index_file: index } }
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { name: title, label: Title, widget: string, required: false }
+      - { name: body, label: Content, widget: markdown }
+
+  # ─── Banner ─────────────────────────────────────────────
+  - name: banner
+    label: Site Banner
+    folder: src/content/banner
+    create: false
+    extension: mdx
+    format: frontmatter
+    fields:
+      - { name: title, label: Title, widget: string, required: false }
+      - { name: summary, label: Summary, widget: text, required: false }
+      - { name: body, label: Content, widget: markdown }
