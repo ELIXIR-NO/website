@@ -170,18 +170,3 @@ collections:
       - { name: title, label: Title, widget: string, required: false }
       - { name: body, label: Content, widget: markdown }
 
-  # ─── Banner ─────────────────────────────────────────────
-  - name: banner
-    label: Site Banner
-    folder: src/content/banner
-    create: false
-    nested:
-      depth: 100
-      summary: "{{title}}"
-    meta: { path: { widget: string, label: Path, index_file: index } }
-    extension: mdx
-    format: frontmatter
-    fields:
-      - { name: title, label: Title, widget: string, required: false }
-      - { name: summary, label: Summary, widget: text, required: false }
-      - { name: body, label: Content, widget: markdown }
