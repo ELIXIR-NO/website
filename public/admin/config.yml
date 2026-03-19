@@ -28,11 +28,7 @@ collections:
     extension: mdx
     format: frontmatter
     summary: "{{title}} — {{date}}"
-    sortable_fields:
-      fields: [date, title]
-      default:
-        field: date
-        direction: Descending
+    sortable_fields: [date, title]
     fields:
       - { name: layout, widget: hidden, default: "../../../layouts/page.astro" }
       - { name: variant, widget: hidden, default: "article" }
@@ -63,11 +59,7 @@ collections:
     extension: mdx
     format: frontmatter
     summary: "{{title}} — {{date}}"
-    sortable_fields:
-      fields: [date, title]
-      default:
-        field: date
-        direction: Descending
+    sortable_fields: [date, title]
     fields:
       - { name: layout, widget: hidden, default: "../../../layouts/page.astro" }
       - { name: variant, widget: hidden, default: "article" }
